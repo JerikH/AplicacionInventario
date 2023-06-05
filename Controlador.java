@@ -5,9 +5,12 @@ import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class Controlador {
-  private Vistas vistas;
+  // private Vistas vistas;
   private Utilidades utilidades;
   private Inventario_General general; // utilizar exhibición y bodega en su lugar
   private Inventario_Vendido vendidos;
@@ -19,9 +22,9 @@ public class Controlador {
 
   Scanner scanner = new Scanner(System.in);
 
-  public Controlador(Vistas vistas, Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
+  public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
       Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios) {
-    this.vistas = vistas;
+    // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
     this.vendidos = vendidos;
@@ -73,17 +76,16 @@ public class Controlador {
             scanner.nextLine();
             switch (opcion){
               case 1:{//buscar una venta
-                
+                this.buscarVenta();
               }
               case 2:{//buscar un pedido
-                
+                System.out.println("MÉTODO EN DESARROLLO ");
               }
               case 3:{//buscar una devolución
-                
-                
+                System.out.println("MÉTODO EN DESARROLLO ");
               }
               default:{
-                
+                System.out.println("MÉTODO EN DESARROLLO ");
               }
             }
           }
@@ -126,25 +128,26 @@ public class Controlador {
       int opcion = scanner.nextInt();
       scanner.nextLine();
       switch(opcion){
-        case 1:
+        case 1: //buscar venta por ID
           System.out.print("Ingrese el ID de la venta a buscar: ");
           String idVenta = scanner.nextLine();
           Venta venta = vendidos.buscarVenta(idVenta);
           if(venta != null){
-            System.out.println(venta.toString());
+            ventatoString(venta);
           }else{
             System.out.println("No se encontró la venta con el ID ingresado.");
           }
           utilidades.esperarPresionarEnter();
           break;
-        case 2:
+        case 2: //bucar venta por empleado
           System.out.print("Ingrese el ID del empleado: ");
           String idEmpleado = scanner.nextLine();
-          // verificar que idEmpleado esté en la lista de empleados (usuarios) 
+          User empleado = null;
           boolean idvalido = false;
           for (User usuario : usuarios) {
             if (usuario.getId().equals(idEmpleado)) {
               idvalido = true;
+              empleado = usuario;
               break;
             }else{
               idvalido = false;
@@ -153,50 +156,51 @@ public class Controlador {
           if (idvalido){
             List<Venta> ventas = vendidos.get_lista_Ventas();
             List<Venta> ventasEmpleado = new ArrayList<>();
-            for (Venta venta : ventas) {
-              if (venta.getEmpleado().getId().equals(idEmpleado)) {
-                ventasEmpleado.add(venta);
+            for (Venta ve : ventas) {
+              if (ve.getEmpleado().getId().equals(idEmpleado)) {
+                ventasEmpleado.add(ve);
               }
             }
-            if(ventas != null){
+            if(!ventasEmpleado.isEmpty()){
+              System.out.println("Ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
               for(Venta v : ventas){
-                System.out.println(v.toString());
+                ventatoString(v);
               }
             }else{
-              System.out.println("No se encontraron ventas con el ID del cliente ingresado.");
+              System.out.println("No se encontraron ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
             }
           }else{
             System.out.println("El ID del empleado ingresado no es válido.");
           }
           utilidades.esperarPresionarEnter();
           break;
-        case 3:
-          System.out.print("Ingrese el ID del empleado a buscar: ");
-          String idEmpleado = scanner.nextLine();
-          ArrayList<Venta> ventas2 = buscarVentasEmpleado(idEmpleado);
-          if(ventas2 != null){
-            for(Venta v : ventas2){
-              System.out.println(v.toString());
-            }
-          }else{
-            System.out.println("No se encontraron ventas con el ID del empleado ingresado.");
+        case 3: //buscar venta por fecha
+          System.out.print("Ingrese la fecha de la venta (dd/MM/yyyy): ");
+          String fechaIngresada = scanner.nextLine();
+          SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+          try {
+              Date fechaBusqueda = formatoFecha.parse(fechaIngresada);
+              List<Venta> ventas = vendidos.get_lista_Ventas();
+              List<Venta> ventasPorFecha = new ArrayList<>();
+              for (Venta ve : ventas) {
+                  if (formatoFecha.format(ve.getFecha()).equals(formatoFecha.format(fechaBusqueda))) {
+                      ventasPorFecha.add(ve);
+                  }
+              }
+              if (!ventasPorFecha.isEmpty()) {
+                  System.out.println("Ventas realizadas en la fecha: " + formatoFecha.format(fechaBusqueda));
+                  for (Venta v : ventasPorFecha) {
+                    ventatoString(v);
+                  }
+              } else {
+                  System.out.println("No se encontraron ventas en la fecha: " + formatoFecha.format(fechaBusqueda));
+              }
+          } catch (ParseException e) {
+              System.out.println("La fecha ingresada no es válida. Por favor, ingrese una fecha en el formato correcto (dd/MM/yyyy).");
           }
           utilidades.esperarPresionarEnter();
           break;
         case 4:
-          System.out.println("Ingrese el ID del producto a buscar: ");
-          String idProducto = scanner.nextLine();
-          ArrayList<Venta> ventas3 = buscarVentasProducto(idProducto);
-          if(ventas3 != null){
-            for(Venta v : ventas3){
-              System.out.println(v.toString());
-            }
-          }else{
-            System.out.println("No se encontraron ventas con el ID del producto ingresado.");
-          }
-          utilidades.esperarPresionarEnter();
-          break;
-        case 5:
           salir = true;
           break;
         default:
@@ -204,9 +208,16 @@ public class Controlador {
           utilidades.esperarPresionarEnter();
           break;
       }
-
     }
-    
+  }
+
+  public void ventatoString(Venta venta){
+    System.out.println("Venta Realizada por: " + venta.getEmpleado().getNombre() + " Con ID: " + venta.getEmpleado().getId());
+    System.out.println("Fecha: " + venta.getFecha());
+    System.out.println("Id de la venta: " + venta.getId());
+    System.out.println("Productos vendidos: ");
+    venta.mostrarProductosEnCarrito();
+    System.out.println("Total: " + venta.calcularTotal());
   }
 
   public boolean Empleado(User session) {
