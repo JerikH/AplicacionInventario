@@ -6,7 +6,7 @@ public class Inventario_Recibido extends Inventario_General {
 
     public Inventario_Recibido() {
         super();
-        List<Pedido> pedidos = new ArrayList<>();
+        pedidos = new ArrayList<>();
     }
 
     //Método para agregar un pedido a la lista del pedidos

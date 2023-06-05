@@ -6,9 +6,10 @@ import java.util.Map;
 
 public class Venta extends Transaccion {
   
-    public Venta(String id, Map<Product, Integer> carrito, Date fecha, User empleado) { 
+    public Venta(String id,  User empleado) { 
         super(id, empleado);
     }
+
 
     public void finalizarVenta(Inventario_Vendido inventarioVendido) {
         inventarioVendido.agregarVenta(this);
