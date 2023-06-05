@@ -22,7 +22,7 @@ public class Inventario_Recibido extends Inventario_General {
     //Método pata buscar un pedido en la lista de pedidos
     public Pedido buscarPedido(String idPedido){
       for (Pedido pedido: pedidos){
-        if (pedido.consultar_id().equals(idPedido)){
+        if (pedido.getId().equals(idPedido)){
           return pedido;
         }
       }

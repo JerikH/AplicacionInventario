@@ -10,6 +10,7 @@ public class Transaccion {
     private Date fecha;
     private User empleado;
 
+    //Constructor
     public Transaccion(String id, User empleado){ 
         this.id = id;
         this.carrito = new HashMap<>();
@@ -17,19 +18,19 @@ public class Transaccion {
         this.empleado = empleado;
     }
 
-    public String consultar_id() {
+    public String getId() {
         return id;
     }
 
-    public Date consultar_fecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public User consultar_empleado() {
+    public User getEmpleado() {
         return empleado;
     }
 
-    public void modificar_fecha(Date nuevaFecha) {
+    public void setFecha(Date nuevaFecha) {
         this.fecha = nuevaFecha;
     }
 
@@ -75,7 +76,7 @@ public class Transaccion {
         System.out.println("Recibo de Transacción:");
         System.out.println("ID de Transacción: " + id);
         System.out.println("Fecha: " + fecha);
-        System.out.println("Empleado: " + consultar_empleado());
+        System.out.println("Empleado: " + this.getEmpleado());
         System.out.println("Productos:");
 
         for (Map.Entry<Product, Integer> entry : carrito.entrySet()) {
@@ -84,11 +85,11 @@ public class Transaccion {
             System.out.println("- " + producto.getNombre() + " (ID: " + producto.getId() + ") - Cantidad: " + cantidad + " - Precio Unitario: " + producto.getPrecio());
         }
 
-        float total = calcularTotal();
+        double total = calcularTotal();
         System.out.println("Total: " + total);
     }
 
-    public HashMap consultar_Carrito(){
+    public Map getCarrito(){
       return carrito;
     }
 }

@@ -18,7 +18,7 @@ public class Inventario_Vendido extends Inventario_General {
         double totalVentas = 0;
 
         for (Venta venta : ventas) {
-            User empleado = venta.consultar_empleado();
+            User empleado = venta.getEmpleado();
             double ventaTotal = venta.calcularTotal();
 
             totalVentasPorEmpleado.put(empleado, totalVentasPorEmpleado.getOrDefault(empleado, 0.0) + ventaTotal);
@@ -42,7 +42,7 @@ public class Inventario_Vendido extends Inventario_General {
     //Busca una venta en el inventario por medio de su ID.
     public Venta buscarVenta(String id) {
       for (Venta venta : ventas) {
-          if (venta.consultar_id().equals(id)) {
+          if (venta.getId().equals(id)) {
               return venta;
           }
       }

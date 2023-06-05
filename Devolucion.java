@@ -1,7 +1,7 @@
 /*import java.util.HashMap;
 import java.util.Map;
 
-public class Devolucion extends Transaccion {
+public class Devolucion extends Transaccion { 
     private Map<Product, Integer> productosDevueltos;
 
     public Devolucion(String id, Map<Product, Integer> carrito, String fecha, User empleado) {
