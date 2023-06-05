@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class Inventario_Bodega extends Inventario_General {
 
   public Inventario_Bodega() {
