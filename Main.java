@@ -10,14 +10,14 @@ public class Main {
     //Declaración lista de usuarios
     List<User> usuarios = new ArrayList<>();
     Utilidades utilidades = new Utilidades(usuarios);
-    Vistas vistas = new Vistas();
+    // Vistas vistas = new Vistas();
     Inventario_General general = new Inventario_General();
     Inventario_Vendido vendidos = new Inventario_Vendido();
     Inventario_Recibido recibidos = new Inventario_Recibido();
     Inventario_Bodega bodega = new Inventario_Bodega();
     Inventario_Exhibicion exhibicion = new Inventario_Exhibicion();
     
-    Controlador controlador = new Controlador(vistas, utilidades, general, vendidos, recibidos, bodega, exhibicion);
+    Controlador controlador = new Controlador(utilidades, general, vendidos, recibidos, bodega, exhibicion, usuarios);
     Scanner scanner = new Scanner(System.in);
     User session;
     //Declaración de usuario inicial para probar el programa
@@ -29,7 +29,6 @@ public class Main {
     boolean apagar = false;
     while(!apagar){
       Utilidades.limpiarPantalla();
-      scanner.nextLine();
       System.out.print("----------LOGIN----------\n");
       System.out.print("Id del usuario: ");
       String IdUsuario = scanner.nextLine();
@@ -56,7 +55,7 @@ public class Main {
         credencialesValidas = false;
       }else{
           System.out.println("Credenciales inválidas. Por favor, intenta nuevamente.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
       }
     }
     scanner.close();   
