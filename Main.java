@@ -28,7 +28,7 @@ public class Main {
     //Login
     boolean apagar = false;
     while(!apagar){
-      utilidades.limpiarPantalla();
+      Utilidades.limpiarPantalla();
       scanner.nextLine();
       System.out.print("----------LOGIN----------\n");
       System.out.print("Id del usuario: ");
@@ -56,7 +56,7 @@ public class Main {
         credencialesValidas = false;
       }else{
           System.out.println("Credenciales inválidas. Por favor, intenta nuevamente.");
-          utilidades.esperarPresionarEnter();
+          Utilidades.esperarPresionarEnter();
       }
     }
     scanner.close();   
