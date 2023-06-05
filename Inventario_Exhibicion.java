@@ -1,6 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
-
 public class Inventario_Exhibicion extends Inventario_General {
 
   public Inventario_Exhibicion() {
