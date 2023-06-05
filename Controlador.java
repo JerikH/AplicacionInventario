@@ -618,6 +618,7 @@ public class Controlador {
   }
 
   //-----------------------------------------------------------------------------------------------------------
+  // Método para Generar Reportes de ventas
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
@@ -671,6 +672,8 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
+  // Método para Administrar Inventarios
   private void AdministrarInventarios(){
     boolean salir = false;
     while(!salir){
@@ -701,6 +704,7 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
   // Metodo para gestioner pedidos
  public void gestionarPedido(User session) {
   boolean salir = false;
@@ -774,7 +778,7 @@ public class Controlador {
     
   }
 }
-
+  //-----------------------------------------------------------------------------------------------------------
   //Método para ver inventarios.
   private void VerInventarios(){
     boolean salir = false;
@@ -828,7 +832,8 @@ public class Controlador {
     }
   }
 
-  //Método para mover inventarios.
+  //-----------------------------------------------------------------------------------------------------------
+  //Método para mover entre inventarios.
   private void MoverInventarios(){
     boolean salir = false;
     while(!salir){
@@ -905,6 +910,8 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
+  //Método para devoluciones
   private void Devoluciones(){
     boolean salir = false;
     while(!salir){
@@ -940,4 +947,6 @@ public class Controlador {
       }
     }
   }
+  //-----------------------------------------------------------------------------------------------------------
+
 }
