@@ -132,156 +132,8 @@ public class Controlador {
           break;
 
         case 8: // Recibir Pedido
-          
-          // Esta es la estructura para mostrar la interfaz en bucle
-          // boolean salir = false;
-          // while (!salir) {
-          //   utilidades.limpiarPantalla();
-          //   vistas.ModuloRecibirPedido();
-          //   System.out.print("Ingrese la acción a realizar: ");
-          //   int opcion = scanner.nextInt();
-          //   scanner.nextLine();
-          //   switch (opcion){
-          //------------lógica del switch----------
-          //   }
-          //}
-          //break;
-
-          
           Utilidades.limpiarPantalla();
-          /*Vistas.ModuloRecibirPedido();
-          System.out.print("Ingrese la opcion a realizar: ");
-          opcion = scanner.nextInt();
-          scanner.nextLine();
-          Pedido pedido = null; //LISTO Creo que hace falta instanciar el objeto Pedido
-          switch (opcion) {
-             case 1: // Agregar Producto
-                Utilidades.limpiarPantalla();
-                //Mostramos los en pantalla los productos
-                transaccion.mostrarProductosEnCarrito(); //esto muestra el carrito actual (necesario verlo para agregar uno nuevo?)
-                //No se usa a 'transaccion' se usa al objeto Pedido.
-              
-                // Solicitar información del producto al usuario
-                System.out.println("Ingrese los detalles del producto:");
-                System.out.print("ID: ");
-                String idProducto = scanner.nextLine();
-                
-                //verificar existencia del producto en la lista 'general' del inventario general
-                //En caso de no existir:
-                //Opcion 1:
-                    //Se piden los datos para crearlo en el inventario general (y lo que esto implica)
-                //Opción 2:
-                    //Se pide que primero se vaya a administrar el inventario y cree el producto en el sistema
-                    //break para cerrar el diálogo y volver al menu de acciones (hay que esperar el enter del usuario para que lo pueda leer).
-                //No sé cuál de las dos opciones sea la más adecuada, quizás la 2 es más restrictiva pero más segura y a mi parecer, menos complicada.
-              
-                // En caso de existir, se trae el objeto del inventario por medio del id ingresado y se muestra al usuario para pedir confirmación.
-                // Ese objeto que se trajo es el que se ingresará al carrito.
-
-                //-------------------------Bloque opcional------------------------------------------
-                //Los siguientes datos solo se pediría en caso de No existe el ID en el inventario y decidimos implementar la opción 1.
-                System.out.print("Nombre: ");
-                String nombreProducto = scanner.nextLine();
-                //hace falta pedir descripción (puede ser vacío?)
-                System.out.print("Precio: ");
-                float precioProducto = scanner.nextFloat();
-                System.out.print("Cantidad: ");
-                int cantidadProducto = scanner.nextInt();
-                scanner.nextLine(); // Consumir la nueva línea
-                
-                // Crear el objeto Producto con la información proporcionada
-                Product producto = new Product(idProducto, nombreProducto, precioProducto); //el constructor tiene otra estructura
-                // Product(String nombre, String descripcion, String id, float precio)
-                //---------------------------------------------------------------------
-
-              
-                // Agregar el producto al carrito de la transacción
-                transaccion.agregarProducto(producto, cantidadProducto); //se usa el objeto Pedido
-                
-                System.out.println("Producto agregado al carrito.");
-                Utilidades.esperarPresionarEnter();
-                break;
-      
-              case 2: // Eliminar Producto
-              
-                  // Verificar si hay productos en el carrito de la transacción
-                  if (transaccion.consultar_Carrito().isEmpty()) { //se usa el objeto Pedido, 
-                      System.out.println("El carrito está vacío. No hay productos para eliminar.");
-                      Utilidades.esperarPresionarEnter();
-                      break;
-                  }
-                  
-                  // Mostrar los productos en el carrito para seleccionar uno para eliminar
-                  System.out.println("Productos en el carrito:");
-                  // verificar funcionamiento de Pedido.mostrarProductosEnCarrito(), se supone que ese método hace lo que se necesita aquí.
-                  // Lo puede modificar si lo cree necesario (lo modificaría en Transacción)
-                  int index = 1;
-                  for (Map.Entry<Product, Integer> entry : transaccion.getCarrito().entrySet()) {
-                      Product prod = entry.getKey();
-                      int cantidad = entry.getValue();
-                      System.out.println(index + ". " + prod.getNombre() + " (Cantidad: " + cantidad + ")");
-                      index++;
-                  }
-
-                  //La lógica de aquí hacia adelante está bien, pero, es más adecuado pedir el id y usar
-                  //Pedido.quitarProducto(id)
-              
-                  // Solicitar al usuario el índice del producto a eliminar
-                  System.out.print("Ingrese el número del producto a eliminar: "); //pedir id (String)
-                  int opcionEliminar = scanner.nextInt();
-                  scanner.nextLine();
-
-                  // verificar presenciad del id en el carrito
-                  // usar Pedido.quitarProducto(id)
-                  
-                  // Obtener el producto seleccionado para eliminar
-                  int contador = 1;
-                  Product productoEliminar = null;
-                  for (Map.Entry<Product, Integer> entry : transaccion.consultar_Carrito().entrySet()) {
-                      if (contador == opcionEliminar) {
-                          productoEliminar = entry.getKey();
-                          break;
-                      }
-                      contador++;
-                  }
-                  
-                  // Verificar si se encontró el producto para eliminar
-                  if (productoEliminar != null) {
-                      // Eliminar el producto del carrito de la transacción
-                      transaccion.eliminarProducto(productoEliminar); //el metodo es quitarProducto y recibe el id como parámetro
-                      System.out.println("Producto eliminado del carrito.");
-                  } else {
-                      System.out.println("No se encontró el producto seleccionado.");
-                  }
-                  
-                  Utilidades.esperarPresionarEnter();
-                  break;
-      
-              case 3: // Finalizar Pedido
-                  // Llamar al método finalizarPedido de la clase Pedido
-                  if (transaccion instanceof Pedido) { //al inicio se instancia el pedido, por lo que esto no es necesario
-                      Pedido pedido = (Pedido) transaccion; //pedido existe desde el inicio de case 8
-                      pedido.finalizarPedido();
-                      //A continuación se debe usar la instancia de recibidos y hacer
-                      //recibidos.agregarPedido(pedido);
-                      transacciones.add(pedido); // Agregar el pedido a la lista de transacciones
-                      System.out.println("Pedido finalizado y registrado.");
-                  } else {
-                      System.out.println("No se puede finalizar el pedido. La transacción no es un Pedido.");
-                  }
-                  
-                  Utilidades.esperarPresionarEnter();
-                  break;
-      
-              case 4: // Salir
-                  salir = true;
-                  break;
-      
-              default:
-                  System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
-                  Utilidades.esperarPresionarEnter();
-                  break;
-          }*/
+          gestionarPedido(session);
           break;
 
           
@@ -606,5 +458,85 @@ public class Controlador {
       }
     }
   }
+
+  public void gestionarPedido(User session) {
+    boolean salir = false;
+    int NumPedido = (recibidos.consultar_cantidad()+1);
+    String IdPedido = Integer.toString(NumPedido);
+    System.out.println("Ingrese el nombre del proveedor:");
+    String NombreProveedor = scanner.nextLine();
+    
+    Pedido pedido = new Pedido(IdPedido, session, NombreProveedor);
+    while (!salir) {
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloRecibirPedido();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+      switch (opcion) {
+        case 1://Agregar producto al pedido
+          System.out.println("Ingrese el ID del producto:");
+          String idProducto = scanner.nextLine();
+      
+          // Verificar si el producto existe en el inventario general
+          Product producto = general.buscarProductoId(idProducto);
+          if (producto == null) {
+              System.out.println("El producto no existe en el inventario.");
+              break;
+          }
+          System.out.println("Ingrese la cantidad:");
+          int cantidad = scanner.nextInt();
+          scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
+      
+          // Agregar el producto al carrito del pedido
+          pedido.agregarProducto(producto, cantidad);
+          System.out.println("Producto agregado al carrito.");
+        break;
+
+        case 2://Eliminar un producto del pedido
+          System.out.println("Ingrese el ID del producto a eliminar:");
+          String idProductoEliminar = scanner.nextLine();
+      
+          // Verificar si el producto existe en el carrito del pedido
+          if (!pedido.getCarrito().containsKey(idProductoEliminar)) {
+            System.out.println("El producto no está en el carrito del pedido.");
+            break;
+          }
+  
+          // Eliminar el producto del carrito del pedido
+          pedido.getCarrito().remove(idProductoEliminar);
+          System.out.println("Producto eliminado del carrito.");
+
+            
+        break;
+        case 3: //Finalizar pedido
+            // Verificar si hay artículos en el carrito del pedido
+            if (pedido.getCarrito().isEmpty()) {
+                System.out.println("El carrito del pedido está vacío. No se puede finalizar el pedido.");
+                break;
+            }
+            /*
+            // Añadir unidades del carrito a la bodega
+            for (Map.Entry<Product, Integer> entry : pedido.getCarrito().entrySet()) {
+              Product producto = entry.getKey();
+              int cantidad = entry.getValue();
+
+              inventarioBodega.agregar_unidades(producto, cantidad);
+            }
+
+            // Vaciar el carrito del pedido
+            pedido.getCarrito().clear();
+
+            System.out.println("Pedido finalizado. Unidades añadidas a la bodega.");
+            */ 
+        break;
+
+      
+        default:
+          break;
+      }
+      
+    }
+}
+
 
 }

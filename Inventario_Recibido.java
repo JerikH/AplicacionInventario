@@ -6,7 +6,7 @@ public class Inventario_Recibido extends Inventario_General {
 
     public Inventario_Recibido() {
         super();
-        List<Pedido> pedidos = new ArrayList<>();
+        pedidos = new ArrayList<>();
     }
 
     //Método para agregar un pedido a la lista del pedidos
@@ -18,6 +18,11 @@ public class Inventario_Recibido extends Inventario_General {
     public void eliminarPedido(Pedido pedido) {
         pedidos.remove(pedido); 
     }
+
+    public int consultar_cantidad() {
+        //Retorna la cantidad de pedidos realizados históricamente
+          return pedidos.size();
+      }
 
     //Método pata buscar un pedido en la lista de pedidos
     public Pedido buscarPedido(String idPedido){
