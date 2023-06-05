@@ -42,7 +42,7 @@ public class Vistas {
     System.out.println("4. Generar Reportes");
     System.out.println("5. Buscar Producto");
     System.out.println("6. Buscar Transacción");
-    System.out.println("7. Ver inventario");
+    System.out.println("7. Administrar Inventarios");
     System.out.println("8. Recibir Pedido");
     System.out.println("9. Cerrar Sesión");
     System.out.println("0. Apagar Sistema");
@@ -58,12 +58,11 @@ public class Vistas {
       System.out.println("6. Cancelar Venta");
       System.out.println("7. Regresar");
     }
-  public static void ModuloVerInventario() {
+  public static void ModuloAdministrarInventarios() {
       System.out.println("Modulo De Visualizacion De Inventario");
-      System.out.println("1. Ver inventario completo");
-      System.out.println("2. Ver inventario de bodega");
-      System.out.println("3. Ver inventario de exhibición");
-      System.out.println("4. Regresar");
+      System.out.println("1. Ver inventarios");
+      System.out.println("2. Mover productos");
+      System.out.println("3. Regresar");
     }
   
   public static void ModuloGestionProductos() {
@@ -129,5 +128,21 @@ public class Vistas {
     System.out.println("2. Buscar por fecha");
     System.out.println("3. Regresar");
   }
-  
+
+  public static void ModuloMoverInventarios(){
+    System.out.println("Modulo Administración de Inventarios");
+    System.out.println("1. Mover producto de bodega a exhibición.");
+    System.out.println("2. Mover de exhibición a bodega.");
+    System.out.println("3. Mover de devolución a bodega.");
+    System.out.println("4. Regresar.");
+  }
+
+  public static void ModuloVerInventarios(){
+    System.out.println("Modulo Ver Inventarios");
+    System.out.println("1. Ver inventario completo.");
+    System.out.println("2. Ver inventario bodega.");
+    System.out.println("3. Ver inventario exhibicion.");
+    System.out.println("4. Ver lista de devoluciones.");
+    System.out.println("5. Regresar.");
+  }
 }

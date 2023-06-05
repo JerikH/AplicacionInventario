@@ -55,7 +55,7 @@ public class Main {
         credencialesValidas = false;
       }else{
           System.out.println("Credenciales inválidas. Por favor, intenta nuevamente.");
-          utilidades.esperarPresionarEnter();
+          Utilidades.esperarPresionarEnter();
       }
     }
     scanner.close();   

@@ -19,6 +19,11 @@ public class Inventario_Recibido extends Inventario_General {
         pedidos.remove(pedido); 
     }
 
+    public int consultar_cantidad() {
+        //Retorna la cantidad de pedidos realizados históricamente
+          return pedidos.size();
+      }
+
     //Método pata buscar un pedido en la lista de pedidos
     public Pedido buscarPedido(String idPedido){
       for (Pedido pedido: pedidos){
