@@ -70,29 +70,30 @@ public class Controlador {
           Utilidades.esperarPresionarEnter();
           break;
 
-        case 6:// Buscar Transacción;--------------------------------------------------
+        case 6:// Buscar Transacción;
           salir = false;
-          /*while (!salir) {
+          while (!salir) {
             Utilidades.limpiarPantalla();
             Vistas.ModuloBuscarTransacciones();
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
             scanner.nextLine();
             switch (opcion){
-              case 1:{
+              case 1:{//buscar una venta
                 
               }
-              case 2:{
+              case 2:{//buscar un pedido
                 
               }
-              case 3:{
+              case 3:{//buscar una devolución
+                
                 
               }
               default:{
                 
               }
             }
-          }*/
+          }
           break;
           
         case 7:// Ver Inventario;------------------------------------------------------
@@ -303,6 +304,77 @@ public class Controlador {
       }
     }
     return apagar;
+  }
+
+  public void buscarVenta(){
+    boolean salir = false;
+    while(!salir){
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloBuscarVentas();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+      switch(opcion){
+        case 1:
+          System.out.println("Ingrese el ID de la venta a buscar: ");
+          String idVenta = scanner.nextLine();
+          Venta venta = buscarVenta(idVenta);
+          if(venta != null){
+            System.out.println(venta.toString());
+          }else{
+            System.out.println("No se encontró la venta con el ID ingresado.");
+          }
+          Utilidades.esperarPresionarEnter();
+          break;
+        case 2:
+          System.out.println("Ingrese el ID del cliente a buscar: ");
+          String idCliente = scanner.nextLine();
+          ArrayList<Venta> ventas = buscarVentasCliente(idCliente);
+          if(ventas != null){
+            for(Venta v : ventas){
+              System.out.println(v.toString());
+            }
+          }else{
+            System.out.println("No se encontraron ventas con el ID del cliente ingresado.");
+          }
+          Utilidades.esperarPresionarEnter();
+          break;
+        case 3:
+          System.out.println("Ingrese el ID del empleado a buscar: ");
+          String idEmpleado = scanner.nextLine();
+          ArrayList<Venta> ventas2 = buscarVentasEmpleado(idEmpleado);
+          if(ventas2 != null){
+            for(Venta v : ventas2){
+              System.out.println(v.toString());
+            }
+          }else{
+            System.out.println("No se encontraron ventas con el ID del empleado ingresado.");
+          }
+          Utilidades.esperarPresionarEnter();
+          break;
+        case 4:
+          System.out.println("Ingrese el ID del producto a buscar: ");
+          String idProducto = scanner.nextLine();
+          ArrayList<Venta> ventas3 = buscarVentasProducto(idProducto);
+          if(ventas3 != null){
+            for(Venta v : ventas3){
+              System.out.println(v.toString());
+            }
+          }else{
+            System.out.println("No se encontraron ventas con el ID del producto ingresado.");
+          }
+          Utilidades.esperarPresionarEnter();
+          break;
+        case 5:
+          salir = true;
+          break;
+        default:
+          System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+          Utilidades.esperarPresionarEnter();
+          break;
+      }
+
+    }
+    
   }
 
   public boolean Empleado(User session) {

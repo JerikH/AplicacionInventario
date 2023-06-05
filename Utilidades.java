@@ -142,7 +142,6 @@ public class Utilidades {
         return elementos;
     }
 
-
     public static boolean IdValido(String id) {
         String regex = "^(?!\\s*$).+";
         return id.matches(regex);

@@ -110,8 +110,8 @@ public class Vistas {
     System.out.println("Modulo Busqueda de Ventas");
     System.out.println("1. Buscar por Id");
     System.out.println("2. Buscar por empleado");
-    System.out.println("2. Buscar por fecha");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar por fecha");
+    System.out.println("4. Regresar");
   }
 
   public static void ModuloBuscarPedidos() {
