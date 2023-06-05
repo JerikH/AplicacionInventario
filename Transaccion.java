@@ -117,7 +117,7 @@ public class Transaccion {
         System.out.println("Total: " + total);
     }
 
-    public Map getCarrito(){
+    public Map<Product, Integer> getCarrito(){
       return carrito;
     }
 }
