@@ -72,7 +72,7 @@ public class Controlador {
 
         case 6:// Buscar Transacción;--------------------------------------------------
           salir = false;
-          while (!salir) {
+          /*while (!salir) {
             Utilidades.limpiarPantalla();
             Vistas.ModuloBuscarTransacciones();
             System.out.print("Seleccione una opción: ");
@@ -92,12 +92,12 @@ public class Controlador {
                 
               }
             }
-          }
+          }*/
           break;
           
         case 7:// Ver Inventario;------------------------------------------------------
           Utilidades.limpiarPantalla();
-          Vistas.ModuloVerInventario();
+          /*Vistas.ModuloVerInventario();
           opcion = scanner.nextInt();
           scanner.nextLine();
           switch (opcion) {
@@ -128,7 +128,7 @@ public class Controlador {
                   break;
           
           System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          Utilidades.esperarPresionarEnter();*/
           break;
 
         case 8: // Recibir Pedido
@@ -149,7 +149,7 @@ public class Controlador {
 
           
           Utilidades.limpiarPantalla();
-          Vistas.ModuloRecibirPedido();
+          /*Vistas.ModuloRecibirPedido();
           System.out.print("Ingrese la opcion a realizar: ");
           opcion = scanner.nextInt();
           scanner.nextLine();
@@ -281,7 +281,7 @@ public class Controlador {
                   System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
                   Utilidades.esperarPresionarEnter();
                   break;
-          }
+          }*/
           break;
 
           
