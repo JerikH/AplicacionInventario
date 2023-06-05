@@ -43,22 +43,5 @@ public class Pedido extends Transaccion {
         // Mostrar mensaje de éxito y generar el recibo de la transacción
         System.out.println("Pedido finalizado. Unidades añadidas a la bodega.");
         generarRecibo();
-    }
-    
-      
-      
-
-
-
-
-  
+    }  
 }
-
-//falta el metodo finalizar pedido
-    //public void FinalizarPedido() {
-        //System.out.println("Falta implementar la lógica");
-        //logica para finalizar el pedido.
-        //se añaden unidades del carrito a la bodega (buscar id del producto antes, en caso de no estar se crea primero)
-        //no se admiten más cambios del usuario una vez que esto se hace.
-    //}
-    //}
