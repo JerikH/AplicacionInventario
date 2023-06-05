@@ -14,6 +14,7 @@ public class Controlador {
   private Inventario_Recibido recibidos;
   private Inventario_Bodega bodega;
   private Inventario_Exhibicion exhibicion;
+  private Inventario_Devuelto devolucion;
 
   Scanner scanner = new Scanner(System.in);
 
@@ -710,7 +711,15 @@ public class Controlador {
           break;
         }
 
-        case 4:{
+        case 4:{ //Ver lista de devolución
+          Utilidades.limpiarPantalla();/*
+          System.out.println("Lista de devolucion:");
+          devolucion.mostrarListaDevolcion();//Crear método
+          Utilidades.esperarPresionarEnter();*/
+          break;
+        }
+
+        case 5:{
           salir = true;
           break;
         }
@@ -771,6 +780,21 @@ public class Controlador {
           break;
         }
         case 3:{
+          Utilidades.limpiarPantalla();
+          System.out.println("----------DEVOLUCIONES A BODEGA----------\n");
+          System.out.println("ID de producto: ");
+          String IdP = scanner.nextLine();
+          Product productoamover = general.buscarProductoId(IdP);
+          if (productoamover == null) {
+            System.out.println("No hay existencias de este producto para devolución.");
+            Utilidades.esperarPresionarEnter();
+            break;
+          }
+          System.out.println("Cantidad: ");
+          int qty = scanner.nextInt();
+          devolucion.mover_a_bodega(productoamover,qty,bodega);
+          System.out.println("Se ha movido el producto.");
+          Utilidades.esperarPresionarEnter();
           break;
         }
         case 4:{

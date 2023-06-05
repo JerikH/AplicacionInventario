@@ -142,6 +142,7 @@ public class Vistas {
     System.out.println("1. Ver inventario completo.");
     System.out.println("2. Ver inventario bodega.");
     System.out.println("3. Ver inventario exhibicion.");
-    System.out.println("4. Regresar.");
+    System.out.println("4. Ver lista de devoluciones.");
+    System.out.println("5. Regresar.");
   }
 }
