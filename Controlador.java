@@ -596,20 +596,20 @@ public class Controlador {
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
-      utilidades.limpiarPantalla();
-      vistas.ModuloGenerarReportes();
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloGenerarReportes();
       int opcion = scanner.nextInt();
       scanner.nextLine();
       switch (opcion) {
         case 1: {
-          utilidades.limpiarPantalla();
+          Utilidades.limpiarPantalla();
           System.out.println("------- Reporte General de Ventas -------");
           SimpleEntry<Pair<Map<User, Double>, Map<User, Integer>>, Double> resultado = vendidos.GenerarReporte();
           System.out.println("\nTotal de ventas general: $" + resultado.getValue());
-          utilidades.esperarPresionarEnter();
+          Utilidades.esperarPresionarEnter();
         }
         case 2: {
-          utilidades.limpiarPantalla();
+          Utilidades.limpiarPantalla();
           System.out.println("------- Reporte individual de Ventas -------");
           SimpleEntry<Pair<Map<User, Double>, Map<User, Integer>>, Double> resultado = vendidos.GenerarReporte();
           Map<User, Double> totalVentasPorEmpleado = resultado.getKey().getKey();
