@@ -29,6 +29,7 @@ public class Main {
     boolean apagar = false;
     while(!apagar){
       utilidades.limpiarPantalla();
+      scanner.nextLine();
       System.out.print("----------LOGIN----------\n");
       System.out.print("Id del usuario: ");
       String IdUsuario = scanner.nextLine();
@@ -42,9 +43,11 @@ public class Main {
           case "3":
           case "1":{//Opciones para administrador---------------------------------------------
             apagar = controlador.Admin(session);
+            break;
           }
           case "2":{
             apagar = controlador.Empleado(session);
+            break;
           }
         }
         session.clean();
