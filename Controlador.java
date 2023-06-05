@@ -714,7 +714,7 @@ public class Controlador {
     boolean salir = false;
     while(!salir){
       Utilidades.limpiarPantalla();
-      Vistas.ModuloVerInvenarios();
+      Vistas.ModuloVerInventarios();
       int opcion = scanner.nextInt();
       scanner.nextLine();
 

@@ -137,7 +137,7 @@ public class Vistas {
     System.out.println("4. Regresar.");
   }
 
-  public static void ModuloVerInvenarios(){
+  public static void ModuloVerInventarios(){
     System.out.println("Modulo Ver Inventarios");
     System.out.println("1. Ver inventario completo.");
     System.out.println("2. Ver inventario bodega.");
