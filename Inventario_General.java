@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.List;
 
 public class Inventario_General {
-    private List<Product> general;
-    private Map<String, Integer> productos; 
+    protected List<Product> general;
+    protected Map<String, Integer> productos; 
 
   
     public Inventario_General() {
