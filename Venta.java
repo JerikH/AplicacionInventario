@@ -13,6 +13,6 @@ public class Venta extends Transaccion {
 
     public void finalizarVenta(Inventario_Vendido inventarioVendido) {
         inventarioVendido.agregarVenta(this);
-        this.generarRecibo();
+        this.generarRecibo("Venta");
     }
 }

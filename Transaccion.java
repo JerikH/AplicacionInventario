@@ -44,7 +44,28 @@ public class Transaccion {
         }
     }
 
-    public void quitarProducto(Integer id) {
+    //Método para buscar un producto con Id en el carrito de compras
+    public Product buscarProducto(String Id){
+        for (Product producto : carrito.keySet()){
+            if (producto.getId().equals(Id)){
+                return producto;
+            }
+        }
+        return null;
+    }
+
+    //Método para consultar la cantidad de unidades de un producto  
+    public int consultarCantUnidades(String Id) {
+        for (Product producto : carrito.keySet()){
+            if (producto.getId().equals(Id)){
+                return carrito.get(producto);
+            }
+        }
+        return 0;
+    }
+
+    //Método para eliminar un producto con el Id
+    public void quitarProducto(String id) {
         List<Product> productos = new ArrayList<>(carrito.keySet());
         for (Product producto : productos) {
             if (producto.getId().equals(String.valueOf(id))) {
@@ -64,18 +85,24 @@ public class Transaccion {
         return total;
     }
 
+    //Método para mostrar productos en el carrito en una transacción
     public void mostrarProductosEnCarrito() {
-        System.out.println("Productos en el carrito:");
+        System.out.println("ID\tNOMBRE\tCANT.\tPRE_UNIT\tPRE_TOTAL");
         for (Map.Entry<Product, Integer> entry : carrito.entrySet()) {
             Product producto = entry.getKey();
+            String idproducto = producto.getId();
+            String nombre = producto.getNombre();
             int cantidad = entry.getValue();
-            System.out.println(producto.getNombre() + " - Cantidad: " + cantidad);
+            float precio = producto.getPrecio();
+            float precio_total = precio*cantidad;
+            System.out.println(idproducto+"\t"+nombre+"\t"+cantidad+"\t"+precio+"\t"+precio_total);
         }
     }
 
-    public void generarRecibo() {
-        System.out.println("Recibo de Transacción:");
-        System.out.println("ID de Transacción: " + id);
+    //Método para generar recibo de una transacción
+    public void generarRecibo(String postfix) {
+        System.out.println("Recibo de "+ postfix + ":");
+        System.out.println("ID de "+ postfix+": " + id);
         System.out.println("Fecha: " + fecha);
         System.out.println("Empleado: " + this.getEmpleado());
         System.out.println("Productos:");

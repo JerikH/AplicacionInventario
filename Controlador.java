@@ -370,11 +370,12 @@ public class Controlador {
         case 1://Agregar Producto
           Utilidades.limpiarPantalla();
           System.out.println("----------AGREGAR PRODUCTO----------\n");
-          System.out.println("Id de producto: ");
+          System.out.print("Id de producto: ");
           String IdProducto = scanner.nextLine();
           Product producto = general.buscarProductoId(IdProducto);
           if (producto != null){//En caso de que el producto exista
-            System.out.println("Cantidad deseada: ");
+            Vistas.InfoProducto(producto);
+            System.out.print("Cantidad deseada: ");
             int CantProducto = scanner.nextInt();
             scanner.nextLine();
             if(CantProducto < exhibicion.consultar_cantidad_unidades(producto)){//En caso de que  hayan suficientes unidades disponibles
@@ -411,17 +412,46 @@ public class Controlador {
             System.out.println("No existe un producto con el Id : " + IdProducto);
             Utilidades.esperarPresionarEnter();
           }
-
         break;
+
         case 2://Quitar Producto
+          Utilidades.limpiarPantalla();
+          System.out.println("----------QUITAR PRODUCTO----------\n");
+          System.out.print("Id de producto: ");
+          String idProd = scanner.nextLine();
+          producto = general.buscarProductoId(idProd);
+          if(!venta.buscarProducto(idProd).equals(null)){//En caso de que el producto si esté en el carrito
+            Vistas.InfoProducto(producto);
+            int cantidad = venta.consultarCantUnidades(idProd);
+            System.out.println("Cantidad: " + cantidad);
+            System.out.println("Se va a eliminar el producto.");
+            if(utilidades.preguntaContinuar()){//En caso de que confirmen
+              venta.quitarProducto(idProd);
+              System.out.println("PRODUCTO ELIMINADO DEL CARRITO.");
+              Utilidades.esperarPresionarEnter();
+            } else { //En caso de que digan que no quieren eliminar el producto
+              System.out.println("EL PRODUCTO NO SE ELIMINO DEL CARRITO.");
+              Utilidades.esperarPresionarEnter();
+            }
+          } else {//En caso de que el producto no se encuentre en el carrito
+            System.out.println("El producto no se encuentra en el carrito.");
+            Utilidades.esperarPresionarEnter();
+          }
+        break;
 
-          System.out.println("METODO EN DESARROLLO");
-        break;
         case 3://Calcular total
-          System.out.println("METODO EN DESARROLLO");
-        break;
+          Utilidades.limpiarPantalla();
+          System.out.println("----------TOTAL----------\n");
+          double total =  venta.calcularTotal();
+          System.out.println("El total actual de su carrito es: $"+ total);
+          Utilidades.esperarPresionarEnter();
+          break;
         case 4://Mostrar Carrito
-          System.out.println("METODO EN DESARROLLO");
+          System.out.println("----------CARRITO----------\n");
+          venta.mostrarProductosEnCarrito();
+          total =  venta.calcularTotal();
+          System.out.println("El total actual de su carrito es: $"+ total);
+          Utilidades.esperarPresionarEnter();
         break;
         case 5://Finalizar Venta
           System.out.println("METODO EN DESARROLLO");
@@ -545,6 +575,7 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
   // Método para realizar todas las opciones de Gestión de Productos
   private void GestionarProductos() {
     boolean salir = false;
@@ -625,6 +656,7 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
