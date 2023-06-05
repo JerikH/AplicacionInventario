@@ -61,9 +61,7 @@ public class Controlador {
           break;
 
         case 5:// Buscar Producto;-----------------------------------------------------
-          Utilidades.limpiarPantalla();
-          System.out.print("MÉTODO EN DESARROLLO ");
-          utilidades.esperarPresionarEnter();
+          this.BuscarProducto();
           break;
 
         case 6:// Buscar Transacción;
@@ -378,13 +376,25 @@ public class Controlador {
           utilidades.esperarPresionarEnter();
         break;
         case 5://Finalizar Venta
-          System.out.println("METODO EN DESARROLLO");
-        break;
+          System.out.println("---------FINALIZAR VENTA---------");
+          System.out.println("Se finzalizará la venta...");
+          if(!utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
+            venta.finalizarVenta(vendidos, exhibicion);
+          } else {//En caso de que no deseen finalizar la venta
+            System.out.println("No se finalizó la venta....");
+            utilidades.esperarPresionarEnter();
+          }
+          break;
         case 6://Cancelar Venta
-          System.out.println("METODO EN DESARROLLO");
+          System.out.println("---------CANCELAR VENTA---------");
+          System.out.println("Se cancelará la venta...");
+          if(!utilidades.preguntaContinuar()){
+            salir=true;
+          } else {
+            System.out.println("No se canceló la venta....");
+            utilidades.esperarPresionarEnter();
+          }
         break;
-        
-
       }
 
 
@@ -394,7 +404,33 @@ public class Controlador {
    }
 
   //-----------------------------------------------------------------------------------------------------------
+  // Método para realizar la opción de buscar producto
+  private void BuscarProducto(){
+    boolean salir = false;
+    while (!salir){
+      Utilidades.limpiarPantalla();
+      System.out.println("---------BUSCAR PRODUCTO---------");
+      System.out.print("Id de producto: ");
+      String IdProducto = scanner.nextLine();
+      Product producto = general.buscarProductoId(IdProducto);
+      if(!producto.equals(null)){//En caso de que el producto exista
+        Vistas.InfoProducto(producto);
+        int CantBodega = bodega.consultar_cantidad_unidades(producto);
+        int CantExhibicion = exhibicion.consultar_cantidad_unidades(producto);
+        System.out.print("Cantidad en Bodega: " + CantBodega);
+        System.out.print("Cantidad en Exhibición: "+ CantExhibicion);
+        salir = true;
+        utilidades.esperarPresionarEnter();
 
+      } else {//En caso de que el producto no exista
+        System.out.print("El producto con Id  (" + IdProducto + ") no está en el sistema");
+        salir = true;
+        utilidades.esperarPresionarEnter();
+      }
+    }
+  }
+
+  //---------------------------------------------------------------------------------------------------------
   // Método para realizar todas las opciones de Gestión de Empleados
   private void GestionarEmpleados(User session) {
     boolean salir = false;
