@@ -353,14 +353,14 @@ public class Controlador {
             if(utilidades.preguntaContinuar()){//En caso de que confirmen
               venta.quitarProducto(idProd);
               System.out.println("PRODUCTO ELIMINADO DEL CARRITO.");
-              Utilidades.esperarPresionarEnter();
+              utilidades.esperarPresionarEnter();
             } else { //En caso de que digan que no quieren eliminar el producto
               System.out.println("EL PRODUCTO NO SE ELIMINO DEL CARRITO.");
-              Utilidades.esperarPresionarEnter();
+              utilidades.esperarPresionarEnter();
             }
           } else {//En caso de que el producto no se encuentre en el carrito
             System.out.println("El producto no se encuentra en el carrito.");
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
           }
         break;
 
@@ -369,14 +369,14 @@ public class Controlador {
           System.out.println("----------TOTAL----------\n");
           double total =  venta.calcularTotal();
           System.out.println("El total actual de su carrito es: $"+ total);
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         case 4://Mostrar Carrito
           System.out.println("----------CARRITO----------\n");
           venta.mostrarProductosEnCarrito();
           total =  venta.calcularTotal();
           System.out.println("El total actual de su carrito es: $"+ total);
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
         break;
         case 5://Finalizar Venta
           System.out.println("METODO EN DESARROLLO");
@@ -595,7 +595,7 @@ public class Controlador {
           System.out.println("------- Reporte General de Ventas -------");
           SimpleEntry<Pair<Map<User, Double>, Map<User, Integer>>, Double> resultado = vendidos.GenerarReporte();
           System.out.println("\nTotal de ventas general: $" + resultado.getValue());
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
         }
         case 2: {
           Utilidades.limpiarPantalla();
@@ -658,7 +658,7 @@ public class Controlador {
         }
         default:{
           System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
       }
@@ -689,7 +689,7 @@ public class Controlador {
         Product producto = general.buscarProductoId(idProducto);
         if (producto == null) {
             System.out.println("El producto no existe en el inventario.");
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
             break;
         }
         System.out.println("Ingrese la cantidad:");
@@ -699,7 +699,7 @@ public class Controlador {
         // Agregar el producto al carrito del pedido
         pedido.agregarProducto(producto, cantidad);
         System.out.println("Producto agregado al carrito.");
-        Utilidades.esperarPresionarEnter();
+        utilidades.esperarPresionarEnter();
       break;
 
       case 2://Eliminar un producto del pedido
@@ -709,25 +709,25 @@ public class Controlador {
         // Verificar si el producto existe en el carrito del pedido
         if (!pedido.getCarrito().containsKey(idProductoEliminar)) {
           System.out.println("El producto no está en el carrito del pedido.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
 
         // Eliminar el producto del carrito del pedido
         pedido.getCarrito().remove(idProductoEliminar);
         System.out.println("Producto eliminado del carrito.");
-        Utilidades.esperarPresionarEnter();
+        utilidades.esperarPresionarEnter();
           
       break;
       case 3: //Finalizar pedido
           // Verificar si hay artículos en el carrito del pedido
           if (pedido.getCarrito().isEmpty()) {
               System.out.println("El carrito del pedido está vacío. No se puede finalizar el pedido.");
-              Utilidades.esperarPresionarEnter();
+              utilidades.esperarPresionarEnter();
               break;
           }
         pedido.finalizarPedido(bodega);
-        Utilidades.esperarPresionarEnter();  
+        utilidades.esperarPresionarEnter();  
         break;
       case 4: //salir
           salir = true;
@@ -753,7 +753,7 @@ public class Controlador {
           Utilidades.limpiarPantalla();/* 
           System.out.println("Inventario Completo:");
           general.mostrarInventarioCompleto();//Crear método
-          Utilidades.esperarPresionarEnter();*/
+          utilidades.esperarPresionarEnter();*/
           break;
         }
       
@@ -761,7 +761,7 @@ public class Controlador {
           Utilidades.limpiarPantalla();/* 
           System.out.println("Inventario en Bodega:");
           bodega.mostrarInventario();//Crear método
-          Utilidades.esperarPresionarEnter();*/
+          utilidades.esperarPresionarEnter();*/
           break;
         }
       
@@ -769,7 +769,7 @@ public class Controlador {
           Utilidades.limpiarPantalla();/*
           System.out.println("Inventario en Exhibición:");
           exhibicion.mostrarInventario();//Crear método
-          Utilidades.esperarPresionarEnter();*/
+          utilidades.esperarPresionarEnter();*/
           break;
         }
 
@@ -777,7 +777,7 @@ public class Controlador {
           Utilidades.limpiarPantalla();/*
           System.out.println("Lista de devolucion:");
           devolucion.mostrarListaDevolcion();//Crear método
-          Utilidades.esperarPresionarEnter();*/
+          utilidades.esperarPresionarEnter();*/
           break;
         }
 
@@ -788,7 +788,7 @@ public class Controlador {
       
         default:{
           System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
       }  
@@ -813,14 +813,14 @@ public class Controlador {
           Product productoamover = general.buscarProductoId(IdP);
           if (productoamover == null) {
             System.out.println("No hay existencias en bodega.");
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
             break;
           }
           System.out.println("Cantidad: ");
           int qty = scanner.nextInt();
           bodega.mover_a_exhibición(productoamover,qty,exhibicion);
           System.out.println("Se ha movido el producto.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
         case 2:{
@@ -831,14 +831,14 @@ public class Controlador {
           Product productoamover = general.buscarProductoId(IdP);
           if (productoamover == null) {
             System.out.println("No hay existencias en exhibicion.");
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
             break;
           }
           System.out.println("Cantidad: ");
           int qty = scanner.nextInt();
           exhibicion.mover_a_bodega(productoamover,qty,bodega);
           System.out.println("Se ha movido el producto.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
         case 3:{
@@ -849,14 +849,14 @@ public class Controlador {
           Product productoamover = general.buscarProductoId(IdP);
           if (productoamover == null) {
             System.out.println("No hay existencias de este producto para devolución.");
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
             break;
           }
           System.out.println("Cantidad: ");
           int qty = scanner.nextInt();
           devolucion.mover_a_bodega(productoamover,qty,bodega);
           System.out.println("Se ha movido el producto.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
         case 4:{
@@ -865,7 +865,7 @@ public class Controlador {
         }
         default:{
           System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         }
       }
