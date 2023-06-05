@@ -39,21 +39,11 @@ public class Controlador {
       scanner.nextLine();
       switch (opcion) {
         case 1:// Realizar Venta;-----------------------------------------------------
-          Utilidades.limpiarPantalla();
-          Vistas.ModuloVenta();
-          opcion = scanner.nextInt();
-          scanner.nextLine();
-          System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          this.RealizarVenta(session);
           break;
 
         case 2:// Gestionar Productos;------------------------------------------------
-          Utilidades.limpiarPantalla();
-          Vistas.ModuloGestionProductos();
-          opcion = scanner.nextInt();
-          scanner.nextLine();
-          System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          this.GestionarProductos();
           break;
 
         case 3:// Gestionar Empleados;------------------------------------------------
@@ -362,13 +352,94 @@ public class Controlador {
     return apagar;
   }
 
+  //---------------------------------------------------------------------------------------------------------
   // Método para realizar todas las opciones de Realizar Venta
   // Nota: Agregar desde Visual
-  // private void RealizarVenta(){
-  // Utilidades.limpiarPantalla();
-  // Vistas.Modulo
+  private void RealizarVenta(User session){
+    boolean salir = false;
+    int NumVentas = (vendidos.consultar_cantidad() + 1);
+    String IdVenta = Integer.toString(NumVentas);
+    Venta venta = new Venta(IdVenta,session);
+    while (!salir){
+      Utilidades.limpiarPantalla();
+      System.out.println("----------MODULO VENTA----------\n");
+      Vistas.ModuloVenta();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+      switch(opcion){
+        case 1://Agregar Producto
+          Utilidades.limpiarPantalla();
+          System.out.println("----------AGREGAR PRODUCTO----------\n");
+          System.out.println("Id de producto: ");
+          String IdProducto = scanner.nextLine();
+          Product producto = general.buscarProductoId(IdProducto);
+          if (producto != null){//En caso de que el producto exista
+            System.out.println("Cantidad deseada: ");
+            int CantProducto = scanner.nextInt();
+            scanner.nextLine();
+            if(CantProducto < exhibicion.consultar_cantidad_unidades(producto)){//En caso de que  hayan suficientes unidades disponibles
+              System.out.println("Se van a agregar "+ CantProducto + " unidades del producto con Id : " + IdProducto);
+              if(utilidades.preguntaContinuar()){//En caso de que confirmen 
+                venta.agregarProducto(producto, CantProducto);
+                System.out.println("PRODUCTO AGREGADO EXITOSAMENTE AL CARRITO.");
+                Utilidades.esperarPresionarEnter();
+                break;
+              } else {//En caso de que digan que no quieren agregar el producto
+                System.out.println("EL PRODUCTO NO SE AGREGÓ AL CARRITO.");
+                Utilidades.esperarPresionarEnter();
+                break;
+              }
+            } else { //En caso de que no hayan suficientes unidades del producto
+              int CantDisponible= exhibicion.consultar_cantidad_unidades(producto);
+              System.out.println("Actualmente solo hay "+ CantDisponible + " unidades del producto en exhibición.\n");
+              System.out.println("Desea llevar esta cantidad?");
+              if(utilidades.preguntaContinuar()){//En caso de que si deseen llevar la cantidad disponible
+                System.out.println("Se van a agregar "+ CantDisponible + " unidades del producto con Id : " + IdProducto);
+                if(utilidades.preguntaContinuar()){//En caso de que confirmen 
+                  venta.agregarProducto(producto, CantDisponible);
+                  System.out.println("PRODUCTO AGREGADO EXITOSAMENTE AL CARRITO.");
+                  Utilidades.esperarPresionarEnter();
+                  break;
+                } else {//En caso de que digan que no quieren agregar el producto
+                  System.out.println("EL PRODUCTO NO SE AGREGÓ AL CARRITO.");
+                  Utilidades.esperarPresionarEnter();
+                  break;
+                }
+              }
+            }
+          } else {//En caso de que el producto no exista
+            System.out.println("No existe un producto con el Id : " + IdProducto);
+            Utilidades.esperarPresionarEnter();
+          }
 
-  // }
+        break;
+        case 2://Quitar Producto
+
+          System.out.println("METODO EN DESARROLLO");
+        break;
+        case 3://Calcular total
+          System.out.println("METODO EN DESARROLLO");
+        break;
+        case 4://Mostrar Carrito
+          System.out.println("METODO EN DESARROLLO");
+        break;
+        case 5://Finalizar Venta
+          System.out.println("METODO EN DESARROLLO");
+        break;
+        case 6://Cancelar Venta
+          System.out.println("METODO EN DESARROLLO");
+        break;
+        
+
+      }
+
+
+    }
+
+
+   }
+
+  //-----------------------------------------------------------------------------------------------------------
 
   // Método para realizar todas las opciones de Gestión de Empleados
   private void GestionarEmpleados(User session) {
@@ -489,7 +560,7 @@ public class Controlador {
           System.out.println("----------AGREGAR PRODUCTO----------\n");
           System.out.println("ID de producto: ");
           String nuevoId = scanner.nextLine();
-          if (inventario_general.buscarProductoId(nuevoId) != null) {
+          if (general.buscarProductoId(nuevoId) != null) {
             System.out.println("Ya existe un producto con Id: " + nuevoId);
             Utilidades.esperarPresionarEnter();
             break;
@@ -499,7 +570,7 @@ public class Controlador {
           // 'agregarlo'(moverlo) a exhibicion agregando unidades (identificar total en
           // bodega y cantidad a mover a exhibicion)
           float precio = Float.parseFloat(elementos[2]);
-          inventario_general.agregarProducto(new Product(elementos[0], elementos[1], nuevoId, precio));
+          general.agregarProducto(new Product(elementos[0], elementos[1], nuevoId, precio));
           // de no indicarse antes, dar la posibilidad de agregar unidades a bodega.??
           System.out.println("El nuevo producto fue creado correctamente.");
           Utilidades.esperarPresionarEnter();
@@ -512,7 +583,7 @@ public class Controlador {
           String IdEliminar = scanner.nextLine();
           // verificar presencia en exhibicion (no se puede eliminar de exhibicion), se
           // mueve a bodega y entonces se elimina, indicarlo al usuario antes de hacerlo.
-          Product productoEliminar = inventario_general.buscarProductoId(IdEliminar);
+          Product productoEliminar = general.buscarProductoId(IdEliminar);
           if (productoEliminar != null) {
             System.out.print("Se eliminará al siguiente producto: ");
             Vistas.InfoProducto(productoEliminar);
@@ -520,7 +591,7 @@ public class Controlador {
             // venta y devolucion.
             boolean continuar = utilidades.preguntaContinuar();
             if (continuar) {
-              inventario_general.eliminarProducto(IdEliminar); // de bodega
+              general.eliminarProducto(IdEliminar); // de bodega
             } else {
               System.out.println("No se eliminó el producto.");
             }
@@ -535,7 +606,7 @@ public class Controlador {
           String IdProducto = scanner.nextLine();
           elementos = utilidades.pedirDatosProducto("Nuevo ");
           precio = Float.parseFloat(elementos[2]);
-          if (inventario_general.ModificarProducto(IdProducto, elementos[0], elementos[1], precio)) {
+          if (general.ModificarProducto(IdProducto, elementos[0], elementos[1], precio)) {
             System.out.println("Producto modificado.");
           } else {
             System.out.println("Producto no encontrado.");

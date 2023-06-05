@@ -20,7 +20,7 @@ public class Vistas {
         System.out.println("Producto encontrado:");
         System.out.println("Nombre: " + producto.getNombre());
         System.out.println("Descripcion: " + producto.getDescripcion());
-        System.out.println("Precio: " + producto.getPrecio());
+        System.out.println("Precio unitario: " + producto.getPrecio());
     }
 
   public static void MenuEmpleado() {
@@ -53,7 +53,7 @@ public class Vistas {
       System.out.println("1. Agregar Producto");
       System.out.println("2. Quitar Producto");
       System.out.println("3. Calcular Total");
-      System.out.println("4. Generar Recibo");
+      System.out.println("4. Mostrar Carrito");
       System.out.println("5. Finalizar Venta");
       System.out.println("6. Cancelar Venta");
       System.out.println("7. Regresar");

@@ -9,7 +9,7 @@ public class Inventario_Vendido extends Inventario_General {
 
     public Inventario_Vendido() {
         super();
-        List<Venta> ventas = new ArrayList<>(); //verificación de lista pendiente
+        ventas = new ArrayList<>(); //verificación de lista pendiente
     }
 
     public SimpleEntry<Pair<Map<User, Double>, Map<User, Integer>>, Double> GenerarReporte() {
