@@ -48,4 +48,9 @@ public class Inventario_Vendido extends Inventario_General {
       }
       return null;  
     }
+    
+    public List<Venta> get_lista_Ventas() {
+        return ventas;
+    }
+
 }

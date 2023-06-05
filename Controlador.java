@@ -5,28 +5,33 @@ import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 public class Controlador {
-  private Vistas vistas;
+  // private Vistas vistas;
   private Utilidades utilidades;
   private Inventario_General general; // utilizar exhibición y bodega en su lugar
   private Inventario_Vendido vendidos;
   private Inventario_Recibido recibidos;
   private Inventario_Bodega bodega;
   private Inventario_Exhibicion exhibicion;
+  private List<User> usuarios;
   private Inventario_Devuelto devolucion;
 
   Scanner scanner = new Scanner(System.in);
 
-  public Controlador(Vistas vistas, Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
-      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion) {
-    this.vistas = vistas;
+  public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
+      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios) {
+    // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
     this.vendidos = vendidos;
     this.recibidos = recibidos;
     this.bodega = bodega;
     this.exhibicion = exhibicion;
+    this.usuarios = usuarios;
   }
 
   public boolean Admin(User session) {
@@ -58,32 +63,32 @@ public class Controlador {
         case 5:// Buscar Producto;-----------------------------------------------------
           Utilidades.limpiarPantalla();
           System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
-        case 6:// Buscar Transacción;--------------------------------------------------
+        case 6:// Buscar Transacción;
           salir = false;
-          /*while (!salir) {
+          while (!salir) {
             Utilidades.limpiarPantalla();
             Vistas.ModuloBuscarTransacciones();
             System.out.print("Seleccione una opción: ");
             opcion = scanner.nextInt();
             scanner.nextLine();
             switch (opcion){
-              case 1:{
-                
+              case 1:{//buscar una venta
+                this.buscarVenta();
               }
-              case 2:{
-                
+              case 2:{//buscar un pedido
+                System.out.println("MÉTODO EN DESARROLLO ");
               }
-              case 3:{
-                
+              case 3:{//buscar una devolución
+                System.out.println("MÉTODO EN DESARROLLO ");
               }
               default:{
-                
+                System.out.println("MÉTODO EN DESARROLLO ");
               }
             }
-          }*/
+          }
           break;
           
         case 7:// Administrar inventarios;------------------------------------------------------
@@ -108,11 +113,111 @@ public class Controlador {
 
         default:
           System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
       }
     }
     return apagar;
+  }
+
+  public void buscarVenta(){
+    boolean salir = false;
+    while(!salir){
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloBuscarVentas();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+      switch(opcion){
+        case 1: //buscar venta por ID
+          System.out.print("Ingrese el ID de la venta a buscar: ");
+          String idVenta = scanner.nextLine();
+          Venta venta = vendidos.buscarVenta(idVenta);
+          if(venta != null){
+            ventatoString(venta);
+          }else{
+            System.out.println("No se encontró la venta con el ID ingresado.");
+          }
+          utilidades.esperarPresionarEnter();
+          break;
+        case 2: //bucar venta por empleado
+          System.out.print("Ingrese el ID del empleado: ");
+          String idEmpleado = scanner.nextLine();
+          User empleado = null;
+          boolean idvalido = false;
+          for (User usuario : usuarios) {
+            if (usuario.getId().equals(idEmpleado)) {
+              idvalido = true;
+              empleado = usuario;
+              break;
+            }else{
+              idvalido = false;
+            }
+          }
+          if (idvalido){
+            List<Venta> ventas = vendidos.get_lista_Ventas();
+            List<Venta> ventasEmpleado = new ArrayList<>();
+            for (Venta ve : ventas) {
+              if (ve.getEmpleado().getId().equals(idEmpleado)) {
+                ventasEmpleado.add(ve);
+              }
+            }
+            if(!ventasEmpleado.isEmpty()){
+              System.out.println("Ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
+              for(Venta v : ventas){
+                ventatoString(v);
+              }
+            }else{
+              System.out.println("No se encontraron ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
+            }
+          }else{
+            System.out.println("El ID del empleado ingresado no es válido.");
+          }
+          utilidades.esperarPresionarEnter();
+          break;
+        case 3: //buscar venta por fecha
+          System.out.print("Ingrese la fecha de la venta (dd/MM/yyyy): ");
+          String fechaIngresada = scanner.nextLine();
+          SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+          try {
+              Date fechaBusqueda = formatoFecha.parse(fechaIngresada);
+              List<Venta> ventas = vendidos.get_lista_Ventas();
+              List<Venta> ventasPorFecha = new ArrayList<>();
+              for (Venta ve : ventas) {
+                  if (formatoFecha.format(ve.getFecha()).equals(formatoFecha.format(fechaBusqueda))) {
+                      ventasPorFecha.add(ve);
+                  }
+              }
+              if (!ventasPorFecha.isEmpty()) {
+                  System.out.println("Ventas realizadas en la fecha: " + formatoFecha.format(fechaBusqueda));
+                  for (Venta v : ventasPorFecha) {
+                    ventatoString(v);
+                  }
+              } else {
+                  System.out.println("No se encontraron ventas en la fecha: " + formatoFecha.format(fechaBusqueda));
+              }
+          } catch (ParseException e) {
+              System.out.println("La fecha ingresada no es válida. Por favor, ingrese una fecha en el formato correcto (dd/MM/yyyy).");
+          }
+          utilidades.esperarPresionarEnter();
+          break;
+        case 4:
+          salir = true;
+          break;
+        default:
+          System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+      }
+    }
+  }
+
+  public void ventatoString(Venta venta){
+    System.out.println("Venta Realizada por: " + venta.getEmpleado().getNombre() + " Con ID: " + venta.getEmpleado().getId());
+    System.out.println("Fecha: " + venta.getFecha());
+    System.out.println("Id de la venta: " + venta.getId());
+    System.out.println("Productos vendidos: ");
+    venta.mostrarProductosEnCarrito();
+    System.out.println("Total: " + venta.calcularTotal());
   }
 
   public boolean Empleado(User session) {
@@ -131,17 +236,17 @@ public class Controlador {
           opcion = scanner.nextInt();
           scanner.nextLine();
           System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 2:// Consultar producto;------------------------------------------------
           System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 3:// Realizar devolución;------------------------------------------------
           System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 4:// Recibir pedido;---------------------------------------------------
@@ -150,7 +255,7 @@ public class Controlador {
           // opcion = scanner.nextInt();
           // scanner.nextLine();
           System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 5: // cerrar sesión
@@ -165,7 +270,7 @@ public class Controlador {
 
         default:
           System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
       }
     }
@@ -203,11 +308,11 @@ public class Controlador {
               if(utilidades.preguntaContinuar()){//En caso de que confirmen 
                 venta.agregarProducto(producto, CantProducto);
                 System.out.println("PRODUCTO AGREGADO EXITOSAMENTE AL CARRITO.");
-                Utilidades.esperarPresionarEnter();
+                utilidades.esperarPresionarEnter();
                 break;
               } else {//En caso de que digan que no quieren agregar el producto
                 System.out.println("EL PRODUCTO NO SE AGREGÓ AL CARRITO.");
-                Utilidades.esperarPresionarEnter();
+                utilidades.esperarPresionarEnter();
                 break;
               }
             } else { //En caso de que no hayan suficientes unidades del producto
@@ -219,18 +324,18 @@ public class Controlador {
                 if(utilidades.preguntaContinuar()){//En caso de que confirmen 
                   venta.agregarProducto(producto, CantDisponible);
                   System.out.println("PRODUCTO AGREGADO EXITOSAMENTE AL CARRITO.");
-                  Utilidades.esperarPresionarEnter();
+                  utilidades.esperarPresionarEnter();
                   break;
                 } else {//En caso de que digan que no quieren agregar el producto
                   System.out.println("EL PRODUCTO NO SE AGREGÓ AL CARRITO.");
-                  Utilidades.esperarPresionarEnter();
+                  utilidades.esperarPresionarEnter();
                   break;
                 }
               }
             }
           } else {//En caso de que el producto no exista
             System.out.println("No existe un producto con el Id : " + IdProducto);
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
           }
         break;
 
@@ -311,13 +416,13 @@ public class Controlador {
           }
           if (utilidades.buscarUsuarioId(nuevoId) != null) {
             System.out.println("Ya existe un usuario con Id: " + nuevoId);
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
             break;
           }
           String[] elementos = utilidades.pedirDatosUser("");
           utilidades.agregarUsuario(new User(elementos[0], elementos[1], elementos[2], elementos[3], nuevoId));
           System.out.println("El usuario fue creado con éxito.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 2:
@@ -326,16 +431,16 @@ public class Controlador {
           System.out.print("ID de usuario a eliminar: ");
           String IdEliminar = scanner.nextLine();
           User usuarioEliminar = utilidades.buscarUsuarioId(IdEliminar);
-          if (IdEliminar.equals(session.getId())) {
-            System.out.println("No puedes eliminarte a tí mismo del sistema.\nPide ayuda al usuario raíz.");
-            Utilidades.esperarPresionarEnter();
-            break;
-          } else if (usuarioEliminar.getNivel_acceso().equals("3")) {
-            System.out.println("No se puede eliminar al usuario raíz.");
-            Utilidades.esperarPresionarEnter();
-            break;
-          }
           if (usuarioEliminar != null) {
+            if (IdEliminar.equals(session.getId())) {
+              System.out.println("No puedes eliminarte a tí mismo del sistema.\nPide ayuda al usuario raíz.");
+              utilidades.esperarPresionarEnter();
+              break;
+            } else if (usuarioEliminar.getNivel_acceso().equals("3")) {
+              System.out.println("No se puede eliminar al usuario raíz.");
+              utilidades.esperarPresionarEnter();
+              break;
+            }
             System.out.print("Se eliminará al siguiente ");
             Vistas.InfoUsuario(usuarioEliminar);
             boolean continuar = utilidades.preguntaContinuar();
@@ -351,7 +456,7 @@ public class Controlador {
           } else {
             System.out.println("Usuario no encontrado.");
           }
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 3:
@@ -366,7 +471,7 @@ public class Controlador {
           } else {
             System.out.println("Usuario no encontrado.");
           }
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 4:
@@ -380,7 +485,7 @@ public class Controlador {
           } else {
             System.out.println("Usuario no encontrado.");
           }
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 5:
@@ -389,7 +494,7 @@ public class Controlador {
 
         default:
           System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
       }
     }
@@ -413,7 +518,7 @@ public class Controlador {
           String nuevoId = scanner.nextLine();
           if (general.buscarProductoId(nuevoId) != null) {
             System.out.println("Ya existe un producto con Id: " + nuevoId);
-            Utilidades.esperarPresionarEnter();
+            utilidades.esperarPresionarEnter();
             break;
           }
           String[] elementos = utilidades.pedirDatosProducto("");
@@ -424,7 +529,7 @@ public class Controlador {
           general.agregarProducto(new Product(elementos[0], elementos[1], nuevoId, precio));
           // de no indicarse antes, dar la posibilidad de agregar unidades a bodega.??
           System.out.println("El nuevo producto fue creado correctamente.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
 
         case 2:// Eliminar Producto
@@ -449,7 +554,7 @@ public class Controlador {
           } else {
             System.out.println("No se encontró ningun producto con el Id : " + IdEliminar);
           }
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         case 3:// Modificar Producto
           Utilidades.limpiarPantalla();
@@ -462,7 +567,7 @@ public class Controlador {
           } else {
             System.out.println("Producto no encontrado.");
           }
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
         case 0:
           salir = true;
@@ -470,7 +575,7 @@ public class Controlador {
 
         default:
           System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
           break;
       }
     }
@@ -520,7 +625,7 @@ public class Controlador {
           // total);
           // });
 
-          Utilidades.esperarPresionarEnter();
+          utilidades.esperarPresionarEnter();
         }
         case 3: {
           salir = true;
