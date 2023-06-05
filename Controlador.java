@@ -95,40 +95,8 @@ public class Controlador {
           }*/
           break;
           
-        case 7:// Ver Inventario;------------------------------------------------------
-          Utilidades.limpiarPantalla();
-          /*Vistas.ModuloVerInventario();
-          opcion = scanner.nextInt();
-          scanner.nextLine();
-          switch (opcion) {
-              case 1: // Ver Inventario Completo
-                  Utilidades.limpiarPantalla();
-                  System.out.println("Inventario Completo:");
-                  general.mostrarInventarioCompleto();//Crear método
-                  Utilidades.esperarPresionarEnter();
-                  break;
-      
-              case 2: // Ver Inventario en Bodega
-                  Utilidades.limpiarPantalla();
-                  System.out.println("Inventario en Bodega:");
-                  bodega.mostrarInventario();//Crear método
-                  Utilidades.esperarPresionarEnter();
-                  break;
-      
-              case 3: // Ver Inventario en Exhibición
-                  Utilidades.limpiarPantalla();
-                  System.out.println("Inventario en Exhibición:");
-                  exhibicion.mostrarInventario();//Crear método
-                  Utilidades.esperarPresionarEnter();
-                  break;
-      
-              default:
-                  System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-                  Utilidades.esperarPresionarEnter();
-                  break;
-          
-          System.out.print("MÉTODO EN DESARROLLO ");
-          Utilidades.esperarPresionarEnter();*/
+        case 7:// Administrar inventarios;------------------------------------------------------
+          AdministrarInventarios();
           break;
 
         case 8: // Recibir Pedido
@@ -607,4 +575,143 @@ public class Controlador {
     }
   }
 
+  private void AdministrarInventarios(){
+    boolean salir = false;
+    while(!salir){
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloAdministrarInventarios();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+
+      switch(opcion){
+        case 1:{
+          VerInventarios(); //Método para ver inventarios.
+          break;
+        }
+        case 2:{
+          MoverInventarios(); //Método para mover productos en los inventarios.
+          break;
+        }
+        case 3:{
+          salir = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          Utilidades.esperarPresionarEnter();
+          break;
+        }
+      }
+    }
+  }
+
+  //Método para ver inventarios.
+  private void VerInventarios(){
+    boolean salir = false;
+    while(!salir){
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloVerInvenarios();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+
+      switch(opcion){
+        case 1:{ // Ver Inventario Completo
+          Utilidades.limpiarPantalla();/* 
+          System.out.println("Inventario Completo:");
+          general.mostrarInventarioCompleto();//Crear método
+          Utilidades.esperarPresionarEnter();*/
+          break;
+        }
+      
+        case 2:{ // Ver Inventario en Bodega
+          Utilidades.limpiarPantalla();/* 
+          System.out.println("Inventario en Bodega:");
+          bodega.mostrarInventario();//Crear método
+          Utilidades.esperarPresionarEnter();*/
+          break;
+        }
+      
+        case 3:{ // Ver Inventario en Exhibición
+          Utilidades.limpiarPantalla();/*
+          System.out.println("Inventario en Exhibición:");
+          exhibicion.mostrarInventario();//Crear método
+          Utilidades.esperarPresionarEnter();*/
+          break;
+        }
+
+        case 4:{
+          salir = true;
+          break;
+        }
+      
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          Utilidades.esperarPresionarEnter();
+          break;
+        }
+      }  
+    }
+  }
+
+  //Método para mover inventarios.
+  private void MoverInventarios(){
+    boolean salir = false;
+    while(!salir){
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloMoverInventarios();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+
+      switch(opcion){
+        case 1:{
+          Utilidades.limpiarPantalla();
+          System.out.println("----------BODEGA A EXHIBICION----------\n");
+          System.out.println("ID de producto: ");
+          String IdP = scanner.nextLine();
+          Product productoamover = general.buscarProductoId(IdP);
+          if (productoamover == null) {
+            System.out.println("No hay existencias en bodega.");
+            Utilidades.esperarPresionarEnter();
+            break;
+          }
+          System.out.println("Cantidad: ");
+          int qty = scanner.nextInt();
+          bodega.mover_a_exhibición(productoamover,qty,exhibicion);
+          System.out.println("Se ha movido el producto.");
+          Utilidades.esperarPresionarEnter();
+          break;
+        }
+        case 2:{
+          Utilidades.limpiarPantalla();
+          System.out.println("----------EXHIBICION A BODEGA----------\n");
+          System.out.println("ID de producto: ");
+          String IdP = scanner.nextLine();
+          Product productoamover = general.buscarProductoId(IdP);
+          if (productoamover == null) {
+            System.out.println("No hay existencias en exhibicion.");
+            Utilidades.esperarPresionarEnter();
+            break;
+          }
+          System.out.println("Cantidad: ");
+          int qty = scanner.nextInt();
+          exhibicion.mover_a_bodega(productoamover,qty,bodega);
+          System.out.println("Se ha movido el producto.");
+          Utilidades.esperarPresionarEnter();
+          break;
+        }
+        case 3:{
+          break;
+        }
+        case 4:{
+          salir = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          Utilidades.esperarPresionarEnter();
+          break;
+        }
+      }
+    }
+  }
 }
