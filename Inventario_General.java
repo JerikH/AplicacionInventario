@@ -22,6 +22,12 @@ public class Inventario_General {
         productos = new HashMap<>();
     }
 
+    //Método para agregra un producto a la lista productos;
+    public void agregarProductoMap(String Id, int Cant){
+        productos.put(Id,Cant);
+    }
+
+
     //Método para agregar un producto a la lista General
     public void agregarProducto(Product producto) {
         general.add(producto);
