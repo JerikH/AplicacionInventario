@@ -14,7 +14,7 @@ public class Inventario_General {
 
   
     public Inventario_General() {
-        List<Product> general = new ArrayList<>();
+        general = new ArrayList<>();
         productos = new HashMap<>();
     }
 

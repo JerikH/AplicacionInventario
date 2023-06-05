@@ -34,6 +34,7 @@ public class Transaccion {
         this.fecha = nuevaFecha;
     }
 
+    //Método para agregar un Producto al carrito
     public void agregarProducto(Product producto, Integer qty) {
         if (carrito.containsKey(producto)) {
             int cantidadActual = carrito.get(producto);
