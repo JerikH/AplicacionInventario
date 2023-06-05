@@ -23,7 +23,7 @@ public class Controlador {
   Scanner scanner = new Scanner(System.in);
 
   public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
-      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios) {
+      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devolucion) {
     // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
@@ -32,6 +32,7 @@ public class Controlador {
     this.bodega = bodega;
     this.exhibicion = exhibicion;
     this.usuarios = usuarios;
+    this.devolucion = devolucion;
   }
 
   public boolean Admin(User session) {
@@ -94,9 +95,9 @@ public class Controlador {
           break;
 
         case 8: // Recibir Pedido
-        Utilidades.limpiarPantalla();
-        gestionarPedido(session);
-        break;
+          Utilidades.limpiarPantalla();
+          gestionarPedido(session);
+          break;
           
 
         case 9:// Cerrar Sesión;-----------------------------------------------------
@@ -785,34 +786,31 @@ public class Controlador {
 
       switch(opcion){
         case 1:{ // Ver Inventario Completo
-          Utilidades.limpiarPantalla();/* 
+          Utilidades.limpiarPantalla();
           System.out.println("Inventario Completo:");
-          general.mostrarInventarioCompleto();//Crear método
-          utilidades.esperarPresionarEnter();*/
+          general.mostrarInventario();
+          utilidades.esperarPresionarEnter();
           break;
         }
       
         case 2:{ // Ver Inventario en Bodega
-          Utilidades.limpiarPantalla();/* 
+          Utilidades.limpiarPantalla(); 
           System.out.println("Inventario en Bodega:");
-          bodega.mostrarInventario();//Crear método
-          utilidades.esperarPresionarEnter();*/
+          bodega.mostrarInventario();
+          utilidades.esperarPresionarEnter();
           break;
         }
       
         case 3:{ // Ver Inventario en Exhibición
-          Utilidades.limpiarPantalla();/*
+          Utilidades.limpiarPantalla();
           System.out.println("Inventario en Exhibición:");
-          exhibicion.mostrarInventario();//Crear método
-          utilidades.esperarPresionarEnter();*/
+          exhibicion.mostrarInventario();
+          utilidades.esperarPresionarEnter();
           break;
         }
 
         case 4:{ //Ver lista de devolución
-          Utilidades.limpiarPantalla();/*
-          System.out.println("Lista de devolucion:");
-          devolucion.mostrarListaDevolcion();//Crear método
-          utilidades.esperarPresionarEnter();*/
+          Devoluciones();
           break;
         }
 
@@ -895,6 +893,42 @@ public class Controlador {
           break;
         }
         case 4:{
+          salir = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+      }
+    }
+  }
+
+  private void Devoluciones(){
+    boolean salir = false;
+    while(!salir){
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloDevoluciones();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+
+      switch(opcion){
+        case 1:{
+          Utilidades.limpiarPantalla();
+          System.out.println("Historico de devoluciones:");
+          devolucion.mostrarHistorico();
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+        case 2:{
+          Utilidades.limpiarPantalla();
+          System.out.println("Lista de devoluciones actuales:");
+          devolucion.mostrarDevoluciones();
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+        case 3:{
           salir = true;
           break;
         }

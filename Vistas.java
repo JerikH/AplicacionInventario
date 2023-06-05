@@ -145,4 +145,11 @@ public class Vistas {
     System.out.println("4. Ver lista de devoluciones.");
     System.out.println("5. Regresar.");
   }
+
+  public static void ModuloDevoluciones(){
+    System.out.println("Lista de devoluciones.");
+    System.out.println("1. Historico.");
+    System.out.println("2. Devoluciones actuales.");
+    System.out.println("3. Regresar.");
+  }
 }
