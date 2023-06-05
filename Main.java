@@ -17,7 +17,7 @@ public class Main {
     Inventario_Bodega bodega = new Inventario_Bodega();
     Inventario_Exhibicion exhibicion = new Inventario_Exhibicion();
     
-    Controlador controlador = new Controlador(vistas, utilidades, general, vendidos, recibidos, bodega, exhibicion);
+    Controlador controlador = new Controlador(vistas, utilidades, general, vendidos, recibidos, bodega, exhibicion, usuarios);
     Scanner scanner = new Scanner(System.in);
     User session;
     //Declaración de usuario inicial para probar el programa
@@ -28,8 +28,7 @@ public class Main {
     //Login
     boolean apagar = false;
     while(!apagar){
-      utilidades.limpiarPantalla();
-      scanner.nextLine();
+      Utilidades.limpiarPantalla();
       System.out.print("----------LOGIN----------\n");
       System.out.print("Id del usuario: ");
       String IdUsuario = scanner.nextLine();

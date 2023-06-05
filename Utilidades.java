@@ -1,5 +1,4 @@
 import java.util.List;
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Utilidades {
@@ -90,13 +89,9 @@ public class Utilidades {
       }
     }
     
-    public static void esperarPresionarEnter() {
+    public void esperarPresionarEnter() {
       System.out.println("\nPresione ENTER para continuar...");
-      try {
-          System.in.read();
-      } catch (IOException e) {
-          System.out.println("Error al esperar la entrada del usuario: " + e.getMessage());
-      }
+      scanner.nextLine();
     }
 
     public boolean preguntaContinuar(){
