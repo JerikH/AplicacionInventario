@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 public class Transaccion {
-    private String id;
-    private Map<Product, Integer> carrito;
-    private Date fecha;
-    private User empleado;
+    protected String id;
+    protected Map<Product, Integer> carrito;
+    protected Date fecha;
+    protected User empleado;
 
     //Constructor
     public Transaccion(String id, User empleado){ 

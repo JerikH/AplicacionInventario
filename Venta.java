@@ -11,7 +11,7 @@ public class Venta extends Transaccion {
     }
 
 
-    public void finalizarVenta(Inventario_Vendido inventarioVendido, Inventario_Bodega inventario_bodega, Inventario_Exhibicion inventario_exhibicion) {
+    public void finalizarVenta(Inventario_Vendido inventarioVendido, Inventario_Exhibicion inventario_exhibicion) {
         
         for (Map.Entry<Product, Integer> entry : carrito.entrySet()){
 

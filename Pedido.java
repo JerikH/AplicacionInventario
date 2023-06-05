@@ -42,6 +42,6 @@ public class Pedido extends Transaccion {
 
         // Mostrar mensaje de éxito y generar el recibo de la transacción
         System.out.println("Pedido finalizado. Unidades añadidas a la bodega.");
-        generarRecibo();
+        generarRecibo("Pedido");
     }  
 }
