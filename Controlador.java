@@ -174,7 +174,6 @@ public class Controlador {
 
   //---------------------------------------------------------------------------------------------------------
   // Método para realizar todas las opciones de Realizar Venta
-  // Nota: Agregar desde Visual
   private void RealizarVenta(User session){
     boolean salir = false;
     int NumVentas = (vendidos.consultar_cantidad() + 1);
