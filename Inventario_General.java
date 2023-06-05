@@ -1,7 +1,11 @@
-// Idea: Nuevo atributo en inv_general, lista general de productos, los demás inventarios solo guardan los id de producto y la cantidad, el objeto se consulta en el inventario general.
+// Idea: Nuevo atributo en inv_general, lista general de productos, los demás inventarios 
+//solo guardan los id de producto y la cantidad, el objeto se consulta en el inventario general.
 
-// Razón: Al modificar un objeto producto esto permitirá que el cambio se vea reflejado en todos los inventarios.
-// Contra: Conflicto al eliminar un producto, ya no sería posible consultar la información del id desde los demás inventarios.
+// Razón: Al modificar un objeto producto esto permitirá que el cambio se vea reflejado en 
+//todos los inventarios.
+
+// Contra: Conflicto al eliminar un producto, ya no sería posible consultar la información del 
+//id desde los demás inventarios.
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,4 +105,33 @@ public class Inventario_General {
         return false;
 
     }
+
+    //Método para mostrar los productos existentes en el inventario.
+    public void mostrarInventario() {
+        if (productos.isEmpty()) {
+            System.out.println("No hay productos en el inventario.");
+        } else {
+            for (Map.Entry<String, Integer> entry : productos.entrySet()) {
+                String productoId = entry.getKey();
+                int cantidad = entry.getValue();
+                Product producto = buscarProductoId(productoId);
+
+                if (producto != null) {
+                    System.out.println("Id: " + producto.getId());
+                    System.out.println("Nombre: " + producto.getNombre());
+                    System.out.println("Descripción: " + producto.getDescripcion());
+                    System.out.println("Precio: " + producto.getPrecio());
+                    System.out.println("Cantidad: " + cantidad);
+                    System.out.println("------------------");
+                }
+                else{
+                    System.out.println("No hay productos en el inventario.");
+                }
+            }
+        }
+    }
 }
+
+
+
+

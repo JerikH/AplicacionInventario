@@ -16,8 +16,9 @@ public class Main {
     Inventario_Recibido recibidos = new Inventario_Recibido();
     Inventario_Bodega bodega = new Inventario_Bodega();
     Inventario_Exhibicion exhibicion = new Inventario_Exhibicion();
+    Inventario_Devuelto devolucion = new Inventario_Devuelto();
     
-    Controlador controlador = new Controlador(utilidades, general, vendidos, recibidos, bodega, exhibicion, usuarios);
+    Controlador controlador = new Controlador(utilidades, general, vendidos, recibidos, bodega, exhibicion, usuarios, devolucion);
     Scanner scanner = new Scanner(System.in);
     User session;
     //Declaración de usuario inicial para probar el programa
