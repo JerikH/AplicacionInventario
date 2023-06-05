@@ -11,11 +11,12 @@ public class Venta extends Transaccion {
     }
 
 
-    /*public void finalizarVenta(Inventario_Vendido inventarioVendido, Inventario_Bodega inventario_bodega, Inventario_Exhibicion inventario_exhibicion) {
-        for (Product producto : carrito.keySet()){
+    public void finalizarVenta(Inventario_Vendido inventarioVendido, Inventario_Bodega inventario_bodega, Inventario_Exhibicion inventario_exhibicion) {
+        
+        for (Map.Entry<Product, Integer> entry : carrito.entrySet()){
 
         }
         inventarioVendido.agregarVenta(this);
         this.generarRecibo("Venta");
-    }*/
+    }
 }
