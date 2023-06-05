@@ -536,7 +536,7 @@ public class Controlador {
     String IdPedido = Integer.toString(NumPedido);
     System.out.println("Ingrese el nombre del proveedor:");
     String NombreProveedor = scanner.nextLine();
-    
+
     Pedido pedido = new Pedido(IdPedido, session, NombreProveedor);
     while (!salir) {
       Utilidades.limpiarPantalla();
@@ -547,11 +547,13 @@ public class Controlador {
         case 1://Agregar producto al pedido
           System.out.println("Ingrese el ID del producto:");
           String idProducto = scanner.nextLine();
+          //scanner.nextLine();  Consumir la nueva línea después de la entrada numérica
       
           // Verificar si el producto existe en el inventario general
           Product producto = general.buscarProductoId(idProducto);
           if (producto == null) {
               System.out.println("El producto no existe en el inventario.");
+              Utilidades.esperarPresionarEnter();
               break;
           }
           System.out.println("Ingrese la cantidad:");
@@ -561,6 +563,7 @@ public class Controlador {
           // Agregar el producto al carrito del pedido
           pedido.agregarProducto(producto, cantidad);
           System.out.println("Producto agregado al carrito.");
+          Utilidades.esperarPresionarEnter();
         break;
 
         case 2://Eliminar un producto del pedido
@@ -570,38 +573,28 @@ public class Controlador {
           // Verificar si el producto existe en el carrito del pedido
           if (!pedido.getCarrito().containsKey(idProductoEliminar)) {
             System.out.println("El producto no está en el carrito del pedido.");
+            Utilidades.esperarPresionarEnter();
             break;
           }
   
           // Eliminar el producto del carrito del pedido
           pedido.getCarrito().remove(idProductoEliminar);
           System.out.println("Producto eliminado del carrito.");
-
+          Utilidades.esperarPresionarEnter();
             
         break;
         case 3: //Finalizar pedido
             // Verificar si hay artículos en el carrito del pedido
             if (pedido.getCarrito().isEmpty()) {
                 System.out.println("El carrito del pedido está vacío. No se puede finalizar el pedido.");
+                Utilidades.esperarPresionarEnter();
                 break;
             }
-            /*
-            // Añadir unidades del carrito a la bodega
-            for (Map.Entry<Product, Integer> entry : pedido.getCarrito().entrySet()) {
-              Product producto = entry.getKey();
-              int cantidad = entry.getValue();
-
-              inventarioBodega.agregar_unidades(producto, cantidad);
-            }
-
-            // Vaciar el carrito del pedido
-            pedido.getCarrito().clear();
-
-            System.out.println("Pedido finalizado. Unidades añadidas a la bodega.");
-            */ 
-        break;
-
-      
+          pedido.finalizarPedido(bodega);  
+          break;
+        case 4: //salir
+            salir = true;
+            break;
         default:
           break;
       }
