@@ -9,14 +9,18 @@ public class Pedido extends Transaccion {
         this.proveedor = proveedor;
     }
 
+    //Obtener proveedor de pedido
     public String getProveedor() {
         return proveedor;
     }
 
+    //Set proveedor de pedido
     public void setProveedor(String proveedor) {
         this.proveedor = proveedor;
     }
 
+
+    /* 
     //Metodo para finalizar el pedido---------------------------------
     public void finalizarPedido() { //método pendiente de revisión exhaustiva.
     // Verificar si hay artículos en el carrito de la transacción
@@ -25,12 +29,10 @@ public class Pedido extends Transaccion {
           System.out.println("El carrito está vacío. No se puede finalizar el pedido.");
           return;
       }
-  
       // Añadir unidades del carrito a la bodega
       for (Map.Entry<Product, Integer> entry : carrito.entrySet()) {
           Product producto = entry.getKey();
           int cantidad = entry.getValue();
-          
           // Buscar el producto en la bodega por ID
           ProductoBodega productoBodega = bodega.buscarProductoPorId(producto.getId()); //????
           
@@ -43,7 +45,6 @@ public class Pedido extends Transaccion {
               bodega.agregarProducto(productoBodega);
           }
       }
-  
       // Mostrar mensaje de éxito y generar el recibo de la transacción
       System.out.println("Pedido finalizado. Unidades añadidas a la bodega.");
       this.generarRecibo();
@@ -53,7 +54,7 @@ public class Pedido extends Transaccion {
 
 
   
-}
+}*/
 
 //falta el metodo finalizar pedido
     //public void FinalizarPedido() {
@@ -62,3 +63,4 @@ public class Pedido extends Transaccion {
         //se añaden unidades del carrito a la bodega (buscar id del producto antes, en caso de no estar se crea primero)
         //no se admiten más cambios del usuario una vez que esto se hace.
     //}
+    }

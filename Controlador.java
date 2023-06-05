@@ -71,12 +71,12 @@ public class Controlador {
           break;
 
         case 6:// Buscar Transacción;--------------------------------------------------
-          boolean salir = false;
+          salir = false;
           while (!salir) {
-            utilidades.limpiarPantalla();
-            vistas.ModuloBuscarTransacciones();
+            Utilidades.limpiarPantalla();
+            Vistas.ModuloBuscarTransacciones();
             System.out.print("Seleccione una opción: ");
-            int opcion = scanner.nextInt();
+            opcion = scanner.nextInt();
             scanner.nextLine();
             switch (opcion){
               case 1:{
@@ -104,21 +104,21 @@ public class Controlador {
               case 1: // Ver Inventario Completo
                   Utilidades.limpiarPantalla();
                   System.out.println("Inventario Completo:");
-                  general.mostrarInventarioCompleto();
+                  general.mostrarInventarioCompleto();//Crear método
                   Utilidades.esperarPresionarEnter();
                   break;
       
               case 2: // Ver Inventario en Bodega
                   Utilidades.limpiarPantalla();
                   System.out.println("Inventario en Bodega:");
-                  bodega.mostrarInventario();
+                  bodega.mostrarInventario();//Crear método
                   Utilidades.esperarPresionarEnter();
                   break;
       
               case 3: // Ver Inventario en Exhibición
                   Utilidades.limpiarPantalla();
                   System.out.println("Inventario en Exhibición:");
-                  exhibicion.mostrarInventario();
+                  exhibicion.mostrarInventario();//Crear método
                   Utilidades.esperarPresionarEnter();
                   break;
       
@@ -384,7 +384,7 @@ public class Controlador {
           Utilidades.limpiarPantalla();
           System.out.print("ID de usuario: ");
           String nuevoId = scanner.nextLine();
-          while (!utilidades.IdValido(nuevoId)) {
+          while (!Utilidades.IdValido(nuevoId)) {
             System.out.print("ID de usuario: ");
             nuevoId = scanner.nextLine();
           }
@@ -407,11 +407,11 @@ public class Controlador {
           User usuarioEliminar = utilidades.buscarUsuarioId(IdEliminar);
           if (IdEliminar.equals(session.getId())) {
             System.out.println("No puedes eliminarte a tí mismo del sistema.\nPide ayuda al usuario raíz.");
-            utilidades.esperarPresionarEnter();
+            Utilidades.esperarPresionarEnter();
             break;
           } else if (usuarioEliminar.getNivel_acceso().equals("3")) {
             System.out.println("No se puede eliminar al usuario raíz.");
-            utilidades.esperarPresionarEnter();
+            Utilidades.esperarPresionarEnter();
             break;
           }
           if (usuarioEliminar != null) {
