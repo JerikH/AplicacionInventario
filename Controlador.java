@@ -798,7 +798,7 @@ public class Controlador {
               utilidades.esperarPresionarEnter();
               break;
           }
-        pedido.finalizarPedido(bodega);
+        pedido.finalizarPedido(bodega,general);
         utilidades.esperarPresionarEnter();  
         break;
       case 4: //salir
