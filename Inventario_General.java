@@ -53,6 +53,21 @@ public class Inventario_General {
         return null;
     }
 
+    //Método para buscar un producto con su Id dentro del mapa productos
+    public Product buscarProductosId(String Id) {
+        Integer cantidad = productos.get(Id);
+        if (cantidad != null) {
+            for (Product producto : general) {
+                if (producto.getId().equals(Id)) {
+                    return producto;
+                }
+            }
+        }
+        return null;
+    }
+    
+    
+
     //Método para consultar la cantidad total de productos en el inventario
     public int consultar_cantidad_inventario() {
         int cantidadTotal = 0;
@@ -112,30 +127,49 @@ public class Inventario_General {
 
     }
 
+    //Método para mostrar inventario completo
+    public void mostrarInventarioCompleto() {
+        if (general.isEmpty()) {
+            System.out.println("No hay productos en el inventario.");
+        } else {
+            for (Product producto : general) {
+                System.out.println("Id: " + producto.getId());
+                System.out.println("Nombre: " + producto.getNombre());
+                System.out.println("Descripción: " + producto.getDescripcion());
+                System.out.println("Precio: " + producto.getPrecio());
+                System.out.println("------------------");
+            }
+        }
+    }
+
     //Método para mostrar los productos existentes en el inventario.
-    public void mostrarInventario() {
+    public void mostrarInventario(Inventario_General general) {
         if (productos.isEmpty()) {
             System.out.println("No hay productos en el inventario.");
         } else {
             for (Map.Entry<String, Integer> entry : productos.entrySet()) {
-                String productoId = entry.getKey();
+                String productId = entry.getKey();
                 int cantidad = entry.getValue();
-                Product producto = buscarProductoId(productoId);
-
+    
+                // Obtener el producto correspondiente al Id
+                Product producto = general.buscarProductoId(productId);
+    
                 if (producto != null) {
-                    System.out.println("Id: " + producto.getId());
+                    System.out.println("Id: " + productId);
                     System.out.println("Nombre: " + producto.getNombre());
                     System.out.println("Descripción: " + producto.getDescripcion());
                     System.out.println("Precio: " + producto.getPrecio());
                     System.out.println("Cantidad: " + cantidad);
                     System.out.println("------------------");
-                }
-                else{
-                    System.out.println("No hay productos en el inventario.");
+                } else {
+                    System.out.println("No se encontró el producto con Id: " + productId);
+                    System.out.println("Cantidad: " + cantidad);
                 }
             }
         }
     }
+    
+    
 }
 
 

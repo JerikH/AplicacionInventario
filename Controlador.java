@@ -818,7 +818,7 @@ public class Controlador {
         case 1:{ // Ver Inventario Completo
           Utilidades.limpiarPantalla();
           System.out.println("Inventario Completo:");
-          general.mostrarInventario();
+          general.mostrarInventarioCompleto();
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -826,7 +826,7 @@ public class Controlador {
         case 2:{ // Ver Inventario en Bodega
           Utilidades.limpiarPantalla(); 
           System.out.println("Inventario en Bodega:");
-          bodega.mostrarInventario();
+          bodega.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -834,17 +834,12 @@ public class Controlador {
         case 3:{ // Ver Inventario en Exhibición
           Utilidades.limpiarPantalla();
           System.out.println("Inventario en Exhibición:");
-          exhibicion.mostrarInventario();
+          exhibicion.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
 
-        case 4:{ //Ver lista de devolución
-          Devoluciones();
-          break;
-        }
-
-        case 5:{
+        case 4:{
           salir = true;
           break;
         }
@@ -906,24 +901,6 @@ public class Controlador {
           break;
         }
         case 3:{
-          Utilidades.limpiarPantalla();
-          System.out.println("----------DEVOLUCIONES A BODEGA----------\n");
-          System.out.println("ID de producto: ");
-          String IdP = scanner.nextLine();
-          Product productoamover = general.buscarProductoId(IdP);
-          if (productoamover == null) {
-            System.out.println("No hay existencias de este producto para devolución.");
-            utilidades.esperarPresionarEnter();
-            break;
-          }
-          System.out.println("Cantidad: ");
-          int qty = scanner.nextInt();
-          devolucion.mover_a_bodega(productoamover,qty,bodega);
-          System.out.println("Se ha movido el producto.");
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 4:{
           salir = true;
           break;
         }
@@ -936,43 +913,6 @@ public class Controlador {
     }
   }
 
-  //-----------------------------------------------------------------------------------------------------------
-  //Método para devoluciones
-  private void Devoluciones(){
-    boolean salir = false;
-    while(!salir){
-      Utilidades.limpiarPantalla();
-      Vistas.ModuloDevoluciones();
-      int opcion = scanner.nextInt();
-      scanner.nextLine();
-
-      switch(opcion){
-        case 1:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Historico de devoluciones:");
-          devolucion.mostrarHistorico();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 2:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Lista de devoluciones actuales:");
-          devolucion.mostrarDevoluciones();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 3:{
-          salir = true;
-          break;
-        }
-        default:{
-          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-      }
-    }
-  }
   //-----------------------------------------------------------------------------------------------------------
 
 }
