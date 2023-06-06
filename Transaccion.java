@@ -84,10 +84,18 @@ public class Transaccion {
         }
         return total;
     }
+    //Método para consultar la cantidad total de productos en el carrito
+    public int consultar_cantidad_carrito() {
+        int cantidadTotal = 0;
+        for (int cantidad : carrito.values()) {
+            cantidadTotal += cantidad;
+        }
+        return cantidadTotal;
+    }
 
     //Método para mostrar productos en el carrito en una transacción
     public void mostrarProductosEnCarrito() {
-        System.out.println("ID\tNOMBRE\tCANT.\tPRE_UNIT\tPRE_TOTAL");
+        System.out.println("ID\tNOMBRE\tCANT.\tPRE_UNIT\tPRE_TOTAL\n");
         for (Map.Entry<Product, Integer> entry : carrito.entrySet()) {
             Product producto = entry.getKey();
             String idproducto = producto.getId();
@@ -95,7 +103,7 @@ public class Transaccion {
             int cantidad = entry.getValue();
             float precio = producto.getPrecio();
             float precio_total = precio*cantidad;
-            System.out.println(idproducto+"\t"+nombre+"\t"+cantidad+"\t"+precio+"\t"+precio_total);
+            System.out.println(idproducto+"\t"+nombre+"\t"+cantidad+"\t"+precio+"\t\t"+precio_total);
         }
     }
 

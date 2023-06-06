@@ -20,7 +20,7 @@ public class Vistas {
         System.out.println("Producto encontrado:");
         System.out.println("Nombre: " + producto.getNombre());
         System.out.println("Descripcion: " + producto.getDescripcion());
-        System.out.println("Precio unitario: " + producto.getPrecio());
+        System.out.println("Precio unitario: $" + producto.getPrecio());
     }
 
   public static void MenuEmpleado() {
@@ -56,7 +56,7 @@ public class Vistas {
       System.out.println("4. Mostrar Carrito");
       System.out.println("5. Finalizar Venta");
       System.out.println("6. Cancelar Venta");
-      System.out.println("7. Regresar");
+      System.out.println("0. Regresar");
     }
   public static void ModuloAdministrarInventarios() {
       System.out.println("Modulo De Visualizacion De Inventario");
@@ -67,10 +67,10 @@ public class Vistas {
   
   public static void ModuloGestionProductos() {
     System.out.println("Modulo De Gestion De Productos");
-    System.out.println("1. Agregar Producto");
+    System.out.println("1. Crear Producto");
     System.out.println("2. Eliminar producto");
     System.out.println("3. Modificar producto"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
-    System.out.println("4. Regresar");
+    System.out.println("0. Regresar");
   }
   
   public static void ModuloGestionEmpleados() {

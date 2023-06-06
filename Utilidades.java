@@ -131,7 +131,7 @@ public class Utilidades {
         String Nombre = scanner.nextLine();
         System.out.print(prefix + "Descripción de producto: ");
         String Descripcion = scanner.nextLine();
-        System.out.print(prefix + "Precio: ");
+        System.out.print(prefix + "Precio: $");
         String Precio = scanner.nextLine();
         String[] elementos = {Nombre, Descripcion, Precio};
         return elementos;
