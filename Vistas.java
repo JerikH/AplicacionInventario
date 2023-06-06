@@ -101,8 +101,8 @@ public class Vistas {
     System.out.println("Modulo Busqueda de transacciones");
     System.out.println("1. Buscar una venta");
     System.out.println("2. Buscar un pedido");
-    System.out.println("2. Buscar una devolución");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar una devolución");
+    System.out.println("4. Regresar");
   }
 
   public static void ModuloBuscarVentas() {
@@ -117,16 +117,17 @@ public class Vistas {
     System.out.println("Modulo Busqueda de Pedidos");
     System.out.println("1. Buscar por Id");
     System.out.println("2. Buscar por empleado");
-    System.out.println("2. Buscar por fecha");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar por fecha");
+    System.out.println("4. Buscar por proveedor");
+    System.out.println("5. Regresar");
   }
 
   public static void ModuloBuscarDevoluciones() {
     System.out.println("Modulo Busqueda de Devoluciones");
     System.out.println("1. Buscar por Id");
     System.out.println("2. Buscar por empleado");
-    System.out.println("2. Buscar por fecha");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar por fecha");
+    System.out.println("4. Regresar");
   }
 
   public static void ModuloMoverInventarios(){

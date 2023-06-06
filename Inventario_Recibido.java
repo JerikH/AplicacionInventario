@@ -34,6 +34,10 @@ public class Inventario_Recibido extends Inventario_General {
       return null;
     }
 
+    public List<Pedido> get_lista_Pedidos() {
+        return pedidos;
+    }
+
 
 
     /*public void mostrarMenu() { //esto se define en controlador
