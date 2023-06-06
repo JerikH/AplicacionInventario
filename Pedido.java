@@ -18,6 +18,10 @@ public class Pedido extends Transaccion {
         this.proveedor = proveedor;
     }
 
+    public void eliminarProducto(Product producto) {
+        carrito.remove(producto);
+    }
+
 
      
     //Metodo para finalizar el pedido---------------------------------

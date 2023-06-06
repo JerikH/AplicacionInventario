@@ -37,4 +37,8 @@ public class Devolucion extends Transaccion {
         }
     }
     
+    public void eliminarProducto(Product producto) {
+        carrito.remove(producto);
+    }
+    
 }
