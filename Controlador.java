@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -18,12 +17,12 @@ public class Controlador {
   private Inventario_Bodega bodega;
   private Inventario_Exhibicion exhibicion;
   private List<User> usuarios;
-  private Inventario_Devuelto devolucion;
+  private Inventario_Devuelto devueltos;
 
   Scanner scanner = new Scanner(System.in);
 
   public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
-      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devolucion) {
+      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devueltos) {
     // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
@@ -32,7 +31,7 @@ public class Controlador {
     this.bodega = bodega;
     this.exhibicion = exhibicion;
     this.usuarios = usuarios;
-    this.devolucion = devolucion;
+    this.devueltos = devueltos;
   }
 
   public boolean Admin(User session) {
@@ -66,28 +65,7 @@ public class Controlador {
           break;
 
         case 6:// Buscar Transacción;
-          salir = false;
-          while (!salir) {
-            Utilidades.limpiarPantalla();
-            Vistas.ModuloBuscarTransacciones();
-            System.out.print("Seleccione una opción: ");
-            opcion = scanner.nextInt();
-            scanner.nextLine();
-            switch (opcion){
-              case 1:{//buscar una venta
-                this.buscarVenta();
-              }
-              case 2:{//buscar un pedido
-                System.out.println("MÉTODO EN DESARROLLO ");
-              }
-              case 3:{//buscar una devolución
-                System.out.println("MÉTODO EN DESARROLLO ");
-              }
-              default:{
-                System.out.println("MÉTODO EN DESARROLLO ");
-              }
-            }
-          }
+          this.buscarTransacciones();
           break;
           
         case 7:// Administrar inventarios;------------------------------------------------------
@@ -99,8 +77,12 @@ public class Controlador {
           gestionarPedido(session);
           break;
           
+        case 9: //Gestionar Devolución
+          Utilidades.limpiarPantalla();
+          gestionarDevolucion(session);
+        break;
 
-        case 9:// Cerrar Sesión;-----------------------------------------------------
+        case 10:// Cerrar Sesión;-----------------------------------------------------
           salir = true;
           apagar = false;
           break;
@@ -119,6 +101,41 @@ public class Controlador {
     return apagar;
   }
 
+//Desde acá se crean las funciones utilizadas en el case
+  public void buscarTransacciones(){
+    boolean back = false;
+    while (!back) {
+      Utilidades.limpiarPantalla();
+      Vistas.ModuloBuscarTransacciones();
+      System.out.print("Seleccione una opción: ");
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+      switch (opcion){
+        case 1:{//buscar una venta
+          this.buscarVenta();
+          break;
+        }
+        case 2:{//buscar un pedido
+          this.buscarPedido();
+          break;
+        }
+        case 3:{//buscar una devolución
+          this.buscarDevolucion();
+          break;
+        }
+        case 4:{//regresar
+          back = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+          utilidades.esperarPresionarEnter();
+        }
+      }
+    }
+  }
+
+
   public void buscarVenta(){
     boolean salir = false;
     while(!salir){
@@ -127,32 +144,23 @@ public class Controlador {
       int opcion = scanner.nextInt();
       scanner.nextLine();
       switch(opcion){
-        case 1: //buscar venta por ID
+        case 1:{ //buscar venta por ID
           System.out.print("Ingrese el ID de la venta a buscar: ");
           String idVenta = scanner.nextLine();
           Venta venta = vendidos.buscarVenta(idVenta);
           if(venta != null){
-            ventatoString(venta);
+            Vistas.ventatoString(venta);
           }else{
             System.out.println("No se encontró la venta con el ID ingresado.");
           }
           utilidades.esperarPresionarEnter();
           break;
-        case 2: //bucar venta por empleado
+        }
+        case 2: {//bucar venta por empleado
           System.out.print("Ingrese el ID del empleado: ");
           String idEmpleado = scanner.nextLine();
-          User empleado = null;
-          boolean idvalido = false;
-          for (User usuario : usuarios) {
-            if (usuario.getId().equals(idEmpleado)) {
-              idvalido = true;
-              empleado = usuario;
-              break;
-            }else{
-              idvalido = false;
-            }
-          }
-          if (idvalido){
+          User empleado = buscarEmpleadoID(idEmpleado);
+          if (empleado != null){
             List<Venta> ventas = vendidos.get_lista_Ventas();
             List<Venta> ventasEmpleado = new ArrayList<>();
             for (Venta ve : ventas) {
@@ -162,8 +170,8 @@ public class Controlador {
             }
             if(!ventasEmpleado.isEmpty()){
               System.out.println("Ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
-              for(Venta v : ventas){
-                ventatoString(v);
+              for(Venta v : ventasEmpleado){
+                Vistas.ventatoString(v);
               }
             }else{
               System.out.println("No se encontraron ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
@@ -173,7 +181,8 @@ public class Controlador {
           }
           utilidades.esperarPresionarEnter();
           break;
-        case 3: //buscar venta por fecha
+        }
+        case 3:{ //buscar venta por fecha
           System.out.print("Ingrese la fecha de la venta (dd/MM/yyyy): ");
           String fechaIngresada = scanner.nextLine();
           SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -189,7 +198,7 @@ public class Controlador {
               if (!ventasPorFecha.isEmpty()) {
                   System.out.println("Ventas realizadas en la fecha: " + formatoFecha.format(fechaBusqueda));
                   for (Venta v : ventasPorFecha) {
-                    ventatoString(v);
+                    Vistas.ventatoString(v);
                   }
               } else {
                   System.out.println("No se encontraron ventas en la fecha: " + formatoFecha.format(fechaBusqueda));
@@ -199,24 +208,236 @@ public class Controlador {
           }
           utilidades.esperarPresionarEnter();
           break;
-        case 4:
+        }
+        case 4:{
           salir = true;
           break;
-        default:
+        }
+        default:{
           System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
           utilidades.esperarPresionarEnter();
           break;
+        }
       }
     }
   }
 
-  public void ventatoString(Venta venta){
-    System.out.println("Venta Realizada por: " + venta.getEmpleado().getNombre() + " Con ID: " + venta.getEmpleado().getId());
-    System.out.println("Fecha: " + venta.getFecha());
-    System.out.println("Id de la venta: " + venta.getId());
-    System.out.println("Productos vendidos: ");
-    venta.mostrarProductosEnCarrito();
-    System.out.println("Total: " + venta.calcularTotal());
+  public void buscarPedido() {
+    boolean salir = false;
+    while (!salir) {
+        Utilidades.limpiarPantalla();
+        Vistas.ModuloBuscarPedidos();
+        int opcion = scanner.nextInt();
+        scanner.nextLine();
+        switch (opcion) {
+            case 1: //buscar pedido por ID
+                System.out.print("Ingrese el ID del pedido a buscar: ");
+                String idPedido = scanner.nextLine();
+                Pedido pedido = recibidos.buscarPedido(idPedido);
+                if (pedido != null) {
+                    Vistas.pedidoToString(pedido);
+                } else {
+                    System.out.println("No se encontró el pedido con el ID ingresado.");
+                }
+                utilidades.esperarPresionarEnter();
+                break;
+            case 2: //buscar pedido por empleado
+                System.out.print("Ingrese el ID del empleado: ");
+                String idEmpleadoPedido = scanner.nextLine();
+                User empleado = buscarEmpleadoID(idEmpleadoPedido);
+                if (empleado != null) {
+                  List<Pedido> pedidosEmpleado = buscarPedidosPorEmpleado(idEmpleadoPedido);
+                  if (!pedidosEmpleado.isEmpty()) {
+                    System.out.println("Ventas realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleadoPedido);
+                      for (Pedido p : pedidosEmpleado) {
+                          Vistas.pedidoToString(p);
+                      }
+                  } else {
+                    System.out.println("No se encontraron pedidos realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleadoPedido);
+                  }
+                } else {
+                    System.out.println("El ID del empleado ingresado no es válido.");
+                }
+                utilidades.esperarPresionarEnter();
+                break;
+            case 3: //buscar pedido por fecha
+                System.out.print("Ingrese la fecha del pedido (dd/MM/yyyy): ");
+                String fechaIngresada = scanner.nextLine();
+                SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date fechaBusqueda = formatoFecha.parse(fechaIngresada);
+                    List<Pedido> pedidos = recibidos.get_lista_Pedidos();
+                    List<Pedido> pedidosPorFecha = new ArrayList<>();
+                    for (Pedido ped : pedidos) {
+                        if (formatoFecha.format(ped.getFecha()).equals(formatoFecha.format(fechaBusqueda))) {
+                            pedidosPorFecha.add(ped);
+                        }
+                    }
+                    if (!pedidosPorFecha.isEmpty()) {
+                        System.out.println("Pedidos realizadas en la fecha: " + formatoFecha.format(fechaBusqueda));
+                        for (Pedido v : pedidosPorFecha) {
+                          Vistas.pedidoToString(v);
+                        }
+                    } else {
+                        System.out.println("No se encontraron pedidos en la fecha: " + formatoFecha.format(fechaBusqueda));
+                    }
+                } catch (ParseException e) {
+                    System.out.println("La fecha ingresada no es válida. Por favor, ingrese una fecha en el formato correcto (dd/MM/yyyy).");
+                }
+                utilidades.esperarPresionarEnter();
+                break;
+            case 4: //buscar pedido por proveedor
+                System.out.print("Ingrese el nombre del proveedor: ");
+                String proveedorBusqueda = scanner.nextLine();
+                List<Pedido> pedidos = recibidos.get_lista_Pedidos();
+                List<Pedido> pedidosProveedor = new ArrayList<>();
+                for (Pedido pe : pedidos) {
+                    if (pe.getProveedor().equals(proveedorBusqueda)) {
+                        pedidosProveedor.add(pe);
+                    }
+                }
+                if (!pedidosProveedor.isEmpty()) {
+                    System.out.println("Pedidos del proveedor: " + proveedorBusqueda);
+                    for (Pedido p : pedidosProveedor) {
+                        Vistas.pedidoToString(p);
+                    }
+                } else {
+                    System.out.println("No se encontraron pedidos del proveedor: " + proveedorBusqueda);
+                }
+                utilidades.esperarPresionarEnter();
+                break;
+            case 5: //salir
+                salir = true;
+                break;
+            default:
+                System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+                utilidades.esperarPresionarEnter();
+                break;
+        }
+    }
+}
+
+  public void buscarDevolucion(){
+  boolean salir = false;
+  while(!salir){
+    Utilidades.limpiarPantalla();
+    Vistas.ModuloBuscarDevoluciones();
+    int opcion = scanner.nextInt();
+    scanner.nextLine();
+    switch(opcion){
+      case 1:{ //buscar devolucion por ID
+        System.out.print("Ingrese el ID de la devolución a buscar: ");
+        String idDevolucion = scanner.nextLine();
+        Devolucion devolucion = devueltos.buscarDevolucion(idDevolucion);
+        if(devolucion != null){
+          Vistas.devoluciontoString(devolucion);
+        }else{
+          System.out.println("No se encontró la devolución con el ID ingresado.");
+        }
+        utilidades.esperarPresionarEnter();
+        break;
+      }
+      case 2: {//bucar devolución por empleado
+        System.out.print("Ingrese el ID del empleado: ");
+        String idEmpleado = scanner.nextLine();
+        User empleado = buscarEmpleadoID(idEmpleado);
+        if (empleado != null){
+          List<Devolucion> devoluciones = devueltos.get_lista_Devoluciones();
+          List<Devolucion> historico = devueltos.get_lista_Historico();
+          List<Devolucion> devolucionesEmpleado = new ArrayList<>();
+          for (Devolucion dev : devoluciones) {
+            if (dev.getEmpleado().getId().equals(idEmpleado)) {
+              devolucionesEmpleado.add(dev);
+            }
+          }
+          for (Devolucion dev : historico) {
+            if (dev.getEmpleado().getId().equals(idEmpleado)) {
+              devolucionesEmpleado.add(dev);
+            }
+          }
+          if(!devolucionesEmpleado.isEmpty()){
+            System.out.println("Devoluciones realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
+            for(Devolucion d : devolucionesEmpleado){
+              Vistas.devoluciontoString(d);
+            }
+          }else{
+            System.out.println("No se encontraron devoluciones realizadas por el empleado " + empleado.getNombre() + " Con ID: "+ idEmpleado);
+          }
+        }else{
+          System.out.println("El ID del empleado ingresado no es válido.");
+        }
+        utilidades.esperarPresionarEnter();
+        break;
+      }
+      case 3:{ //buscar devolucion por fecha
+        System.out.print("Ingrese la fecha de la devolución (dd/MM/yyyy): ");
+        String fechaIngresada = scanner.nextLine();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date fechaBusqueda = formatoFecha.parse(fechaIngresada);
+            List<Devolucion> devoluciones = devueltos.get_lista_Devoluciones();
+            List<Devolucion> historico = devueltos.get_lista_Historico();
+            List<Devolucion> devolucionesPorFecha = new ArrayList<>();
+            for (Devolucion devo : devoluciones) {
+                if (formatoFecha.format(devo.getFecha()).equals(formatoFecha.format(fechaBusqueda))) {
+                    devolucionesPorFecha.add(devo);
+                }
+            }
+            for (Devolucion devo : historico) {
+                if (formatoFecha.format(devo.getFecha()).equals(formatoFecha.format(fechaBusqueda))) {
+                    devolucionesPorFecha.add(devo);
+                }
+            }
+            if (!devolucionesPorFecha.isEmpty()) {
+                System.out.println("Devoluciones realizadas en la fecha: " + formatoFecha.format(fechaBusqueda));
+                for (Devolucion devo : devolucionesPorFecha) {
+                  Vistas.devoluciontoString(devo);
+                }
+            } else {
+                System.out.println("No se encontraron devoluciones en la fecha: " + formatoFecha.format(fechaBusqueda));
+            }
+        } catch (ParseException e) {
+            System.out.println("La fecha ingresada no es válida. Por favor, ingrese una fecha en el formato correcto (dd/MM/yyyy).");
+        }
+        utilidades.esperarPresionarEnter();
+        break;
+      }
+      case 4:{
+        salir = true;
+        break;
+      }
+      default:{
+        System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+        utilidades.esperarPresionarEnter();
+        break;
+      }
+    }
+  }
+}
+
+  
+  public User buscarEmpleadoID(String idEmpleado){
+      User empleado = null;
+      for (User usuario : usuarios) {
+          if (usuario.getId().equals(idEmpleado)) {
+              empleado = usuario;
+              break;
+          } else {
+              empleado = null;
+          }
+      }
+      return empleado;
+  }
+
+  public List<Pedido> buscarPedidosPorEmpleado(String idEmpleado) {
+    List<Pedido> pedidos = recibidos.get_lista_Pedidos();
+    List<Pedido> pedidosEmpleado = new ArrayList<>();
+    for (Pedido pe : pedidos) {
+        if (pe.getEmpleado().getId().equals(idEmpleado)) {
+            pedidosEmpleado.add(pe);
+        }
+    }
+    return pedidosEmpleado;
   }
 
   public boolean Empleado(User session) {
@@ -644,6 +865,7 @@ public class Controlador {
   }
 
   //-----------------------------------------------------------------------------------------------------------
+  // Método para Generar Reportes de ventas
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
@@ -658,6 +880,7 @@ public class Controlador {
           SimpleEntry<Pair<Map<User, Double>, Map<User, Integer>>, Double> resultado = vendidos.GenerarReporte();
           System.out.println("\nTotal de ventas general: $" + resultado.getValue());
           utilidades.esperarPresionarEnter();
+          break;
         }
         case 2: {
           Utilidades.limpiarPantalla();
@@ -689,6 +912,7 @@ public class Controlador {
 
           utilidades.esperarPresionarEnter();
         }
+        break;
         case 3: {
           salir = true;
           break;
@@ -697,6 +921,8 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
+  // Método para Administrar Inventarios
   private void AdministrarInventarios(){
     boolean salir = false;
     while(!salir){
@@ -727,7 +953,8 @@ public class Controlador {
     }
   }
 
-  // Metodo para gestioner pedidos
+  //-----------------------------------------------------------------------------------------------------------
+  // Metodo para gestionar pedidos
  public void gestionarPedido(User session) {
   boolean salir = false;
   int NumPedido = (recibidos.consultar_cantidad()+1);
@@ -769,14 +996,15 @@ public class Controlador {
         String idProductoEliminar = scanner.nextLine();
     
         // Verificar si el producto existe en el carrito del pedido
-        if (!pedido.getCarrito().containsKey(idProductoEliminar)) {
+        Product productoEliminar = general.buscarProductoId(idProductoEliminar);
+        if (productoEliminar == null) {
           System.out.println("El producto no está en el carrito del pedido.");
           utilidades.esperarPresionarEnter();
           break;
         }
 
         // Eliminar el producto del carrito del pedido
-        pedido.getCarrito().remove(idProductoEliminar);
+        pedido.eliminarProducto(productoEliminar);
         System.out.println("Producto eliminado del carrito.");
         utilidades.esperarPresionarEnter();
           
@@ -788,20 +1016,21 @@ public class Controlador {
               utilidades.esperarPresionarEnter();
               break;
           }
-        pedido.finalizarPedido(bodega);
+        pedido.finalizarPedido(bodega,general);
         utilidades.esperarPresionarEnter();  
         break;
       case 4: //salir
           salir = true;
           break;
       default:
+        System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+        utilidades.esperarPresionarEnter();
         break;
     }
     
   }
 }
-
-  //-------------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------------------------------
   //Método para ver inventarios.
   private void VerInventarios(){
     boolean salir = false;
@@ -815,7 +1044,7 @@ public class Controlador {
         case 1:{ // Ver Inventario Completo
           Utilidades.limpiarPantalla();
           System.out.println("Inventario Completo:");
-          general.mostrarInventario();
+          general.mostrarInventarioCompleto();
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -823,7 +1052,7 @@ public class Controlador {
         case 2:{ // Ver Inventario en Bodega
           Utilidades.limpiarPantalla(); 
           System.out.println("Inventario en Bodega:");
-          bodega.mostrarInventario();
+          bodega.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -831,17 +1060,12 @@ public class Controlador {
         case 3:{ // Ver Inventario en Exhibición
           Utilidades.limpiarPantalla();
           System.out.println("Inventario en Exhibición:");
-          exhibicion.mostrarInventario();
+          exhibicion.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
 
-        case 4:{ //Ver lista de devolución
-          Devoluciones();
-          break;
-        }
-
-        case 5:{
+        case 4:{
           salir = true;
           break;
         }
@@ -855,8 +1079,8 @@ public class Controlador {
     }
   }
 
-  //----------------------------------------------------------------------------------------------------
-  //Método para mover inventarios.
+  //-----------------------------------------------------------------------------------------------------------
+  //Método para mover entre inventarios.
   private void MoverInventarios(){
     boolean salir = false;
     while(!salir){
@@ -903,70 +1127,119 @@ public class Controlador {
           break;
         }
         case 3:{
-          Utilidades.limpiarPantalla();
-          System.out.println("----------DEVOLUCIONES A BODEGA----------\n");
-          System.out.println("ID de producto: ");
-          String IdP = scanner.nextLine();
-          Product productoamover = general.buscarProductoId(IdP);
-          if (productoamover == null) {
-            System.out.println("No hay existencias de este producto para devolución.");
+          salir = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+      }
+    }
+  }
+
+  //-----------------------------------------------------------------------------------------------------------
+
+  // Metodo para gestionar Devolución
+  public void gestionarDevolucion(User session) {
+  boolean salir = false;
+  int NumDevolucion = (devueltos.consultar_cantidad_devoluciones()+1);
+  String IdDevolucion = Integer.toString(NumDevolucion);
+
+  Devolucion devolucionAct = new Devolucion(IdDevolucion, session);
+  while (!salir) {
+    Utilidades.limpiarPantalla();
+    Vistas.ModuloGestionarDevolucion();
+    int opcion = scanner.nextInt();
+    scanner.nextLine();
+    switch (opcion) {
+
+      case 1://Agregar producto al carrito de devolución
+        System.out.println("Ingrese el ID del producto:");
+        String idProducto = scanner.nextLine();
+            
+        // Verificar si el producto existe en el inventario general
+        Product producto = general.buscarProductoId(idProducto);
+        if (producto == null) {
+            System.out.println("El producto no existe en el inventario.");
             utilidades.esperarPresionarEnter();
             break;
+        }
+        System.out.println("Ingrese la cantidad de unidades que se devuelven:");
+        int cantidad = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
+    
+        // Agregar el producto al carrito del devolucion
+        devolucionAct.agregarProducto(producto, cantidad);
+        System.out.println("Producto agregado al carrito de devolucion");
+        utilidades.esperarPresionarEnter();
+      break;
+
+      case 2://Eliminar un producto del carrito la devolución
+        System.out.println("Ingrese el ID del producto a eliminar:");
+        String idProductoEliminar = scanner.nextLine();
+    
+        // Verificar si el producto existe en el carrito de devolucion
+        Product productoEliminar = general.buscarProductoId(idProductoEliminar);
+        if (productoEliminar == null) {
+          System.out.println("El producto no está en el carrito de devolucion.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+
+        // Eliminar el producto del carrito de devolucion
+        devolucionAct.eliminarProducto(productoEliminar);
+        System.out.println("Producto eliminado del carrito de devolucion.");
+        utilidades.esperarPresionarEnter();
+      break;
+      case 3: //Finalizar devolucion
+          // Verificar si hay artículos en el carrito del pedido
+          if (devolucionAct.getCarrito().isEmpty()) {
+              System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
+              utilidades.esperarPresionarEnter();
+              break;
           }
-          System.out.println("Cantidad: ");
-          int qty = scanner.nextInt();
-          devolucion.mover_a_bodega(productoamover,qty,bodega);
-          System.out.println("Se ha movido el producto.");
+        devolucionAct.finalizarDevolucion(devueltos, general);
+        utilidades.esperarPresionarEnter();  
+        break;
+        case 4: // Mover devoluciones a bodega y pasar a historico
+          List <Devolucion> devoluciones= devueltos.getDevoluciones();
+          System.out.println("LISTA ACTIVA DE LAS DEVOLUCIONES:");
+         if (!devoluciones.isEmpty()){
+          for (Devolucion devuelto:devoluciones) {
+              System.out.println("Devolucion Realizada por: " + devuelto.getEmpleado().getNombre() + " Con ID: " + devuelto.getEmpleado().getId());
+              System.out.println("Fecha: " + devuelto.getFecha());
+              System.out.println("Id de la devolucion: " + devuelto.getId());
+              System.out.println("Productos devueltos: ");
+              devuelto.mostrarProductosEnCarrito();
+              System.out.println("Total: " + devuelto.calcularTotal() + "\n\n");
+            
+          }
+        }else{
+          System.out.println("No hay productos en la lista de devoluciones.");
           utilidades.esperarPresionarEnter();
           break;
         }
-        case 4:{
-          salir = true;
-          break;
-        }
-        default:{
-          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+        System.out.println("Estos se trasladaran a bodega.");
+        boolean continuar = utilidades.preguntaContinuar();
+        if(continuar){
+          devueltos.moverABodega(bodega);
+          devueltos.agregarAHistorico();
+        }else{
+          System.out.println("No se movio nada a bodega.");
           utilidades.esperarPresionarEnter();
           break;
         }
-      }
+        System.out.println("Las devoluciones se movieron a bodega.");
+        utilidades.esperarPresionarEnter();
+        break;
+    
+      default:
+        break;
     }
+    
   }
+}
 
-  //--------------------------------------------------------------------------------------------------
-  private void Devoluciones(){
-    boolean salir = false;
-    while(!salir){
-      Utilidades.limpiarPantalla();
-      Vistas.ModuloDevoluciones();
-      int opcion = scanner.nextInt();
-      scanner.nextLine();
-
-      switch(opcion){
-        case 1:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Historico de devoluciones:");
-          devolucion.mostrarHistorico();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 2:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Lista de devoluciones actuales:");
-          devolucion.mostrarDevoluciones();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 3:{
-          salir = true;
-          break;
-        }
-        default:{
-          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-      }
-    }
-  }
 }

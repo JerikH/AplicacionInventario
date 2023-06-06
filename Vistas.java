@@ -44,7 +44,8 @@ public class Vistas {
     System.out.println("6. Buscar Transacción");
     System.out.println("7. Administrar Inventarios");
     System.out.println("8. Recibir Pedido");
-    System.out.println("9. Cerrar Sesión");
+    System.out.println("9. Gestionar Devolución");
+    System.out.println("10. Cerrar Sesión");
     System.out.println("0. Apagar Sistema");
     System.out.print("Seleccione una opción: ");
   }
@@ -101,8 +102,8 @@ public class Vistas {
     System.out.println("Modulo Busqueda de transacciones");
     System.out.println("1. Buscar una venta");
     System.out.println("2. Buscar un pedido");
-    System.out.println("2. Buscar una devolución");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar una devolución");
+    System.out.println("4. Regresar");
   }
 
   public static void ModuloBuscarVentas() {
@@ -117,24 +118,24 @@ public class Vistas {
     System.out.println("Modulo Busqueda de Pedidos");
     System.out.println("1. Buscar por Id");
     System.out.println("2. Buscar por empleado");
-    System.out.println("2. Buscar por fecha");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar por fecha");
+    System.out.println("4. Buscar por proveedor");
+    System.out.println("5. Regresar");
   }
 
   public static void ModuloBuscarDevoluciones() {
     System.out.println("Modulo Busqueda de Devoluciones");
     System.out.println("1. Buscar por Id");
     System.out.println("2. Buscar por empleado");
-    System.out.println("2. Buscar por fecha");
-    System.out.println("3. Regresar");
+    System.out.println("3. Buscar por fecha");
+    System.out.println("4. Regresar");
   }
 
   public static void ModuloMoverInventarios(){
     System.out.println("Modulo Administración de Inventarios");
     System.out.println("1. Mover producto de bodega a exhibición.");
     System.out.println("2. Mover de exhibición a bodega.");
-    System.out.println("3. Mover de devolución a bodega.");
-    System.out.println("4. Regresar.");
+    System.out.println("3. Regresar.");
   }
 
   public static void ModuloVerInventarios(){
@@ -142,14 +143,45 @@ public class Vistas {
     System.out.println("1. Ver inventario completo.");
     System.out.println("2. Ver inventario bodega.");
     System.out.println("3. Ver inventario exhibicion.");
-    System.out.println("4. Ver lista de devoluciones.");
+    System.out.println("4. Regresar.");
+  }
+
+  public static void ModuloGestionarDevolucion() {
+    System.out.println("Modulo De Gestion De Devolucion");
+    System.out.println("1. Agregar Producto que se va a devolver");
+    System.out.println("2. Eliminar producto que se va a devolver");
+    System.out.println("3. Finalizar devolucion"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
+    System.out.println("4. Mover las devoluciones a bodega");
     System.out.println("5. Regresar.");
   }
 
-  public static void ModuloDevoluciones(){
-    System.out.println("Lista de devoluciones.");
-    System.out.println("1. Historico.");
-    System.out.println("2. Devoluciones actuales.");
-    System.out.println("3. Regresar.");
+  public static void ventatoString(Venta venta){
+    System.out.println("Venta Realizada por: " + venta.getEmpleado().getNombre() + " Con ID: " + venta.getEmpleado().getId());
+    System.out.println("Fecha: " + venta.getFecha());
+    System.out.println("Id de la venta: " + venta.getId());
+    System.out.println("Productos vendidos: ");
+    venta.mostrarProductosEnCarrito();
+    System.out.println("Total: " + venta.calcularTotal() + "\n\n");
   }
+
+  public static void pedidoToString(Pedido pedido){
+    System.out.println("Pedido Realizada por: " + pedido.getEmpleado().getNombre() + " Con ID: " + pedido.getEmpleado().getId());
+    System.out.println("Fecha: " + pedido.getFecha());
+    System.out.println("Id del pedido: " + pedido.getId());
+    System.out.println("Proveedor: " + pedido.getProveedor());
+    System.out.println("Productos pedidos: ");
+    pedido.mostrarProductosEnCarrito();
+    System.out.println("Total: " + pedido.calcularTotal() + "\n\n");
+  }
+
+  public static void devoluciontoString(Devolucion devolucion){
+    System.out.println("Venta Realizada por: " + devolucion.getEmpleado().getNombre() + " Con ID: " + devolucion.getEmpleado().getId());
+    System.out.println("Fecha: " + devolucion.getFecha());
+    System.out.println("Id de la venta: " + devolucion.getId());
+    System.out.println("Productos vendidos: ");
+    devolucion.mostrarProductosEnCarrito();
+    System.out.println("Total: " + devolucion.calcularTotal() + "\n\n");
+  }
+
+
 }
