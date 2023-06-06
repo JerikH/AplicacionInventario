@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.HashMap;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -737,7 +736,7 @@ public class Controlador {
   }
 
   //-----------------------------------------------------------------------------------------------------------
-  // Metodo para gestioner pedidos
+  // Metodo para gestionar pedidos
  public void gestionarPedido(User session) {
   boolean salir = false;
   int NumPedido = (recibidos.consultar_cantidad()+1);
@@ -779,14 +778,15 @@ public class Controlador {
         String idProductoEliminar = scanner.nextLine();
     
         // Verificar si el producto existe en el carrito del pedido
-        if (!pedido.getCarrito().containsKey(idProductoEliminar)) {
+        Product productoEliminar = general.buscarProductoId(idProductoEliminar);
+        if (productoEliminar == null) {
           System.out.println("El producto no está en el carrito del pedido.");
           utilidades.esperarPresionarEnter();
           break;
         }
 
         // Eliminar el producto del carrito del pedido
-        pedido.getCarrito().remove(idProductoEliminar);
+        pedido.eliminarProducto(productoEliminar);
         System.out.println("Producto eliminado del carrito.");
         utilidades.esperarPresionarEnter();
           
@@ -961,17 +961,17 @@ public class Controlador {
         String idProductoEliminar = scanner.nextLine();
     
         // Verificar si el producto existe en el carrito de devolucion
-        if (!devolucionAct.getCarrito().containsKey(idProductoEliminar)) {
+        Product productoEliminar = general.buscarProductoId(idProductoEliminar);
+        if (productoEliminar == null) {
           System.out.println("El producto no está en el carrito de devolucion.");
           utilidades.esperarPresionarEnter();
           break;
         }
 
         // Eliminar el producto del carrito de devolucion
-        devolucionAct.getCarrito().remove(idProductoEliminar);
+        devolucionAct.eliminarProducto(productoEliminar);
         System.out.println("Producto eliminado del carrito de devolucion.");
         utilidades.esperarPresionarEnter();
-          
       break;
       case 3: //Finalizar devolucion
           // Verificar si hay artículos en el carrito del pedido
@@ -1021,4 +1021,5 @@ public class Controlador {
     
   }
 }
+
 }
