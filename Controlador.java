@@ -801,6 +801,7 @@ public class Controlador {
   }
 }
 
+  //-------------------------------------------------------------------------------------------------------
   //Método para ver inventarios.
   private void VerInventarios(){
     boolean salir = false;
@@ -854,6 +855,7 @@ public class Controlador {
     }
   }
 
+  //----------------------------------------------------------------------------------------------------
   //Método para mover inventarios.
   private void MoverInventarios(){
     boolean salir = false;
@@ -931,6 +933,7 @@ public class Controlador {
     }
   }
 
+  //--------------------------------------------------------------------------------------------------
   private void Devoluciones(){
     boolean salir = false;
     while(!salir){
