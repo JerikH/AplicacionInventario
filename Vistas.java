@@ -58,12 +58,14 @@ public class Vistas {
       System.out.println("5. Finalizar Venta");
       System.out.println("6. Cancelar Venta");
       System.out.println("0. Regresar");
+      System.out.print("Seleccione una opción: ");
     }
   public static void ModuloAdministrarInventarios() {
       System.out.println("Modulo De Visualizacion De Inventario");
       System.out.println("1. Ver inventarios");
       System.out.println("2. Mover productos");
       System.out.println("3. Regresar");
+      System.out.print("Seleccione una opción: ");
     }
   
   public static void ModuloGestionProductos() {
@@ -72,6 +74,7 @@ public class Vistas {
     System.out.println("2. Eliminar producto");
     System.out.println("3. Modificar producto"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
     System.out.println("0. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
   
   public static void ModuloGestionEmpleados() {
@@ -81,6 +84,7 @@ public class Vistas {
     System.out.println("3. Modificar Empleado");
     System.out.println("4. Buscar Usuario");
     System.out.println("5. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloGenerarReportes() {
@@ -88,6 +92,7 @@ public class Vistas {
     System.out.println("1. Reporte total de ventas");
     System.out.println("2. Reporte de ventas por empleado");
     System.out.println("3. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloRecibirPedido() {
@@ -96,6 +101,7 @@ public class Vistas {
     System.out.println("2. Eliminar producto");
     System.out.println("3. Finalizar");
     System.out.println("4. Salir");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloBuscarTransacciones() {
@@ -104,6 +110,7 @@ public class Vistas {
     System.out.println("2. Buscar un pedido");
     System.out.println("3. Buscar una devolución");
     System.out.println("4. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloBuscarVentas() {
@@ -112,6 +119,7 @@ public class Vistas {
     System.out.println("2. Buscar por empleado");
     System.out.println("3. Buscar por fecha");
     System.out.println("4. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloBuscarPedidos() {
@@ -121,6 +129,7 @@ public class Vistas {
     System.out.println("3. Buscar por fecha");
     System.out.println("4. Buscar por proveedor");
     System.out.println("5. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloBuscarDevoluciones() {
@@ -129,6 +138,7 @@ public class Vistas {
     System.out.println("2. Buscar por empleado");
     System.out.println("3. Buscar por fecha");
     System.out.println("4. Regresar");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloMoverInventarios(){
@@ -136,6 +146,7 @@ public class Vistas {
     System.out.println("1. Mover producto de bodega a exhibición.");
     System.out.println("2. Mover de exhibición a bodega.");
     System.out.println("3. Regresar.");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloVerInventarios(){
@@ -144,6 +155,7 @@ public class Vistas {
     System.out.println("2. Ver inventario bodega.");
     System.out.println("3. Ver inventario exhibicion.");
     System.out.println("4. Regresar.");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ModuloGestionarDevolucion() {
@@ -153,6 +165,7 @@ public class Vistas {
     System.out.println("3. Finalizar devolucion"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
     System.out.println("4. Mover las devoluciones a bodega");
     System.out.println("5. Regresar.");
+    System.out.print("Seleccione una opción: ");
   }
 
   public static void ventatoString(Venta venta){
