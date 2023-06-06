@@ -1,4 +1,3 @@
-
 public class Venta extends Transaccion {
   
     public Venta(String id,  User empleado) { 
