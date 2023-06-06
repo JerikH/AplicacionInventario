@@ -101,7 +101,60 @@ public class Controlador {
     return apagar;
   }
 
-//Desde acá se crean las funciones utilizadas en el case
+  //-----------------------------------------------------------------------------------------------------
+  // Método para admnistrar las opciones de empleado
+
+   public boolean Empleado(User session) {
+    boolean salir = false;
+    boolean apagar = false;
+    while (!salir) {
+      Utilidades.limpiarPantalla();
+      System.out.println("¡Bienvenido(a) " + session.getNombre() + "!\n");
+      Vistas.MenuEmpleado();
+      int opcion = scanner.nextInt();
+      scanner.nextLine();
+      switch (opcion) {
+        case 1:// Realizar Venta;-----------------------------------------------------
+          this.RealizarVenta(session);
+          break;
+
+        case 2:// Consultar producto;------------------------------------------------
+          this.BuscarProducto();
+          break;
+
+        case 3:// Realizar devolución;------------------------------------------------
+          Utilidades.limpiarPantalla();
+          gestionarDevolucion(session);
+          break;
+
+        case 4:// Recibir pedido;---------------------------------------------------
+          Utilidades.limpiarPantalla();
+          gestionarPedido(session);
+          break;
+
+        case 5: // cerrar sesión
+          salir = true;
+          apagar = false;
+          break;
+
+        case 0: // apagar sistema.
+          salir = true;
+          apagar = true;
+          break;
+
+        default:
+          System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+      }
+    }
+    return apagar;
+  }
+
+  //-----------------------------------------------------------------------------------------------------
+  //Desde acá se crean las funciones utilizadas en el case
+  //-----------------------------------------------------------------------------------------------------
+  //Método para realizar la opción de buscar transacciones
   public void buscarTransacciones(){
     boolean back = false;
     while (!back) {
@@ -135,7 +188,8 @@ public class Controlador {
     }
   }
 
-
+ //-----------------------------------------------------------------------------------------------------
+ //Método para realizar la función de buscar venta
   public void buscarVenta(){
     boolean salir = false;
     while(!salir){
@@ -222,6 +276,8 @@ public class Controlador {
     }
   }
 
+   //-----------------------------------------------------------------------------------------------------
+   //Método para realizar la opción de buscar pedido
   public void buscarPedido() {
     boolean salir = false;
     while (!salir) {
@@ -317,6 +373,9 @@ public class Controlador {
     }
 }
 
+
+ //-----------------------------------------------------------------------------------------------------
+ //Método para realizar la opción de buscar devolución
   public void buscarDevolucion(){
   boolean salir = false;
   while(!salir){
@@ -415,7 +474,9 @@ public class Controlador {
   }
 }
 
-  
+  //-----------------------------------------------------------------------------------------------------
+  //Método para buscar un empleado con el ID
+
   public User buscarEmpleadoID(String idEmpleado){
       User empleado = null;
       for (User usuario : usuarios) {
@@ -429,6 +490,9 @@ public class Controlador {
       return empleado;
   }
 
+   //-----------------------------------------------------------------------------------------------------
+   //Método para buscar pedidos por Empleado
+
   public List<Pedido> buscarPedidosPorEmpleado(String idEmpleado) {
     List<Pedido> pedidos = recibidos.get_lista_Pedidos();
     List<Pedido> pedidosEmpleado = new ArrayList<>();
@@ -438,53 +502,6 @@ public class Controlador {
         }
     }
     return pedidosEmpleado;
-  }
-
-  public boolean Empleado(User session) {
-    boolean salir = false;
-    boolean apagar = false;
-    while (!salir) {
-      Utilidades.limpiarPantalla();
-      System.out.println("¡Bienvenido(a) " + session.getNombre() + "!\n");
-      Vistas.MenuEmpleado();
-      int opcion = scanner.nextInt();
-      scanner.nextLine();
-      switch (opcion) {
-        case 1:// Realizar Venta;-----------------------------------------------------
-          this.RealizarVenta(session);
-          break;
-
-        case 2:// Consultar producto;------------------------------------------------
-          this.BuscarProducto();
-          break;
-
-        case 3:// Realizar devolución;------------------------------------------------
-          Utilidades.limpiarPantalla();
-          gestionarDevolucion(session);
-          break;
-
-        case 4:// Recibir pedido;---------------------------------------------------
-          Utilidades.limpiarPantalla();
-          gestionarPedido(session);
-          break;
-
-        case 5: // cerrar sesión
-          salir = true;
-          apagar = false;
-          break;
-
-        case 0: // apagar sistema.
-          salir = true;
-          apagar = true;
-          break;
-
-        default:
-          System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
-          utilidades.esperarPresionarEnter();
-          break;
-      }
-    }
-    return apagar;
   }
 
   //---------------------------------------------------------------------------------------------------------
@@ -637,6 +654,7 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
   // Método para realizar la opción de buscar producto
+
   private void BuscarProducto(){
     boolean salir = false;
     while (!salir){
@@ -664,6 +682,7 @@ public class Controlador {
 
   //---------------------------------------------------------------------------------------------------------
   // Método para realizar todas las opciones de Gestión de Empleados
+
   private void GestionarEmpleados(User session) {
     boolean salir = false;
     while (!salir) {
@@ -769,6 +788,7 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
   // Método para realizar todas las opciones de Gestión de Productos
+
   private void GestionarProductos() {
     boolean salir = false;
     while (!salir) {
@@ -856,6 +876,7 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
   // Método para Generar Reportes de ventas
+
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
@@ -913,6 +934,7 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
   // Método para Administrar Inventarios
+
   private void AdministrarInventarios(){
     boolean salir = false;
     while(!salir){
@@ -945,6 +967,7 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
   // Metodo para gestionar pedidos
+
  public void gestionarPedido(User session) {
   boolean salir = false;
   int NumPedido = (recibidos.consultar_cantidad()+1);
@@ -1022,6 +1045,7 @@ public class Controlador {
 }
   //-----------------------------------------------------------------------------------------------------------
   //Método para ver inventarios.
+
   private void VerInventarios(){
     boolean salir = false;
     while(!salir){
@@ -1071,6 +1095,7 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
   //Método para mover entre inventarios.
+
   private void MoverInventarios(){
     boolean salir = false;
     while(!salir){
@@ -1130,8 +1155,8 @@ public class Controlador {
   }
 
   //-----------------------------------------------------------------------------------------------------------
-
   // Metodo para gestionar Devolución
+
   public void gestionarDevolucion(User session) {
   boolean salir = false;
   int NumDevolucion = (devueltos.consultar_cantidad_devoluciones()+1);
