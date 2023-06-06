@@ -907,20 +907,13 @@ public class Controlador {
                 User empleado = entry.getKey();
                 double total = entry.getValue();
                 int cantidad = cantidadVentasPorEmpleado.get(empleado);
-                System.out.println("\n------\nEmpleado: " + empleado.getNombre() + "ID: " + empleado.getId()
+                System.out.println("\n------\nEmpleado: " + empleado.getNombre() + " ID: " + empleado.getId()
                     + "\nCantidad de ventas: " + cantidad + "\nTotal: $" + total);
               }
             });
           } else {
             System.out.println("Los empleados no han realizado ventas.");
           }
-          // totalVentasPorEmpleado.forEach((empleado, total) -> {
-          // int cantidad = cantidadVentasPorEmpleado.get(empleado);
-          // System.out.println("Empleado: " + empleado.getNombre() + "ID: " +
-          // empleado.getId() + "\nCantidad de ventas: " + cantidad + "\nTotal: $" +
-          // total);
-          // });
-
           utilidades.esperarPresionarEnter();
         }
         break;
@@ -1215,7 +1208,8 @@ public class Controlador {
               utilidades.esperarPresionarEnter();
               break;
           }
-        devolucionAct.finalizarDevolucion(devueltos, general);
+        // devolucionAct.finalizarDevolucion(devueltos, general);
+        devueltos.agregarADevoluciones(devolucionAct);
         utilidades.esperarPresionarEnter();  
         break;
         case 4: // Mover devoluciones a bodega y pasar a historico

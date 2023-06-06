@@ -34,8 +34,7 @@ public class Inventario_Devuelto extends Inventario_General {
             Product producto = entry.getKey();
             int cantidad = entry.getValue();
             bodega.agregar_unidades(producto, cantidad);
-          }
-          
+          } 
         }
     }
 
