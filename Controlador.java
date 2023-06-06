@@ -1024,6 +1024,8 @@ public class Controlador {
               break;
           }
         pedido.finalizarPedido(bodega,general);
+        recibidos.agregarPedido(pedido);
+        salir = true;
         utilidades.esperarPresionarEnter();  
         break;
       case 4: //salir
