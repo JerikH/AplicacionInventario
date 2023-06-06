@@ -616,8 +616,9 @@ public class Controlador {
           System.out.println("---------FINALIZAR VENTA---------");
           if(venta.consultar_cantidad_carrito() > 0){//En caso de que hayan productos en el carrito
             System.out.println("Se finzalizará la venta...");
-            if(!utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
-              venta.finalizarVenta(vendidos, exhibicion);
+            if(utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
+              venta.finalizarVenta(vendidos, exhibicion, general);
+              utilidades.esperarPresionarEnter();
               salir=true;
             } else {//En caso de que no deseen finalizar la venta
               System.out.println("No se finalizó la venta....");
