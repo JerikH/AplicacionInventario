@@ -1167,7 +1167,7 @@ public class Controlador {
     switch (opcion) {
 
       case 1://Agregar producto al carrito de devolución
-        System.out.println("Ingrese el ID del producto:");
+        System.out.print("Ingrese el ID del producto:");
         String idProducto = scanner.nextLine();
             
         // Verificar si el producto existe en el inventario general
@@ -1177,7 +1177,7 @@ public class Controlador {
             utilidades.esperarPresionarEnter();
             break;
         }
-        System.out.println("Ingrese la cantidad de unidades que se devuelven:");
+        System.out.print("Ingrese la cantidad de unidades que se devuelven:");
         int cantidad = Utilidades.nextIntCustom(scanner);
         scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
     
@@ -1188,7 +1188,7 @@ public class Controlador {
       break;
 
       case 2://Eliminar un producto del carrito la devolución
-        System.out.println("Ingrese el ID del producto a eliminar:");
+        System.out.print("Ingrese el ID del producto a eliminar:");
         String idProductoEliminar = scanner.nextLine();
     
         // Verificar si el producto existe en el carrito de devolucion
@@ -1209,11 +1209,11 @@ public class Controlador {
           if (devolucionAct.getCarrito().isEmpty()) {
               System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
               utilidades.esperarPresionarEnter();
-              salir = true;
               break;
           }
         // devolucionAct.finalizarDevolucion(devueltos, general);
         devueltos.agregarADevoluciones(devolucionAct);
+        salir = true;
         utilidades.esperarPresionarEnter();  
         break;
         case 4: // Mover devoluciones a bodega y pasar a historico
