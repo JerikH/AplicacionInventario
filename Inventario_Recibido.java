@@ -47,7 +47,7 @@ public class Inventario_Recibido extends Inventario_General {
         while (!finalizado) {
             Vistas.ModuloRecibirPedido();
             System.out.print("Ingrese la opción deseada: ");
-            int opcion = scanner.nextInt();
+            int opcion = Utilidades.nextIntCustom(scanner);
             scanner.nextLine(); // Consumir el salto de línea después de leer el entero
 
             switch (opcion) {
@@ -76,7 +76,7 @@ public class Inventario_Recibido extends Inventario_General {
     //     System.out.print("Ingrese el nombre del producto: ");
     //     String nombreProducto = scanner.nextLine();
     //     System.out.print("Ingrese la cantidad del producto: ");
-    //     Int cantidadProducto = scanner.nextInt();
+    //     Int cantidadProducto = Utilidades.nextIntCustom(scanner);
     //     Product producto = buscarProducto(nombreProducto);
     //     if (producto != null) {
     //         pedido.agregarProducto(producto, cantidadProducto);
@@ -90,7 +90,7 @@ public class Inventario_Recibido extends Inventario_General {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Ingrese el ID del producto a eliminar: ");
-        int idProducto = scanner.nextInt();
+        int idProducto = Utilidades.nextIntCustom(scanner);
         scanner.nextLine(); // Consumir el salto de línea después de leer el entero
 
         pedido.quitarProducto(idProducto);
