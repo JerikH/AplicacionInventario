@@ -44,7 +44,11 @@ public class Inventario_Devuelto extends Inventario_General {
         historico.add(devuelto);
       }
       devoluciones.clear();
-  }
+    }
+
+    public void agregarADevoluciones(Devolucion devolucion) {
+      devoluciones.add(devolucion);
+    }
 
     public Devolucion buscarDevolucion(String id) {
       for (Devolucion devolucion : devoluciones) {
