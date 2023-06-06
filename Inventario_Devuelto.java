@@ -20,30 +20,28 @@ public class Inventario_Devuelto extends Inventario_General {
         //Retorna historico de la cantidad de devoluciones.
           return historico.size();
       }
+    
+    public List<Product> getDevoluciones() {
+        // Retorna la lista de devoluciones.
+        return devoluciones;
+      }
 
-    //Método para agregar productos a la lista de devoluciones.
-    public void agregarDevuelto(Product producto, int qty) {
-        for(int i = 0; qty > i; i++){
-            devoluciones.add(producto);
-        }
-    }
-
-    //Método para agregar productos a la lista de historico y eliminar de devoluciones.
-    public void agregarHistorico(Product producto, int qty) {
-      for(int i = 0; qty > i; i++){
+   public void agregarProductoAHistorico(Product producto, int cantidad) {
+      for (int i = 0; i < cantidad; i++) {
           historico.add(producto);
+        }
       }
-    }
-
-    public void mover_a_bodega(Product producto, int qty, Inventario_Bodega inventario_bodega) {
-      int cantidadEnExhibicion = consultar_cantidad_unidades(producto);
-      if (cantidadEnExhibicion >= qty) {
-        quitar_unidades(producto, qty);
-        agregarHistorico(producto, qty);
-        inventario_bodega.agregar_unidades(producto, qty);
-      } else {
-        System.out.println("No hay suficientes unidades en devolucion.");
-      }
+      
+    public void moverProductoABodega(Product producto, int cantidad, Inventario_Bodega bodega) {
+      int cantidadEnDevoluciones = consultar_cantidad_unidades(producto);
+      if (cantidadEnDevoluciones >= cantidad) {
+            for (int i = 0; i < cantidad; i++) {
+                devoluciones.remove(producto);
+            }
+            bodega.agregar_unidades(producto, cantidad);
+        } else {
+            System.out.println("No hay suficientes unidades en devoluciones.");
+        }
     }
 
     public void mostrarDevoluciones() {
@@ -71,5 +69,16 @@ public class Inventario_Devuelto extends Inventario_General {
           }
       }
     }
-  
+
+    public int consultar_cantidad_unidades(Product producto) {
+      // Retorna la cantidad de unidades del producto en devoluciones.
+      int cantidad = 0;
+      for (Product p : devoluciones) {
+          if (p.getId().equals(producto.getId())) {
+              cantidad++;
+          }
+      }
+      return cantidad;
+    }
+
 }

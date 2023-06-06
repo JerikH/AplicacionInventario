@@ -99,8 +99,12 @@ public class Controlador {
           gestionarPedido(session);
           break;
           
+        case 9: //Gestionar Devolución
+          Utilidades.limpiarPantalla();
+          gestionarDevolucion(session);
+        break;
 
-        case 9:// Cerrar Sesión;-----------------------------------------------------
+        case 10:// Cerrar Sesión;-----------------------------------------------------
           salir = true;
           apagar = false;
           break;
@@ -118,6 +122,8 @@ public class Controlador {
     }
     return apagar;
   }
+
+//Desde acá se crean las funciones utilizadas en el case
 
   public void buscarVenta(){
     boolean salir = false;
@@ -940,4 +946,102 @@ public class Controlador {
       }
     }
   }
+
+  // Metodo para gestionar Devolución
+ public void gestionarDevolucion(User session) {
+  boolean salir = false;
+  int NumDevolucion = (devolucion.consultar_cantidad_devoluciones()+1);
+  String IdDevolucion = Integer.toString(NumDevolucion);
+
+  Devolucion devolucionAct = new Devolucion(IdDevolucion, session);
+  while (!salir) {
+    Utilidades.limpiarPantalla();
+    Vistas.ModuloGestionarDevolucion();
+    int opcion = scanner.nextInt();
+    scanner.nextLine();
+    switch (opcion) {
+      case 1://Agregar producto al carrito de devolución
+        System.out.println("Ingrese el ID del producto:");
+        String idProducto = scanner.nextLine();
+            
+        // Verificar si el producto existe en el inventario general
+        Product producto = general.buscarProductoId(idProducto);
+        if (producto == null) {
+            System.out.println("El producto no existe en el inventario.");
+            utilidades.esperarPresionarEnter();
+            break;
+        }
+        System.out.println("Ingrese la cantidad de unidades que se devuelven:");
+        int cantidad = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
+    
+        // Agregar el producto al carrito del devolucion
+        devolucionAct.agregarProducto(producto, cantidad);
+        System.out.println("Producto agregado al carrito de devolucion");
+        utilidades.esperarPresionarEnter();
+      break;
+
+      case 2://Eliminar un producto del carrito la devolución
+        System.out.println("Ingrese el ID del producto a eliminar:");
+        String idProductoEliminar = scanner.nextLine();
+    
+        // Verificar si el producto existe en el carrito de devolucion
+        if (!devolucionAct.getCarrito().containsKey(idProductoEliminar)) {
+          System.out.println("El producto no está en el carrito de devolucion.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+
+        // Eliminar el producto del carrito de devolucion
+        devolucionAct.getCarrito().remove(idProductoEliminar);
+        System.out.println("Producto eliminado del carrito de devolucion.");
+        utilidades.esperarPresionarEnter();
+          
+      break;
+      case 3: //Finalizar devolucion
+          // Verificar si hay artículos en el carrito del pedido
+          if (devolucionAct.getCarrito().isEmpty()) {
+              System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
+              utilidades.esperarPresionarEnter();
+              break;
+          }
+        devolucionAct.finalizarDevolucion(devolucion, general);
+        utilidades.esperarPresionarEnter();  
+        break;
+        case 4: // Mover devoluciones a bodega y pasar a historico
+          // Verificar si hay productos en la lista de devoluciones
+          if (devolucion.consultar_cantidad_devoluciones() == 0) {
+              System.out.println("No hay productos en la lista de devoluciones.");
+              utilidades.esperarPresionarEnter();
+              break;
+          }
+      
+          // Mover productos de devoluciones a bodega
+          for (Product devolucionProducto : devolucion.getDevoluciones()) {
+            int cantidadDevolucion = devolucion.consultar_cantidad_unidades(devolucionProducto);
+            devolucion.moverProductoABodega(devolucionProducto, cantidadDevolucion, bodega);
+          }
+
+          // Agregar productos de devoluciones a historico
+          for (Product devolucionProducto : devolucion.getDevoluciones()) {
+            int cantidadDevolucion = devolucion.consultar_cantidad_unidades(devolucionProducto);
+            devolucion.agregarProductoAHistorico(devolucionProducto, cantidadDevolucion);
+          }
+      
+          // Vaciar la lista de devoluciones
+          devolucion.getDevoluciones().clear();
+      
+          System.out.println("Se han movido los productos de devoluciones a bodega y se han agregado al historico.");
+          utilidades.esperarPresionarEnter();
+        break;
+    
+      default:
+        break;
+    }
+    
+  }
+}
+
+
+
 }
