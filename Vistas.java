@@ -25,10 +25,10 @@ public class Vistas {
 
   public static void MenuEmpleado() {
     System.out.println("Vista de Empleado");
-    System.out.println("1. Realizar venta");
-    System.out.println("2. Consultar producto");
-    System.out.println("3. Recibir devolución");
-    System.out.println("4. Recibir pedido.");
+    System.out.println("1. Realizar Venta");
+    System.out.println("2. Consultar Producto");
+    System.out.println("3. Gestionar Devolucion");
+    System.out.println("4. Recibir Pedido.");
     System.out.println("5. Cerrar Sesión");
     System.out.println("0. Apagar Sistema");
     System.out.print("Seleccione una opción: ");
@@ -40,7 +40,7 @@ public class Vistas {
     System.out.println("2. Gestionar Productos");
     System.out.println("3. Gestionar Empleados");
     System.out.println("4. Generar Reportes");
-    System.out.println("5. Buscar Producto");
+    System.out.println("5. Consultar Producto");
     System.out.println("6. Buscar Transacción");
     System.out.println("7. Administrar Inventarios");
     System.out.println("8. Recibir Pedido");

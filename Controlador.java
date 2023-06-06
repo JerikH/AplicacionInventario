@@ -239,22 +239,17 @@ public class Controlador {
           break;
 
         case 2:// Consultar producto;------------------------------------------------
-          System.out.print("MÉTODO EN DESARROLLO ");
-          utilidades.esperarPresionarEnter();
+          this.BuscarProducto();
           break;
 
         case 3:// Realizar devolución;------------------------------------------------
-          System.out.print("MÉTODO EN DESARROLLO ");
-          utilidades.esperarPresionarEnter();
+          Utilidades.limpiarPantalla();
+          gestionarDevolucion(session);
           break;
 
         case 4:// Recibir pedido;---------------------------------------------------
           Utilidades.limpiarPantalla();
-          // Vistas.ModuloGenerarReportes();
-          // opcion = scanner.nextInt();
-          // scanner.nextLine();
-          System.out.print("MÉTODO EN DESARROLLO ");
-          utilidades.esperarPresionarEnter();
+          gestionarPedido(session);
           break;
 
         case 5: // cerrar sesión
