@@ -1,5 +1,6 @@
 import java.util.List;
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Utilidades {
     private List<User> usuarios;
@@ -142,4 +143,19 @@ public class Utilidades {
         return id.matches(regex);
     }
   
+    public static int nextIntCustom(Scanner scanner) {
+        int numero = 0;
+        boolean valido = false;
+        
+        while (!valido) {
+            try {
+                numero = scanner.nextInt();
+                valido = true;
+            } catch (InputMismatchException e) {
+                scanner.next(); // Descartar la entrada incorrecta
+            }
+        }
+        
+        return numero;
+    }
 }
