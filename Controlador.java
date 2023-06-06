@@ -973,7 +973,7 @@ public class Controlador {
   boolean salir = false;
   int NumPedido = (recibidos.consultar_cantidad()+1);
   String IdPedido = Integer.toString(NumPedido);
-  System.out.println("Ingrese el nombre del proveedor:");
+  System.out.print("Ingrese el nombre del proveedor:");
   String NombreProveedor = scanner.nextLine();
 
   Pedido pedido = new Pedido(IdPedido, session, NombreProveedor);
@@ -984,7 +984,7 @@ public class Controlador {
     scanner.nextLine();
     switch (opcion) {
       case 1://Agregar producto al pedido
-        System.out.println("Ingrese el ID del producto:");
+        System.out.print("Ingrese el ID del producto:");
         String idProducto = scanner.nextLine();
         //scanner.nextLine();  Consumir la nueva línea después de la entrada numérica
     
@@ -995,7 +995,7 @@ public class Controlador {
             utilidades.esperarPresionarEnter();
             break;
         }
-        System.out.println("Ingrese la cantidad:");
+        System.out.print("Ingrese la cantidad:");
         int cantidad = scanner.nextInt();
         scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
     
@@ -1006,7 +1006,7 @@ public class Controlador {
       break;
 
       case 2://Eliminar un producto del pedido
-        System.out.println("Ingrese el ID del producto a eliminar:");
+        System.out.print("Ingrese el ID del producto a eliminar:");
         String idProductoEliminar = scanner.nextLine();
     
         // Verificar si el producto existe en el carrito del pedido
