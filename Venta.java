@@ -20,6 +20,6 @@ public class Venta extends Transaccion {
         //Mostrar que la venta fue realizada exitosamente y después mostrar el recibo
         inventarioVendido.agregarVenta(this);
         System.out.println("----------VENTA FINALIZADA----------");
-        this.generarRecibo("Venta");//Cambiar método generar recibo.
+        this.generarRecibo("Venta");
     }
 }
