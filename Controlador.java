@@ -18,12 +18,12 @@ public class Controlador {
   private Inventario_Bodega bodega;
   private Inventario_Exhibicion exhibicion;
   private List<User> usuarios;
-  private Inventario_Devuelto devolucion;
+  private Inventario_Devuelto devueltos;
 
   Scanner scanner = new Scanner(System.in);
 
   public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
-      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devolucion) {
+      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devueltos) {
     // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
@@ -32,7 +32,7 @@ public class Controlador {
     this.bodega = bodega;
     this.exhibicion = exhibicion;
     this.usuarios = usuarios;
-    this.devolucion = devolucion;
+    this.devueltos = devueltos;
   }
 
   public boolean Admin(User session) {
@@ -893,7 +893,7 @@ public class Controlador {
           }
           System.out.println("Cantidad: ");
           int qty = scanner.nextInt();
-          devolucion.mover_a_bodega(productoamover,qty,bodega);
+          devueltos.mover_a_bodega(productoamover,qty,bodega);
           System.out.println("Se ha movido el producto.");
           utilidades.esperarPresionarEnter();
           break;
@@ -923,14 +923,14 @@ public class Controlador {
         case 1:{
           Utilidades.limpiarPantalla();
           System.out.println("Historico de devoluciones:");
-          devolucion.mostrarHistorico();
+          devueltos.mostrarHistorico();
           utilidades.esperarPresionarEnter();
           break;
         }
         case 2:{
           Utilidades.limpiarPantalla();
           System.out.println("Lista de devoluciones actuales:");
-          devolucion.mostrarDevoluciones();
+          devueltos.mostrarDevoluciones();
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -950,7 +950,7 @@ public class Controlador {
   // Metodo para gestionar Devolución
  public void gestionarDevolucion(User session) {
   boolean salir = false;
-  int NumDevolucion = (devolucion.consultar_cantidad_devoluciones()+1);
+  int NumDevolucion = (devueltos.consultar_cantidad_devoluciones()+1);
   String IdDevolucion = Integer.toString(NumDevolucion);
 
   Devolucion devolucionAct = new Devolucion(IdDevolucion, session);
@@ -960,6 +960,7 @@ public class Controlador {
     int opcion = scanner.nextInt();
     scanner.nextLine();
     switch (opcion) {
+
       case 1://Agregar producto al carrito de devolución
         System.out.println("Ingrese el ID del producto:");
         String idProducto = scanner.nextLine();
@@ -1005,34 +1006,39 @@ public class Controlador {
               utilidades.esperarPresionarEnter();
               break;
           }
-        devolucionAct.finalizarDevolucion(devolucion, general);
+        devolucionAct.finalizarDevolucion(devueltos, general);
         utilidades.esperarPresionarEnter();  
         break;
         case 4: // Mover devoluciones a bodega y pasar a historico
-          // Verificar si hay productos en la lista de devoluciones
-          if (devolucion.consultar_cantidad_devoluciones() == 0) {
-              System.out.println("No hay productos en la lista de devoluciones.");
-              utilidades.esperarPresionarEnter();
-              break;
+          List <Devolucion> devoluciones= devueltos.getDevoluciones();
+          System.out.println("LISTA ACTIVA DE LAS DEVOLUCIONES:");
+         if (!devoluciones.isEmpty()){
+          for (Devolucion devuelto:devoluciones) {
+              System.out.println("Devolucion Realizada por: " + devuelto.getEmpleado().getNombre() + " Con ID: " + devuelto.getEmpleado().getId());
+              System.out.println("Fecha: " + devuelto.getFecha());
+              System.out.println("Id de la devolucion: " + devuelto.getId());
+              System.out.println("Productos devueltos: ");
+              devuelto.mostrarProductosEnCarrito();
+              System.out.println("Total: " + devuelto.calcularTotal() + "\n\n");
+            
           }
-      
-          // Mover productos de devoluciones a bodega
-          for (Product devolucionProducto : devolucion.getDevoluciones()) {
-            int cantidadDevolucion = devolucion.consultar_cantidad_unidades(devolucionProducto);
-            devolucion.moverProductoABodega(devolucionProducto, cantidadDevolucion, bodega);
-          }
-
-          // Agregar productos de devoluciones a historico
-          for (Product devolucionProducto : devolucion.getDevoluciones()) {
-            int cantidadDevolucion = devolucion.consultar_cantidad_unidades(devolucionProducto);
-            devolucion.agregarProductoAHistorico(devolucionProducto, cantidadDevolucion);
-          }
-      
-          // Vaciar la lista de devoluciones
-          devolucion.getDevoluciones().clear();
-      
-          System.out.println("Se han movido los productos de devoluciones a bodega y se han agregado al historico.");
+        }else{
+          System.out.println("No hay productos en la lista de devoluciones.");
           utilidades.esperarPresionarEnter();
+          break;
+        }
+        System.out.println("Estos se trasladaran a bodega.");
+        boolean continuar = utilidades.preguntaContinuar();
+        if(continuar){
+          devueltos.moverABodega(bodega);
+          devueltos.agregarAHistorico();
+        }else{
+          System.out.println("No se movio nada a bodega.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+        System.out.println("Las devoluciones se movieron a bodega.");
+        utilidades.esperarPresionarEnter();
         break;
     
       default:

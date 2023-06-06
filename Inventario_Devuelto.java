@@ -1,9 +1,10 @@
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class Inventario_Devuelto extends Inventario_General {
-    private List<Product> devoluciones;
-    private List<Product> historico;
+    private List<Devolucion> devoluciones;
+    private List<Devolucion> historico;
 
     public Inventario_Devuelto() {
         super();
@@ -21,34 +22,36 @@ public class Inventario_Devuelto extends Inventario_General {
           return historico.size();
       }
     
-    public List<Product> getDevoluciones() {
+    public List<Devolucion> getDevoluciones() {
         // Retorna la lista de devoluciones.
         return devoluciones;
       }
 
-   public void agregarProductoAHistorico(Product producto, int cantidad) {
-      for (int i = 0; i < cantidad; i++) {
-          historico.add(producto);
-        }
-      }
-      
-    public void moverProductoABodega(Product producto, int cantidad, Inventario_Bodega bodega) {
-      int cantidadEnDevoluciones = consultar_cantidad_unidades(producto);
-      if (cantidadEnDevoluciones >= cantidad) {
-            for (int i = 0; i < cantidad; i++) {
-                devoluciones.remove(producto);
-            }
+      public void moverABodega(Inventario_Bodega bodega) {
+        for (Devolucion devuelto : this.devoluciones) {
+          Map<Product, Integer> carrito_devuelto= devuelto.getCarrito();
+          for(Map.Entry<Product, Integer> entry : carrito_devuelto.entrySet()){
+            Product producto = entry.getKey();
+            int cantidad = entry.getValue();
             bodega.agregar_unidades(producto, cantidad);
-        } else {
-            System.out.println("No hay suficientes unidades en devoluciones.");
+          }
+          
         }
     }
 
+    public void agregarAHistorico() {
+      for (Devolucion devuelto : this.devoluciones) {
+        historico.add(devuelto);
+      }
+      devoluciones.clear();
+  }
+   /* 
     public void mostrarDevoluciones() {
       if (devoluciones.isEmpty()) {
           System.out.println("No hay devoluciones.");
       } else {
-          for (Product producto : devoluciones) {
+          for (Devolucion devolucion : devoluciones) {
+              Product producto = devolucion.getProducto();
               System.out.println("Id: " + producto.getId());
               System.out.println("Nombre: " + producto.getNombre());
               System.out.println("Descripción: " + producto.getDescripcion());
@@ -61,20 +64,21 @@ public class Inventario_Devuelto extends Inventario_General {
       if (historico.isEmpty()) {
           System.out.println("No hay productos en el historico de devoluciones.");
       } else {
-          for (Product producto : historico) {
+          for (Devolucion devolucion : historico) {
+              Product producto = devolucion.getProducto();
               System.out.println("Id: " + producto.getId());
               System.out.println("Nombre: " + producto.getNombre());
               System.out.println("Descripción: " + producto.getDescripcion());
               System.out.println("------------------");
           }
       }
-    }
+    }*/
 
     public int consultar_cantidad_unidades(Product producto) {
       // Retorna la cantidad de unidades del producto en devoluciones.
       int cantidad = 0;
-      for (Product p : devoluciones) {
-          if (p.getId().equals(producto.getId())) {
+      for (Devolucion d : devoluciones) {
+          if (d.getId().equals(producto.getId())) {
               cantidad++;
           }
       }
