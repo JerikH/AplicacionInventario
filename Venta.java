@@ -5,11 +5,11 @@ public class Venta extends Transaccion {
     }
 
 
-    public void finalizarVenta(Inventario_Vendido inventarioVendido, Inventario_Exhibicion inventario_exhibicion) {
+    public void finalizarVenta(Inventario_Vendido inventarioVendido, Inventario_Exhibicion inventario_exhibicion, Inventario_General general) {
         
         for (Product producto : carrito.keySet()){
             String idProducto = producto.getId();
-            if (!inventario_exhibicion.buscarProductoId(idProducto).equals(null)){// Verificar que el producto exista en el inventario de exhibición.
+            if (general.buscarProductoId(idProducto) != null){// Verificar que el producto exista en el inventario de exhibición.
                 inventario_exhibicion.agregar_unidades(producto, (carrito.get(producto)*-1));//Disminuir unidades
                 
             } else {

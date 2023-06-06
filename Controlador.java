@@ -616,8 +616,9 @@ public class Controlador {
           System.out.println("---------FINALIZAR VENTA---------");
           if(venta.consultar_cantidad_carrito() > 0){//En caso de que hayan productos en el carrito
             System.out.println("Se finzalizará la venta...");
-            if(!utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
-              venta.finalizarVenta(vendidos, exhibicion);
+            if(utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
+              venta.finalizarVenta(vendidos, exhibicion, general);
+              utilidades.esperarPresionarEnter();
               salir=true;
             } else {//En caso de que no deseen finalizar la venta
               System.out.println("No se finalizó la venta....");
@@ -965,7 +966,7 @@ public class Controlador {
   boolean salir = false;
   int NumPedido = (recibidos.consultar_cantidad()+1);
   String IdPedido = Integer.toString(NumPedido);
-  System.out.println("Ingrese el nombre del proveedor:");
+  System.out.print("Ingrese el nombre del proveedor:");
   String NombreProveedor = scanner.nextLine();
 
   Pedido pedido = new Pedido(IdPedido, session, NombreProveedor);
@@ -976,7 +977,7 @@ public class Controlador {
     scanner.nextLine();
     switch (opcion) {
       case 1://Agregar producto al pedido
-        System.out.println("Ingrese el ID del producto:");
+        System.out.print("Ingrese el ID del producto:");
         String idProducto = scanner.nextLine();
         //scanner.nextLine();  Consumir la nueva línea después de la entrada numérica
     
@@ -998,7 +999,7 @@ public class Controlador {
       break;
 
       case 2://Eliminar un producto del pedido
-        System.out.println("Ingrese el ID del producto a eliminar:");
+        System.out.print("Ingrese el ID del producto a eliminar:");
         String idProductoEliminar = scanner.nextLine();
     
         // Verificar si el producto existe en el carrito del pedido

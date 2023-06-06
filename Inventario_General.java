@@ -1,12 +1,3 @@
-// Idea: Nuevo atributo en inv_general, lista general de productos, los demás inventarios 
-//solo guardan los id de producto y la cantidad, el objeto se consulta en el inventario general.
-
-// Razón: Al modificar un objeto producto esto permitirá que el cambio se vea reflejado en 
-//todos los inventarios.
-
-// Contra: Conflicto al eliminar un producto, ya no sería posible consultar la información del 
-//id desde los demás inventarios.
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,9 +45,7 @@ public class Inventario_General {
     }
 
     //Método para buscar un producto con su Id dentro del mapa productos
-    public Product buscarProductosId(String Id) {
-        Integer cantidad = productos.get(Id);
-        if (cantidad != null) {
+    /*public String buscarProductosId(String Id){
             for (Product producto : general) {
                 if (producto.getId().equals(Id)) {
                     return producto;
@@ -64,7 +53,7 @@ public class Inventario_General {
             }
         }
         return null;
-    }
+    }*/
     
     
 
