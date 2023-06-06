@@ -41,7 +41,7 @@ public class Controlador {
       Utilidades.limpiarPantalla();
       System.out.println("¡Bienvenido(a) " + session.getNombre() + "!\n");
       Vistas.MenuAdministrador();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch (opcion) {
         case 1:// Realizar Venta;-----------------------------------------------------
@@ -111,7 +111,7 @@ public class Controlador {
       Utilidades.limpiarPantalla();
       System.out.println("¡Bienvenido(a) " + session.getNombre() + "!\n");
       Vistas.MenuEmpleado();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch (opcion) {
         case 1:// Realizar Venta;-----------------------------------------------------
@@ -161,7 +161,7 @@ public class Controlador {
       Utilidades.limpiarPantalla();
       Vistas.ModuloBuscarTransacciones();
       System.out.print("Seleccione una opción: ");
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch (opcion){
         case 1:{//buscar una venta
@@ -195,7 +195,7 @@ public class Controlador {
     while(!salir){
       Utilidades.limpiarPantalla();
       Vistas.ModuloBuscarVentas();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch(opcion){
         case 1:{ //buscar venta por ID
@@ -283,7 +283,7 @@ public class Controlador {
     while (!salir) {
         Utilidades.limpiarPantalla();
         Vistas.ModuloBuscarPedidos();
-        int opcion = scanner.nextInt();
+        int opcion = Utilidades.nextIntCustom(scanner);
         scanner.nextLine();
         switch (opcion) {
             case 1: //buscar pedido por ID
@@ -381,7 +381,7 @@ public class Controlador {
   while(!salir){
     Utilidades.limpiarPantalla();
     Vistas.ModuloBuscarDevoluciones();
-    int opcion = scanner.nextInt();
+    int opcion = Utilidades.nextIntCustom(scanner);
     scanner.nextLine();
     switch(opcion){
       case 1:{ //buscar devolucion por ID
@@ -516,7 +516,7 @@ public class Controlador {
       System.out.println("----------MODULO VENTA----------\n");
       Vistas.ModuloVenta();
       System.out.print("Ingrese una opción:");
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch(opcion){
         case 1://Agregar Producto
@@ -529,7 +529,7 @@ public class Controlador {
             if (exhibicion.consultar_cantidad_unidades(producto) > 0){//En caso de que si hayan unidades disponibles del producto
               Vistas.InfoProducto(producto);
             System.out.print("Cantidad deseada: ");
-            int CantProducto = scanner.nextInt();
+            int CantProducto = Utilidades.nextIntCustom(scanner);
             scanner.nextLine();
             if(CantProducto <= exhibicion.consultar_cantidad_unidades(producto)){//En caso de que  hayan suficientes unidades disponibles
               System.out.println("Se van a agregar "+ CantProducto + " unidades del producto con Id : " + IdProducto);
@@ -689,7 +689,7 @@ public class Controlador {
     while (!salir) {
       Utilidades.limpiarPantalla();
       Vistas.ModuloGestionEmpleados();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch (opcion) {
         case 1:
@@ -796,7 +796,7 @@ public class Controlador {
       Utilidades.limpiarPantalla();
       Vistas.ModuloGestionProductos();
       System.out.print("Ingrese una opción:");
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
 
       switch (opcion) {
@@ -883,7 +883,7 @@ public class Controlador {
     while (!salir) {
       Utilidades.limpiarPantalla();
       Vistas.ModuloGenerarReportes();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
       switch (opcion) {
         case 1: {
@@ -908,20 +908,13 @@ public class Controlador {
                 User empleado = entry.getKey();
                 double total = entry.getValue();
                 int cantidad = cantidadVentasPorEmpleado.get(empleado);
-                System.out.println("\n------\nEmpleado: " + empleado.getNombre() + "ID: " + empleado.getId()
+                System.out.println("\n------\nEmpleado: " + empleado.getNombre() + " ID: " + empleado.getId()
                     + "\nCantidad de ventas: " + cantidad + "\nTotal: $" + total);
               }
             });
           } else {
             System.out.println("Los empleados no han realizado ventas.");
           }
-          // totalVentasPorEmpleado.forEach((empleado, total) -> {
-          // int cantidad = cantidadVentasPorEmpleado.get(empleado);
-          // System.out.println("Empleado: " + empleado.getNombre() + "ID: " +
-          // empleado.getId() + "\nCantidad de ventas: " + cantidad + "\nTotal: $" +
-          // total);
-          // });
-
           utilidades.esperarPresionarEnter();
         }
         break;
@@ -941,7 +934,7 @@ public class Controlador {
     while(!salir){
       Utilidades.limpiarPantalla();
       Vistas.ModuloAdministrarInventarios();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
 
       switch(opcion){
@@ -980,7 +973,7 @@ public class Controlador {
   while (!salir) {
     Utilidades.limpiarPantalla();
     Vistas.ModuloRecibirPedido();
-    int opcion = scanner.nextInt();
+    int opcion = Utilidades.nextIntCustom(scanner);
     scanner.nextLine();
     switch (opcion) {
       case 1://Agregar producto al pedido
@@ -995,8 +988,8 @@ public class Controlador {
             utilidades.esperarPresionarEnter();
             break;
         }
-        System.out.print("Ingrese la cantidad:");
-        int cantidad = scanner.nextInt();
+        System.out.println("Ingrese la cantidad:");
+        int cantidad = Utilidades.nextIntCustom(scanner);
         scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
     
         // Agregar el producto al carrito del pedido
@@ -1052,7 +1045,7 @@ public class Controlador {
     while(!salir){
       Utilidades.limpiarPantalla();
       Vistas.ModuloVerInventarios();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
 
       switch(opcion){
@@ -1102,7 +1095,7 @@ public class Controlador {
     while(!salir){
       Utilidades.limpiarPantalla();
       Vistas.ModuloMoverInventarios();
-      int opcion = scanner.nextInt();
+      int opcion = Utilidades.nextIntCustom(scanner);
       scanner.nextLine();
 
       switch(opcion){
@@ -1118,7 +1111,7 @@ public class Controlador {
             break;
           }
           System.out.println("Cantidad: ");
-          int qty = scanner.nextInt();
+          int qty = Utilidades.nextIntCustom(scanner);
           bodega.mover_a_exhibición(productoamover,qty,exhibicion);
           System.out.println("Se ha movido el producto.");
           utilidades.esperarPresionarEnter();
@@ -1136,7 +1129,7 @@ public class Controlador {
             break;
           }
           System.out.println("Cantidad: ");
-          int qty = scanner.nextInt();
+          int qty = Utilidades.nextIntCustom(scanner);
           exhibicion.mover_a_bodega(productoamover,qty,bodega);
           System.out.println("Se ha movido el producto.");
           utilidades.esperarPresionarEnter();
@@ -1167,7 +1160,7 @@ public class Controlador {
   while (!salir) {
     Utilidades.limpiarPantalla();
     Vistas.ModuloGestionarDevolucion();
-    int opcion = scanner.nextInt();
+    int opcion = Utilidades.nextIntCustom(scanner);
     scanner.nextLine();
     switch (opcion) {
 
@@ -1183,7 +1176,7 @@ public class Controlador {
             break;
         }
         System.out.println("Ingrese la cantidad de unidades que se devuelven:");
-        int cantidad = scanner.nextInt();
+        int cantidad = Utilidades.nextIntCustom(scanner);
         scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
     
         // Agregar el producto al carrito del devolucion
@@ -1216,7 +1209,8 @@ public class Controlador {
               utilidades.esperarPresionarEnter();
               break;
           }
-        devolucionAct.finalizarDevolucion(devueltos, general);
+        // devolucionAct.finalizarDevolucion(devueltos, general);
+        devueltos.agregarADevoluciones(devolucionAct);
         utilidades.esperarPresionarEnter();  
         break;
         case 4: // Mover devoluciones a bodega y pasar a historico
