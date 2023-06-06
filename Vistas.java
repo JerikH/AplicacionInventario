@@ -134,8 +134,7 @@ public class Vistas {
     System.out.println("Modulo Administración de Inventarios");
     System.out.println("1. Mover producto de bodega a exhibición.");
     System.out.println("2. Mover de exhibición a bodega.");
-    System.out.println("3. Mover de devolución a bodega.");
-    System.out.println("4. Regresar.");
+    System.out.println("3. Regresar.");
   }
 
   public static void ModuloVerInventarios(){
@@ -143,15 +142,7 @@ public class Vistas {
     System.out.println("1. Ver inventario completo.");
     System.out.println("2. Ver inventario bodega.");
     System.out.println("3. Ver inventario exhibicion.");
-    System.out.println("4. Ver lista de devoluciones.");
-    System.out.println("5. Regresar.");
-  }
-
-  public static void ModuloDevoluciones(){
-    System.out.println("Lista de devoluciones.");
-    System.out.println("1. Historico.");
-    System.out.println("2. Devoluciones actuales.");
-    System.out.println("3. Regresar.");
+    System.out.println("4. Regresar.");
   }
 
   public static void ModuloGestionarDevolucion() {

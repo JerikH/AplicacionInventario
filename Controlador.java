@@ -650,6 +650,7 @@ public class Controlador {
   }
 
   //-----------------------------------------------------------------------------------------------------------
+  // Método para Generar Reportes de ventas
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
@@ -703,6 +704,8 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
+  // Método para Administrar Inventarios
   private void AdministrarInventarios(){
     boolean salir = false;
     while(!salir){
@@ -733,6 +736,7 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
   // Metodo para gestioner pedidos
  public void gestionarPedido(User session) {
   boolean salir = false;
@@ -806,7 +810,7 @@ public class Controlador {
     
   }
 }
-
+  //-----------------------------------------------------------------------------------------------------------
   //Método para ver inventarios.
   private void VerInventarios(){
     boolean salir = false;
@@ -820,7 +824,7 @@ public class Controlador {
         case 1:{ // Ver Inventario Completo
           Utilidades.limpiarPantalla();
           System.out.println("Inventario Completo:");
-          general.mostrarInventario();
+          general.mostrarInventarioCompleto();
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -828,7 +832,7 @@ public class Controlador {
         case 2:{ // Ver Inventario en Bodega
           Utilidades.limpiarPantalla(); 
           System.out.println("Inventario en Bodega:");
-          bodega.mostrarInventario();
+          bodega.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -836,17 +840,12 @@ public class Controlador {
         case 3:{ // Ver Inventario en Exhibición
           Utilidades.limpiarPantalla();
           System.out.println("Inventario en Exhibición:");
-          exhibicion.mostrarInventario();
+          exhibicion.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
 
-        case 4:{ //Ver lista de devolución
-          Devoluciones();
-          break;
-        }
-
-        case 5:{
+        case 4:{
           salir = true;
           break;
         }
@@ -860,7 +859,8 @@ public class Controlador {
     }
   }
 
-  //Método para mover inventarios.
+  //-----------------------------------------------------------------------------------------------------------
+  //Método para mover entre inventarios.
   private void MoverInventarios(){
     boolean salir = false;
     while(!salir){
@@ -907,24 +907,6 @@ public class Controlador {
           break;
         }
         case 3:{
-          Utilidades.limpiarPantalla();
-          System.out.println("----------DEVOLUCIONES A BODEGA----------\n");
-          System.out.println("ID de producto: ");
-          String IdP = scanner.nextLine();
-          Product productoamover = general.buscarProductoId(IdP);
-          if (productoamover == null) {
-            System.out.println("No hay existencias de este producto para devolución.");
-            utilidades.esperarPresionarEnter();
-            break;
-          }
-          System.out.println("Cantidad: ");
-          int qty = scanner.nextInt();
-          devueltos.mover_a_bodega(productoamover,qty,bodega);
-          System.out.println("Se ha movido el producto.");
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 4:{
           salir = true;
           break;
         }
@@ -937,41 +919,7 @@ public class Controlador {
     }
   }
 
-  private void Devoluciones(){
-    boolean salir = false;
-    while(!salir){
-      Utilidades.limpiarPantalla();
-      Vistas.ModuloDevoluciones();
-      int opcion = scanner.nextInt();
-      scanner.nextLine();
-
-      switch(opcion){
-        case 1:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Historico de devoluciones:");
-          devueltos.mostrarHistorico();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 2:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Lista de devoluciones actuales:");
-          devueltos.mostrarDevoluciones();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 3:{
-          salir = true;
-          break;
-        }
-        default:{
-          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-      }
-    }
-  }
+  //-----------------------------------------------------------------------------------------------------------
 
   // Metodo para gestionar Devolución
  public void gestionarDevolucion(User session) {
@@ -1073,7 +1021,4 @@ public class Controlador {
     
   }
 }
-
-
-
 }
