@@ -113,7 +113,7 @@ public class Transaccion {
         System.out.println("Recibo de "+ postfix + ":");
         System.out.println("ID de "+ postfix+": " + id);
         System.out.println("Fecha: " + fecha);
-        System.out.println("Empleado: " + this.getEmpleado());
+        System.out.println("Empleado: " + this.getEmpleado().getNombre());
         System.out.println("Productos:");
 
         for (Map.Entry<Product, Integer> entry : carrito.entrySet()) {
