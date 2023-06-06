@@ -235,12 +235,7 @@ public class Controlador {
       scanner.nextLine();
       switch (opcion) {
         case 1:// Realizar Venta;-----------------------------------------------------
-          Utilidades.limpiarPantalla();
-          Vistas.ModuloVenta();
-          opcion = scanner.nextInt();
-          scanner.nextLine();
-          System.out.print("MÉTODO EN DESARROLLO ");
-          utilidades.esperarPresionarEnter();
+          this.RealizarVenta(session);
           break;
 
         case 2:// Consultar producto;------------------------------------------------
