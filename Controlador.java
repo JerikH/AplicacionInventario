@@ -18,12 +18,12 @@ public class Controlador {
   private Inventario_Bodega bodega;
   private Inventario_Exhibicion exhibicion;
   private List<User> usuarios;
-  private Inventario_Devuelto devolucion;
+  private Inventario_Devuelto devueltos;
 
   Scanner scanner = new Scanner(System.in);
 
   public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
-      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devolucion) {
+      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devueltos) {
     // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
@@ -32,7 +32,7 @@ public class Controlador {
     this.bodega = bodega;
     this.exhibicion = exhibicion;
     this.usuarios = usuarios;
-    this.devolucion = devolucion;
+    this.devueltos = devueltos;
   }
 
   public boolean Admin(User session) {
@@ -99,8 +99,12 @@ public class Controlador {
           gestionarPedido(session);
           break;
           
+        case 9: //Gestionar Devolución
+          Utilidades.limpiarPantalla();
+          gestionarDevolucion(session);
+        break;
 
-        case 9:// Cerrar Sesión;-----------------------------------------------------
+        case 10:// Cerrar Sesión;-----------------------------------------------------
           salir = true;
           apagar = false;
           break;
@@ -118,6 +122,8 @@ public class Controlador {
     }
     return apagar;
   }
+
+//Desde acá se crean las funciones utilizadas en el case
 
   public void buscarVenta(){
     boolean salir = false;
@@ -915,4 +921,104 @@ public class Controlador {
 
   //-----------------------------------------------------------------------------------------------------------
 
+  // Metodo para gestionar Devolución
+ public void gestionarDevolucion(User session) {
+  boolean salir = false;
+  int NumDevolucion = (devueltos.consultar_cantidad_devoluciones()+1);
+  String IdDevolucion = Integer.toString(NumDevolucion);
+
+  Devolucion devolucionAct = new Devolucion(IdDevolucion, session);
+  while (!salir) {
+    Utilidades.limpiarPantalla();
+    Vistas.ModuloGestionarDevolucion();
+    int opcion = scanner.nextInt();
+    scanner.nextLine();
+    switch (opcion) {
+
+      case 1://Agregar producto al carrito de devolución
+        System.out.println("Ingrese el ID del producto:");
+        String idProducto = scanner.nextLine();
+            
+        // Verificar si el producto existe en el inventario general
+        Product producto = general.buscarProductoId(idProducto);
+        if (producto == null) {
+            System.out.println("El producto no existe en el inventario.");
+            utilidades.esperarPresionarEnter();
+            break;
+        }
+        System.out.println("Ingrese la cantidad de unidades que se devuelven:");
+        int cantidad = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
+    
+        // Agregar el producto al carrito del devolucion
+        devolucionAct.agregarProducto(producto, cantidad);
+        System.out.println("Producto agregado al carrito de devolucion");
+        utilidades.esperarPresionarEnter();
+      break;
+
+      case 2://Eliminar un producto del carrito la devolución
+        System.out.println("Ingrese el ID del producto a eliminar:");
+        String idProductoEliminar = scanner.nextLine();
+    
+        // Verificar si el producto existe en el carrito de devolucion
+        if (!devolucionAct.getCarrito().containsKey(idProductoEliminar)) {
+          System.out.println("El producto no está en el carrito de devolucion.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+
+        // Eliminar el producto del carrito de devolucion
+        devolucionAct.getCarrito().remove(idProductoEliminar);
+        System.out.println("Producto eliminado del carrito de devolucion.");
+        utilidades.esperarPresionarEnter();
+          
+      break;
+      case 3: //Finalizar devolucion
+          // Verificar si hay artículos en el carrito del pedido
+          if (devolucionAct.getCarrito().isEmpty()) {
+              System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
+              utilidades.esperarPresionarEnter();
+              break;
+          }
+        devolucionAct.finalizarDevolucion(devueltos, general);
+        utilidades.esperarPresionarEnter();  
+        break;
+        case 4: // Mover devoluciones a bodega y pasar a historico
+          List <Devolucion> devoluciones= devueltos.getDevoluciones();
+          System.out.println("LISTA ACTIVA DE LAS DEVOLUCIONES:");
+         if (!devoluciones.isEmpty()){
+          for (Devolucion devuelto:devoluciones) {
+              System.out.println("Devolucion Realizada por: " + devuelto.getEmpleado().getNombre() + " Con ID: " + devuelto.getEmpleado().getId());
+              System.out.println("Fecha: " + devuelto.getFecha());
+              System.out.println("Id de la devolucion: " + devuelto.getId());
+              System.out.println("Productos devueltos: ");
+              devuelto.mostrarProductosEnCarrito();
+              System.out.println("Total: " + devuelto.calcularTotal() + "\n\n");
+            
+          }
+        }else{
+          System.out.println("No hay productos en la lista de devoluciones.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+        System.out.println("Estos se trasladaran a bodega.");
+        boolean continuar = utilidades.preguntaContinuar();
+        if(continuar){
+          devueltos.moverABodega(bodega);
+          devueltos.agregarAHistorico();
+        }else{
+          System.out.println("No se movio nada a bodega.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+        System.out.println("Las devoluciones se movieron a bodega.");
+        utilidades.esperarPresionarEnter();
+        break;
+    
+      default:
+        break;
+    }
+    
+  }
+}
 }

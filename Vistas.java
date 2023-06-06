@@ -44,7 +44,8 @@ public class Vistas {
     System.out.println("6. Buscar Transacción");
     System.out.println("7. Administrar Inventarios");
     System.out.println("8. Recibir Pedido");
-    System.out.println("9. Cerrar Sesión");
+    System.out.println("9. Gestionar Devolución");
+    System.out.println("10. Cerrar Sesión");
     System.out.println("0. Apagar Sistema");
     System.out.print("Seleccione una opción: ");
   }
@@ -142,5 +143,14 @@ public class Vistas {
     System.out.println("2. Ver inventario bodega.");
     System.out.println("3. Ver inventario exhibicion.");
     System.out.println("4. Regresar.");
+  }
+
+  public static void ModuloGestionarDevolucion() {
+    System.out.println("Modulo De Gestion De Devolucion");
+    System.out.println("1. Agregar Producto que se va a devolver");
+    System.out.println("2. Eliminar producto que se va a devolver");
+    System.out.println("3. Finalizar devolucion"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
+    System.out.println("4. Mover las devoluciones a bodega");
+    System.out.println("5. Regresar.");
   }
 }
