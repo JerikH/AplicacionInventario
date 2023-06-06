@@ -18,12 +18,12 @@ public class Controlador {
   private Inventario_Bodega bodega;
   private Inventario_Exhibicion exhibicion;
   private List<User> usuarios;
-  private Inventario_Devuelto devolucion;
+  private Inventario_Devuelto devueltos;
 
   Scanner scanner = new Scanner(System.in);
 
   public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
-      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devolucion) {
+      Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devueltos) {
     // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
@@ -32,7 +32,7 @@ public class Controlador {
     this.bodega = bodega;
     this.exhibicion = exhibicion;
     this.usuarios = usuarios;
-    this.devolucion = devolucion;
+    this.devueltos = devueltos;
   }
 
   public boolean Admin(User session) {
@@ -107,8 +107,12 @@ public class Controlador {
           gestionarPedido(session);
           break;
           
+        case 9: //Gestionar Devolución
+          Utilidades.limpiarPantalla();
+          gestionarDevolucion(session);
+        break;
 
-        case 9:// Cerrar Sesión;-----------------------------------------------------
+        case 10:// Cerrar Sesión;-----------------------------------------------------
           salir = true;
           apagar = false;
           break;
@@ -126,6 +130,8 @@ public class Controlador {
     }
     return apagar;
   }
+
+//Desde acá se crean las funciones utilizadas en el case
 
   public void buscarVenta(){
     boolean salir = false;
@@ -505,6 +511,7 @@ public class Controlador {
       Utilidades.limpiarPantalla();
       System.out.println("----------MODULO VENTA----------\n");
       Vistas.ModuloVenta();
+      System.out.print("Ingrese una opción:");
       int opcion = scanner.nextInt();
       scanner.nextLine();
       switch(opcion){
@@ -515,11 +522,12 @@ public class Controlador {
           String IdProducto = scanner.nextLine();
           Product producto = general.buscarProductoId(IdProducto);
           if (producto != null){//En caso de que el producto exista
-            Vistas.InfoProducto(producto);
+            if (exhibicion.consultar_cantidad_unidades(producto) > 0){//En caso de que si hayan unidades disponibles del producto
+              Vistas.InfoProducto(producto);
             System.out.print("Cantidad deseada: ");
             int CantProducto = scanner.nextInt();
             scanner.nextLine();
-            if(CantProducto < exhibicion.consultar_cantidad_unidades(producto)){//En caso de que  hayan suficientes unidades disponibles
+            if(CantProducto <= exhibicion.consultar_cantidad_unidades(producto)){//En caso de que  hayan suficientes unidades disponibles
               System.out.println("Se van a agregar "+ CantProducto + " unidades del producto con Id : " + IdProducto);
               if(utilidades.preguntaContinuar()){//En caso de que confirmen 
                 venta.agregarProducto(producto, CantProducto);
@@ -549,6 +557,10 @@ public class Controlador {
                 }
               }
             }
+          } else {//En caso de que no haya unidades del producto
+            System.out.println("Error: Actualmente no hay existencias del producto en exhibición.");
+            utilidades.esperarPresionarEnter();
+          }
           } else {//En caso de que el producto no exista
             System.out.println("No existe un producto con el Id : " + IdProducto);
             utilidades.esperarPresionarEnter();
@@ -561,7 +573,7 @@ public class Controlador {
           System.out.print("Id de producto: ");
           String idProd = scanner.nextLine();
           producto = general.buscarProductoId(idProd);
-          if(!venta.buscarProducto(idProd).equals(null)){//En caso de que el producto si esté en el carrito
+          if(venta.buscarProducto(idProd) != null){//En caso de que el producto si esté en el carrito
             Vistas.InfoProducto(producto);
             int cantidad = venta.consultarCantUnidades(idProd);
             System.out.println("Cantidad: " + cantidad);
@@ -588,6 +600,7 @@ public class Controlador {
           utilidades.esperarPresionarEnter();
           break;
         case 4://Mostrar Carrito
+          Utilidades.limpiarPantalla();
           System.out.println("----------CARRITO----------\n");
           venta.mostrarProductosEnCarrito();
           total =  venta.calcularTotal();
@@ -595,14 +608,21 @@ public class Controlador {
           utilidades.esperarPresionarEnter();
         break;
         case 5://Finalizar Venta
+        Utilidades.limpiarPantalla();
           System.out.println("---------FINALIZAR VENTA---------");
-          System.out.println("Se finzalizará la venta...");
-          if(!utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
-            venta.finalizarVenta(vendidos, exhibicion);
-          } else {//En caso de que no deseen finalizar la venta
-            System.out.println("No se finalizó la venta....");
+          if(venta.consultar_cantidad_carrito() > 0){//En caso de que hayan productos en el carrito
+            System.out.println("Se finzalizará la venta...");
+            if(!utilidades.preguntaContinuar()){//En caso de que si deseen finalizar la venta
+              venta.finalizarVenta(vendidos, exhibicion);
+              salir=true;
+            } else {//En caso de que no deseen finalizar la venta
+              System.out.println("No se finalizó la venta....");
+              utilidades.esperarPresionarEnter();
+            }
+          } else {
+            System.out.println("Error: El carrito no tiene productos aún.");
             utilidades.esperarPresionarEnter();
-          }
+          }         
           break;
         case 6://Cancelar Venta
           System.out.println("---------CANCELAR VENTA---------");
@@ -613,8 +633,14 @@ public class Controlador {
             System.out.println("No se canceló la venta....");
             utilidades.esperarPresionarEnter();
           }
-        break;
-      }
+        case 0:
+          salir=true;
+          break;
+        default:
+          System.out.println("Opción inválida. Por favor, seleccione una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+      } 
 
 
     }
@@ -632,12 +658,12 @@ public class Controlador {
       System.out.print("Id de producto: ");
       String IdProducto = scanner.nextLine();
       Product producto = general.buscarProductoId(IdProducto);
-      if(!producto.equals(null)){//En caso de que el producto exista
+      if(general.buscarProductoId(IdProducto) != null){//En caso de que el producto exista
         Vistas.InfoProducto(producto);
         int CantBodega = bodega.consultar_cantidad_unidades(producto);
         int CantExhibicion = exhibicion.consultar_cantidad_unidades(producto);
-        System.out.print("Cantidad en Bodega: " + CantBodega);
-        System.out.print("Cantidad en Exhibición: "+ CantExhibicion);
+        System.out.println("Cantidad en Bodega: " + CantBodega);
+        System.out.println("Cantidad en Exhibición: "+ CantExhibicion);
         salir = true;
         utilidades.esperarPresionarEnter();
 
@@ -761,47 +787,49 @@ public class Controlador {
     while (!salir) {
       Utilidades.limpiarPantalla();
       Vistas.ModuloGestionProductos();
+      System.out.print("Ingrese una opción:");
       int opcion = scanner.nextInt();
       scanner.nextLine();
 
       switch (opcion) {
-        case 1:// Agregar Producto
+        case 1:// Crear Producto
           Utilidades.limpiarPantalla();
-          System.out.println("----------AGREGAR PRODUCTO----------\n");
-          System.out.println("ID de producto: ");
+          System.out.println("----------CREAR PRODUCTO----------\n");
+          System.out.print("ID de producto: ");
           String nuevoId = scanner.nextLine();
-          if (general.buscarProductoId(nuevoId) != null) {
+          if (general.buscarProductoId(nuevoId) != null) {//En caso de que el producto ya exista
             System.out.println("Ya existe un producto con Id: " + nuevoId);
             utilidades.esperarPresionarEnter();
             break;
-          }
+          } else {//En caso de que el producto aún no exista
           String[] elementos = utilidades.pedirDatosProducto("");
-          // crear el producto en bodega de forma nativa, dar la posibilidad de
-          // 'agregarlo'(moverlo) a exhibicion agregando unidades (identificar total en
-          // bodega y cantidad a mover a exhibicion)
           float precio = Float.parseFloat(elementos[2]);
           general.agregarProducto(new Product(elementos[0], elementos[1], nuevoId, precio));
-          // de no indicarse antes, dar la posibilidad de agregar unidades a bodega.??
+          bodega.agregarProductoMap(nuevoId, 0);
+          exhibicion.agregarProductoMap(nuevoId, 0);
           System.out.println("El nuevo producto fue creado correctamente.");
           utilidades.esperarPresionarEnter();
+          }
           break;
 
         case 2:// Eliminar Producto
           Utilidades.limpiarPantalla();
           System.out.println("----------ELIMINAR PRODUCTO----------\n");
-          System.out.println("ID de producto a eliminar: ");
+          System.out.print("ID de producto a eliminar: ");
           String IdEliminar = scanner.nextLine();
-          // verificar presencia en exhibicion (no se puede eliminar de exhibicion), se
-          // mueve a bodega y entonces se elimina, indicarlo al usuario antes de hacerlo.
           Product productoEliminar = general.buscarProductoId(IdEliminar);
           if (productoEliminar != null) {
-            System.out.print("Se eliminará al siguiente producto: ");
+            System.out.println("Se eliminará al siguiente producto de los inventarios: ");
             Vistas.InfoProducto(productoEliminar);
-            // informar que aún puede haber registro del producto en los inventarios de
-            // venta y devolucion.
-            boolean continuar = utilidades.preguntaContinuar();
-            if (continuar) {
-              general.eliminarProducto(IdEliminar); // de bodega
+            int CantBodega = bodega.consultar_cantidad_unidades(productoEliminar);
+            int CantExhibicion = exhibicion.consultar_cantidad_unidades(productoEliminar);
+            System.out.println("Cantidad en bodega: "+ CantBodega);
+            System.out.println("Cantidad en exhibición: "+ CantExhibicion);
+            if (utilidades.preguntaContinuar()) {//En caso de que confirmen que van a eliminar el producto
+              general.eliminarProducto(IdEliminar); //
+              bodega.eliminarProducto(IdEliminar);
+              exhibicion.eliminarProducto(IdEliminar);
+              System.out.println("El producto fue eliminado.");
             } else {
               System.out.println("No se eliminó el producto.");
             }
@@ -814,12 +842,16 @@ public class Controlador {
           Utilidades.limpiarPantalla();
           System.out.print("ID de producto a modificar: ");
           String IdProducto = scanner.nextLine();
-          elementos = utilidades.pedirDatosProducto("Nuevo ");
-          precio = Float.parseFloat(elementos[2]);
-          if (general.ModificarProducto(IdProducto, elementos[0], elementos[1], precio)) {
-            System.out.println("Producto modificado.");
-          } else {
-            System.out.println("Producto no encontrado.");
+          if(general.buscarProductoId(IdProducto) != (null)){//En caso de que el producto exista
+            String [] elementos = utilidades.pedirDatosProducto("Nuevo ");
+            float precio = Float.parseFloat(elementos[2]);
+            if (general.ModificarProducto(IdProducto, elementos[0], elementos[1], precio)) {
+              System.out.println("Producto modificado.");
+          }else {
+            System.out.println("ERROR: No se pudo modificar el producto.");
+          }
+        } else {//En caso de que el producto no exista
+            System.out.println("El producto no existe en el sistema.");
           }
           utilidades.esperarPresionarEnter();
           break;
@@ -836,6 +868,7 @@ public class Controlador {
   }
 
   //-----------------------------------------------------------------------------------------------------------
+  // Método para Generar Reportes de ventas
   private void GenerarReportes() {
     boolean salir = false;
     while (!salir) {
@@ -889,6 +922,8 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
+  // Método para Administrar Inventarios
   private void AdministrarInventarios(){
     boolean salir = false;
     while(!salir){
@@ -919,6 +954,7 @@ public class Controlador {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------
   // Metodo para gestioner pedidos
  public void gestionarPedido(User session) {
   boolean salir = false;
@@ -992,7 +1028,7 @@ public class Controlador {
     
   }
 }
-
+  //-----------------------------------------------------------------------------------------------------------
   //Método para ver inventarios.
   private void VerInventarios(){
     boolean salir = false;
@@ -1006,7 +1042,7 @@ public class Controlador {
         case 1:{ // Ver Inventario Completo
           Utilidades.limpiarPantalla();
           System.out.println("Inventario Completo:");
-          general.mostrarInventario();
+          general.mostrarInventarioCompleto();
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -1014,7 +1050,7 @@ public class Controlador {
         case 2:{ // Ver Inventario en Bodega
           Utilidades.limpiarPantalla(); 
           System.out.println("Inventario en Bodega:");
-          bodega.mostrarInventario();
+          bodega.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
@@ -1022,17 +1058,12 @@ public class Controlador {
         case 3:{ // Ver Inventario en Exhibición
           Utilidades.limpiarPantalla();
           System.out.println("Inventario en Exhibición:");
-          exhibicion.mostrarInventario();
+          exhibicion.mostrarInventario(general);
           utilidades.esperarPresionarEnter();
           break;
         }
 
-        case 4:{ //Ver lista de devolución
-          Devoluciones();
-          break;
-        }
-
-        case 5:{
+        case 4:{
           salir = true;
           break;
         }
@@ -1046,7 +1077,8 @@ public class Controlador {
     }
   }
 
-  //Método para mover inventarios.
+  //-----------------------------------------------------------------------------------------------------------
+  //Método para mover entre inventarios.
   private void MoverInventarios(){
     boolean salir = false;
     while(!salir){
@@ -1093,69 +1125,118 @@ public class Controlador {
           break;
         }
         case 3:{
-          Utilidades.limpiarPantalla();
-          System.out.println("----------DEVOLUCIONES A BODEGA----------\n");
-          System.out.println("ID de producto: ");
-          String IdP = scanner.nextLine();
-          Product productoamover = general.buscarProductoId(IdP);
-          if (productoamover == null) {
-            System.out.println("No hay existencias de este producto para devolución.");
+          salir = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+      }
+    }
+  }
+
+  //-----------------------------------------------------------------------------------------------------------
+
+  // Metodo para gestionar Devolución
+ public void gestionarDevolucion(User session) {
+  boolean salir = false;
+  int NumDevolucion = (devueltos.consultar_cantidad_devoluciones()+1);
+  String IdDevolucion = Integer.toString(NumDevolucion);
+
+  Devolucion devolucionAct = new Devolucion(IdDevolucion, session);
+  while (!salir) {
+    Utilidades.limpiarPantalla();
+    Vistas.ModuloGestionarDevolucion();
+    int opcion = scanner.nextInt();
+    scanner.nextLine();
+    switch (opcion) {
+
+      case 1://Agregar producto al carrito de devolución
+        System.out.println("Ingrese el ID del producto:");
+        String idProducto = scanner.nextLine();
+            
+        // Verificar si el producto existe en el inventario general
+        Product producto = general.buscarProductoId(idProducto);
+        if (producto == null) {
+            System.out.println("El producto no existe en el inventario.");
             utilidades.esperarPresionarEnter();
             break;
+        }
+        System.out.println("Ingrese la cantidad de unidades que se devuelven:");
+        int cantidad = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
+    
+        // Agregar el producto al carrito del devolucion
+        devolucionAct.agregarProducto(producto, cantidad);
+        System.out.println("Producto agregado al carrito de devolucion");
+        utilidades.esperarPresionarEnter();
+      break;
+
+      case 2://Eliminar un producto del carrito la devolución
+        System.out.println("Ingrese el ID del producto a eliminar:");
+        String idProductoEliminar = scanner.nextLine();
+    
+        // Verificar si el producto existe en el carrito de devolucion
+        if (!devolucionAct.getCarrito().containsKey(idProductoEliminar)) {
+          System.out.println("El producto no está en el carrito de devolucion.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
+
+        // Eliminar el producto del carrito de devolucion
+        devolucionAct.getCarrito().remove(idProductoEliminar);
+        System.out.println("Producto eliminado del carrito de devolucion.");
+        utilidades.esperarPresionarEnter();
+          
+      break;
+      case 3: //Finalizar devolucion
+          // Verificar si hay artículos en el carrito del pedido
+          if (devolucionAct.getCarrito().isEmpty()) {
+              System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
+              utilidades.esperarPresionarEnter();
+              break;
           }
-          System.out.println("Cantidad: ");
-          int qty = scanner.nextInt();
-          devolucion.mover_a_bodega(productoamover,qty,bodega);
-          System.out.println("Se ha movido el producto.");
+        devolucionAct.finalizarDevolucion(devueltos, general);
+        utilidades.esperarPresionarEnter();  
+        break;
+        case 4: // Mover devoluciones a bodega y pasar a historico
+          List <Devolucion> devoluciones= devueltos.getDevoluciones();
+          System.out.println("LISTA ACTIVA DE LAS DEVOLUCIONES:");
+         if (!devoluciones.isEmpty()){
+          for (Devolucion devuelto:devoluciones) {
+              System.out.println("Devolucion Realizada por: " + devuelto.getEmpleado().getNombre() + " Con ID: " + devuelto.getEmpleado().getId());
+              System.out.println("Fecha: " + devuelto.getFecha());
+              System.out.println("Id de la devolucion: " + devuelto.getId());
+              System.out.println("Productos devueltos: ");
+              devuelto.mostrarProductosEnCarrito();
+              System.out.println("Total: " + devuelto.calcularTotal() + "\n\n");
+            
+          }
+        }else{
+          System.out.println("No hay productos en la lista de devoluciones.");
           utilidades.esperarPresionarEnter();
           break;
         }
-        case 4:{
-          salir = true;
-          break;
-        }
-        default:{
-          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+        System.out.println("Estos se trasladaran a bodega.");
+        boolean continuar = utilidades.preguntaContinuar();
+        if(continuar){
+          devueltos.moverABodega(bodega);
+          devueltos.agregarAHistorico();
+        }else{
+          System.out.println("No se movio nada a bodega.");
           utilidades.esperarPresionarEnter();
           break;
         }
-      }
+        System.out.println("Las devoluciones se movieron a bodega.");
+        utilidades.esperarPresionarEnter();
+        break;
+    
+      default:
+        break;
     }
+    
   }
-
-  private void Devoluciones(){
-    boolean salir = false;
-    while(!salir){
-      Utilidades.limpiarPantalla();
-      Vistas.ModuloDevoluciones();
-      int opcion = scanner.nextInt();
-      scanner.nextLine();
-
-      switch(opcion){
-        case 1:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Historico de devoluciones:");
-          devolucion.mostrarHistorico();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 2:{
-          Utilidades.limpiarPantalla();
-          System.out.println("Lista de devoluciones actuales:");
-          devolucion.mostrarDevoluciones();
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-        case 3:{
-          salir = true;
-          break;
-        }
-        default:{
-          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
-          utilidades.esperarPresionarEnter();
-          break;
-        }
-      }
-    }
-  }
+}
 }
