@@ -42,20 +42,7 @@ public class Inventario_General {
             }
         }
         return null;
-    }
-
-    //Método para buscar un producto con su Id dentro del mapa productos
-    /*public String buscarProductosId(String Id){
-            for (Product producto : general) {
-                if (producto.getId().equals(Id)) {
-                    return producto;
-                }
-            }
-        }
-        return null;
-    }*/
-    
-    
+    }    
 
     //Método para consultar la cantidad total de productos en el inventario
     public int consultar_cantidad_inventario() {

@@ -96,7 +96,6 @@ public class Utilidades {
     }
 
     public boolean preguntaContinuar(){
-      // Scanner scanner = new Scanner(System.in);
       System.out.print("¿Desea continuar? (si/no): ");
       String continuar = scanner.nextLine();
       continuar = continuar.toLowerCase();

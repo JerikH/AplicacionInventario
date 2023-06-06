@@ -9,9 +9,8 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 public class Controlador {
-  // private Vistas vistas;
   private Utilidades utilidades;
-  private Inventario_General general; // utilizar exhibición y bodega en su lugar
+  private Inventario_General general;
   private Inventario_Vendido vendidos;
   private Inventario_Recibido recibidos;
   private Inventario_Bodega bodega;
@@ -23,7 +22,6 @@ public class Controlador {
 
   public Controlador(Utilidades utilidades, Inventario_General general, Inventario_Vendido vendidos,
       Inventario_Recibido recibidos, Inventario_Bodega bodega, Inventario_Exhibicion exhibicion, List<User> usuarios, Inventario_Devuelto devueltos) {
-    // this.vistas = vistas;
     this.utilidades = utilidades;
     this.general = general;
     this.vendidos = vendidos;
@@ -1167,6 +1165,7 @@ public class Controlador {
     switch (opcion) {
 
       case 1://Agregar producto al carrito de devolución
+        Utilidades.limpiarPantalla();
         System.out.print("Ingrese el ID del producto:");
         String idProducto = scanner.nextLine();
             
@@ -1179,7 +1178,7 @@ public class Controlador {
         }
         System.out.print("Ingrese la cantidad de unidades que se devuelven:");
         int cantidad = Utilidades.nextIntCustom(scanner);
-        scanner.nextLine(); // Consumir la nueva línea después de la entrada numérica
+        scanner.nextLine();
     
         // Agregar el producto al carrito del devolucion
         devolucionAct.agregarProducto(producto, cantidad);
@@ -1188,6 +1187,7 @@ public class Controlador {
       break;
 
       case 2://Eliminar un producto del carrito la devolución
+        Utilidades.limpiarPantalla();
         System.out.print("Ingrese el ID del producto a eliminar:");
         String idProductoEliminar = scanner.nextLine();
     
@@ -1206,6 +1206,7 @@ public class Controlador {
       break;
       case 3: //Finalizar devolucion
           // Verificar si hay artículos en el carrito del pedido
+          Utilidades.limpiarPantalla();
           if (devolucionAct.getCarrito().isEmpty()) {
               System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
               utilidades.esperarPresionarEnter();
@@ -1213,14 +1214,16 @@ public class Controlador {
           }
         // devolucionAct.finalizarDevolucion(devueltos, general);
         devueltos.agregarADevoluciones(devolucionAct);
-        salir = true;
-        utilidades.esperarPresionarEnter();  
+        System.out.println("Se ha añadido a la lista de devoluciones activas.");
+        utilidades.esperarPresionarEnter(); 
         break;
         case 4: // Mover devoluciones a bodega y pasar a historico
+          Utilidades.limpiarPantalla();
           List <Devolucion> devoluciones= devueltos.getDevoluciones();
           System.out.println("LISTA ACTIVA DE LAS DEVOLUCIONES:");
          if (!devoluciones.isEmpty()){
           for (Devolucion devuelto:devoluciones) {
+              System.out.println("----------------------------------------------------------------------------------------------------");
               System.out.println("Devolucion Realizada por: " + devuelto.getEmpleado().getNombre() + " Con ID: " + devuelto.getEmpleado().getId());
               System.out.println("Fecha: " + devuelto.getFecha());
               System.out.println("Id de la devolucion: " + devuelto.getId());
@@ -1244,6 +1247,7 @@ public class Controlador {
           utilidades.esperarPresionarEnter();
           break;
         }
+        Utilidades.limpiarPantalla();
         System.out.println("Las devoluciones se movieron a bodega.");
         utilidades.esperarPresionarEnter();
         break;

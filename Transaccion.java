@@ -75,6 +75,7 @@ public class Transaccion {
         }
     }
 
+    //Método para calcular total
     public double calcularTotal() {
         double total = 0;
         for (Map.Entry<Product, Integer> entry : carrito.entrySet()) {

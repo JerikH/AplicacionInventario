@@ -1,14 +1,4 @@
 public class Vistas {
-  // public static void MenuPrincipal() {
-  //     System.out.println("Menú principal:");
-  //     System.out.println("1. Agregar usuario");
-  //     System.out.println("2. Quitar usuario");
-  //     System.out.println("3. Modificar usuario");
-  //     System.out.println("4. Buscar Usuario.");
-  //     System.out.println("0. Salir");
-  //     System.out.print("Seleccione una opción: ");
-  // }
-
   public static void InfoUsuario(User usuario) {
       System.out.println("Usuario encontrado:");
       System.out.println("Nombre: " + usuario.getNombre());
@@ -72,7 +62,7 @@ public class Vistas {
     System.out.println("Modulo De Gestion De Productos");
     System.out.println("1. Crear Producto");
     System.out.println("2. Eliminar producto");
-    System.out.println("3. Modificar producto"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
+    System.out.println("3. Modificar producto");
     System.out.println("0. Regresar");
     System.out.print("Seleccione una opción: ");
   }
@@ -162,7 +152,7 @@ public class Vistas {
     System.out.println("Modulo De Gestion De Devolucion");
     System.out.println("1. Agregar Producto que se va a devolver");
     System.out.println("2. Eliminar producto que se va a devolver");
-    System.out.println("3. Finalizar devolucion"); //sub menu desde esta opcion, métodos de producto y manipulacion de unidades.
+    System.out.println("3. Finalizar devolucion");
     System.out.println("4. Mover las devoluciones a bodega");
     System.out.println("5. Regresar.");
     System.out.print("Seleccione una opción: ");
