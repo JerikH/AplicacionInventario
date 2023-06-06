@@ -1209,6 +1209,7 @@ public class Controlador {
           if (devolucionAct.getCarrito().isEmpty()) {
               System.out.println("El carrito de devolucion está vacío. No se puede finalizar el pedido.");
               utilidades.esperarPresionarEnter();
+              salir = true;
               break;
           }
         // devolucionAct.finalizarDevolucion(devueltos, general);
