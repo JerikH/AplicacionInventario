@@ -109,6 +109,7 @@ public class Transaccion {
 
     //Método para generar recibo de una transacción
     public void generarRecibo(String postfix) {
+        System.out.println("----------------------------------------------------------------------------------------------------");
         System.out.println("Recibo de "+ postfix + ":");
         System.out.println("ID de "+ postfix+": " + id);
         System.out.println("Fecha: " + fecha);
@@ -123,6 +124,7 @@ public class Transaccion {
 
         double total = calcularTotal();
         System.out.println("Total: " + total);
+        System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
     public Map<Product, Integer> getCarrito(){
