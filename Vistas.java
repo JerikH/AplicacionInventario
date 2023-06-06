@@ -154,4 +154,34 @@ public class Vistas {
     System.out.println("4. Mover las devoluciones a bodega");
     System.out.println("5. Regresar.");
   }
+
+  public static void ventatoString(Venta venta){
+    System.out.println("Venta Realizada por: " + venta.getEmpleado().getNombre() + " Con ID: " + venta.getEmpleado().getId());
+    System.out.println("Fecha: " + venta.getFecha());
+    System.out.println("Id de la venta: " + venta.getId());
+    System.out.println("Productos vendidos: ");
+    venta.mostrarProductosEnCarrito();
+    System.out.println("Total: " + venta.calcularTotal() + "\n\n");
+  }
+
+  public static void pedidoToString(Pedido pedido){
+    System.out.println("Pedido Realizada por: " + pedido.getEmpleado().getNombre() + " Con ID: " + pedido.getEmpleado().getId());
+    System.out.println("Fecha: " + pedido.getFecha());
+    System.out.println("Id del pedido: " + pedido.getId());
+    System.out.println("Proveedor: " + pedido.getProveedor());
+    System.out.println("Productos pedidos: ");
+    pedido.mostrarProductosEnCarrito();
+    System.out.println("Total: " + pedido.calcularTotal() + "\n\n");
+  }
+
+  public static void devoluciontoString(Devolucion devolucion){
+    System.out.println("Venta Realizada por: " + devolucion.getEmpleado().getNombre() + " Con ID: " + devolucion.getEmpleado().getId());
+    System.out.println("Fecha: " + devolucion.getFecha());
+    System.out.println("Id de la venta: " + devolucion.getId());
+    System.out.println("Productos vendidos: ");
+    devolucion.mostrarProductosEnCarrito();
+    System.out.println("Total: " + devolucion.calcularTotal() + "\n\n");
+  }
+
+
 }
