@@ -1225,10 +1225,16 @@ public class Controlador {
         utilidades.esperarPresionarEnter();
         break;
     
-      default:
-        break;
+        case 5:{
+          salir = true;
+          break;
+        }
+        default:{
+          System.out.println("Opción inválida. Por favor, selecciona una opción válida.");
+          utilidades.esperarPresionarEnter();
+          break;
+        }
     }
-    
   }
 }
 
